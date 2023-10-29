@@ -8,7 +8,7 @@ const imageHeight = 0.70 * tabHeight;
 //onst [selectedBuilding, setSelectedBuilding] = useState({});
 
 
-const imageSource = require('./campus1.jpg'); // Replace with your image path
+const imageSource = require('./assets/campus1.jpg'); // Replace with your image path
 
 
 
@@ -17,7 +17,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
   const handleBuildingPress = (buildingName) => {
     onBuildingPress(buildingName);
     // Do anything else you need with the selected building name.
-    // For example, send it to a backend or store it.
+    // For example, send it to a backend or store it
   }
 
   return (
@@ -31,7 +31,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
           top: '25%',     // Example value
           left: '9%',    // Example value
           position: 'absolute',
-          borderColor: 'red',
+          borderColor: 'transparent',
           borderWidth: 1  // This is optional, just to see the borders of the touchable area
         }}
         onPress={() => {
