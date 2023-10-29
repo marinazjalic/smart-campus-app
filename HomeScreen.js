@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, Button, Image, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Button, Image, Dimensions, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Alert } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { Calendar } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native';
-import { Dimensions } from 'react-native';
+//import { Dimensions } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; // Import the date-time picker
 import  CampusMap1  from './CampusMap1';
 import Checkbox from './Checkbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LogoutScreen from './Logout';
+import UpcomingBookings from './UpcomingBookings';
 const Stack = createStackNavigator();
 
 
@@ -27,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
   const [showError, setShowError] = useState(false);
   const inputRef = useRef(null);
   const [markedDates, setMarkedDates] = useState({});
+  
 
 //i couldnt get stack container for the longest time but i tried it here and it works?
 <NavigationContainer>
@@ -35,6 +37,15 @@ const HomeScreen = ({ navigation }) => {
         <Stack.Screen name="Logout" component={LogoutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+
+    const handleButtonPress = () => {
+      if((selectedBuilding && selectedDate) && selectedTime) {
+        Alert.alert('Success, all options are selected');
+      }
+      else{
+        Alert.alert('Error, please select all mandatory options (date, time, location).');
+            }
+    }
     
     const renderBookingPanel = (booking) => {
       return (
@@ -95,23 +106,97 @@ const HomeScreen = ({ navigation }) => {
     alert(`Selected: ${buildingName}`);
   };
 
+/*
+  const onDayPress = (day) => {
+    const dayToCheck = new Date(day.year, day.month - 1, day.day);
+    if(dayToCheck >= today && dayToCheck <= maxDate) {
+      setSelectedDate(day.dateString);
+    }
+  };
+  */
+
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() +14);
+  const disabledDates = {};
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // months are zero-indexed
+    const day = date.getDate();
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  };
+/*
+  const handleDateSelection = (day) => {
+    const selectedDay = new Date(day.dateString);
+    selectedDay.setHours(0, 0, 0, 0);
+    const todayMidnight = new Date(today);
+    todayMidnight.setHours(0, 0, 0, 0);
+
+    if (selectedDay >= todayMidnight && selectedDay <= maxDate) {
+      const newStyle = { selected: true, selectedColor: 'blue' };
+      setSelectedDate(day.dateString);
+      setSelectedDates({ [day.dateString]: newStyle });
+    }
+  };
+  */
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'date':
         return (
-          <View style={{ flex: 1, margin: 0, padding: 0 }}>
+          <View style={{ flex: 1, margin: 0, padding: 0, backgroundColor: 'white', borderRadius: 10, overflow: 'hidden' }}>
             {
               <Calendar
+              minDate={formatDate(today)}
+              maxDate={formatDate(maxDate)}
+              //markingType={'custom'}
+              //markedDates1 = {disabledDates}
+              /*markedDates={{
+                [selectedDate]: {selected: true, selectedColor: 'blue'}
+              }}
+              
+              markedDates={{
+                ...selectedDates,
+                ...Array.from({ length: 15 }, (_, i) => new Date(new Date().setDate(today.getDate() + i)))
+                  .reduce((acc, date) => {
+                    const formattedDate = formatDate(date);
+                    if (!selectedDates[formattedDate]) {
+                      acc[formattedDate] = { customStyles: { container: { backgroundColor: 'white' }, text: { color: 'black' } } };
+                    }
+                    return acc;
+                  }, {}),
+              }}
+              
+              dayComponent={({date, state }) => {
+                const dayToCheck = new Date(date.year, date.month -1, date.day);
+                isSelected = formatDate(dayToCheck) === selectedDate;
+                const isDisabled = dayToCheck < today || dayToCheck > maxDate;
+                
+                return (
+                  <View>
+                    <Text style={{ color: isDisabled ? 'darkgrey' : 'black'}}>
+                      {date.day}
+                    </Text>
+                    </View>
+                    
+                  
+                );
+                
+              }*/
               // clendar props and customization options here
-              style={{ height: screenHeight * 0.38, borderTopWidth: 1, borderTopColor: 'gray', marginBottom: 30 }}
-              onDayPress={(day) => handleDateSelection(day)} markedDates={selectedDates}
-            />
-            }
+            style={{ height: screenHeight * 0.38, borderTopWidth: 1, borderTopColor: 'gray', marginBottom: 30 }}
+             onDayPress={(day) => handleDateSelection(day)} markedDates={selectedDates}
+              
+              />
+            
+          }
+        
           </View>
         );
       case 'location':
         return (
-          <View style={{ width: "100%", height: "70%", flex:1, margin: 0, padding:0 }}>
+          <View style={{ width: "100%", height: "70%", flex:1, margin: 0, padding:0, backgroundColor: 'white' }}>
             <CampusMap1
               selectedBuilding={selectedBuilding} 
               onBuildingPress={setSelectedBuilding}
@@ -127,9 +212,9 @@ const HomeScreen = ({ navigation }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: 'blue' }}
+      indicatorStyle={{ backgroundColor: '#0B7DF1' }}
       style={{ backgroundColor: 'white' }}
-      activeColor={'blue'}
+      activeColor={'#0B7DF1'}
       inactiveColor={'gray'}
     />
   );
@@ -153,6 +238,7 @@ const HomeScreen = ({ navigation }) => {
     hideTimePicker();
   };
 
+  
   const handleDateSelection = (day) => {
     const selectedDay = new Date(day.dateString);
     const today = new Date();
@@ -170,7 +256,9 @@ const HomeScreen = ({ navigation }) => {
       // make a new style for the selected date
       const newStyle = {
         selected: true,
-        selectedColor: 'blue',
+        selectedColor: '#0B7DF1',
+        //color: 'red'
+        //selected
       };
   
       // update state with the selected date and style
@@ -184,6 +272,10 @@ const HomeScreen = ({ navigation }) => {
       // if user doesnt pick a day within 14 days, nothing happens they just cant pick it
     }
   };
+  
+
+  
+  
  
   
   return (
@@ -193,15 +285,15 @@ const HomeScreen = ({ navigation }) => {
       }
       <View style={{ flex: 3.5}}>
         { //title for Upcoming Bookings
-          <Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
-         //followed by panels for Upcoming bookings
-         
-      
-        }{/* Rest of your HomeScreen content */}
-    
+        <UpcomingBookings>
+          
+        </UpcomingBookings>
+          //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
+         //followed by panels for Upcoming bookings 
+        }
 
-        
         </View>
+
         <View style={{ flex: 6.5 }}>
         <TabView //this is the tab for 'Date' and 'Location'
           navigationState={{ index, routes }}
@@ -211,10 +303,10 @@ const HomeScreen = ({ navigation }) => {
           style={{ flex: 1 }}  // Fixed height
         />
         
-        <View>
+        <View style={{ backgroundColor: 'white', alignItems: 'center' }}>  
         {isDateTabActive && (  
-          <View style={{ justifyContent: 'space-between' }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={styles.card}>
+          <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button title="Select a Time" onPress={showTimePicker} /> 
           
           {selectedDate && selectedTime && (  //if date and time are selected, show them both
@@ -238,12 +330,12 @@ const HomeScreen = ({ navigation }) => {
 
       
     
-    <View>
+    <View> 
     {isLocationTabActive && (
 
-      <View style={{ justifyContent: 'space-between' }}>  
-      <View style={{padding: 15, marginTop:6 }} onPress={() => inputRef.current.focus()}>
-      <View style={{marginBottom: 5 }}>
+      <View style={{ justifyContent: 'space-between', backgroundColor: 'white' }}>  
+      <View style={{ paddingLeft: 10, marginTop:0 }} onPress={() => inputRef.current.focus()}>
+      <View style={{ marginBottom: 5 }}>
       <TextInput //this is for the capacity thing
         ref = {inputRef}
         value={roomCapacity}
@@ -267,17 +359,22 @@ const HomeScreen = ({ navigation }) => {
             />
         </View>
       
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Button title="Select a Time" onPress={showTimePicker} />
+        <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
+       
 
 
-      {selectedBuilding && selectedTime && (  //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
-      <View> 
-      <Button title="Find Room" onPress={() => navigation.navigate('Logout')} color="#ADD8E6" style={{ marginTop: -20}} /> 
+      <View style= {{ backgroundColor: 'white' }}>
+
+      {selectedTime && selectedDate && selectedBuilding && (  //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
+      //onPress={() => navigation.navigate('Logout')} for the find a room button
+      <View>
+      <Button title="Find Room" onPress={handleButtonPress} color="#0B7DF1" style={{ marginTop: -20}} /> 
       <Text style={{ marginRight: 16 }} >Selected Time: {selectedTime}</Text>
       <Text style={{ marginRight: 16 }}>Selected Building: {selectedBuilding} </Text>
     </View>
-      )}
+      )} 
+    </View>
+      
       </View>
   </View>
     )}
@@ -296,8 +393,33 @@ export default HomeScreen;
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: "#F8F8F8",
       alignItems: "center",
       justifyContent: "center",
     },
-  });
+    card: {
+      width: '95%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 30,
+      marginBottom: 10,
+      borderRadius: 20, // Adjust for desired corner radius
+      backgroundColor: 'white',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 1,
+        height: 2,
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 2.99,
+      elevation: 10,
+    },
+    cardTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    cardContent: {
+      marginTop: 8,
+      fontSize: 14,
+    },
+});

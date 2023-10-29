@@ -28,7 +28,7 @@ export default App;
 
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Alert, View } from "react-native";
 import HomeScreen from './HomeScreen';
 import ManageBookings from './ManageBookings';
 import Logout from './Logout';
@@ -47,6 +47,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
@@ -59,7 +60,7 @@ export default function App() {
             }else if (route.name == 'Manage Bookings') {
               iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
             }
-            else if (route.name === 'Login') {
+            else if (route.name === 'Logout') {
               iconName = focused ? 'ios-person' : 'ios-person-outline';
             }
 
@@ -67,14 +68,37 @@ export default function App() {
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'tomato',
+          tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'gray',
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
-        <Tab.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
-        <Tab.Screen name="Login" component={Login} />
+        <Tab.Screen 
+        name="Logout" 
+        component={Logout} 
+        listeners={({ navigation }) => ({
+          tabPress: e => {
+            // Prevent default action
+            e.preventDefault();
+            
+            Alert.alert(
+              "Logout",
+              "Are you sure you want to logout?",
+              [
+                {
+                  text: "No",
+                  style: "cancel"
+                },
+                {
+                  text: "Yes",
+                  onPress: () => navigation.navigate('Login')
+                }
+              ]
+            );
+          },
+        })}
+        />
         
       </Tab.Navigator>
     </NavigationContainer>
