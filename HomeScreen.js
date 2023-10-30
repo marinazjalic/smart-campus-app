@@ -346,7 +346,7 @@ const HomeScreen = ({ navigation }) => {
       <TextInput //this is for the capacity thing
         ref = {inputRef}
         value={roomCapacity}
-        onChangeText={handleInputChange(value)}
+        onChangeText={handleInputChange}
         keyboardType="numeric"
         placeholder="Capacity (1-8 ppl)"
         style={{borderWidth: 1, padding: 5, borderColor:'transparent', borderBottomColor: '#ccc', width: '40%'}}
