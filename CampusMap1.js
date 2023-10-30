@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Image, Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const tabHeight = 0.65 * screenHeight;
-const imageHeight = 1.7 * tabHeight;
+const imageHeight = 1.2 * tabHeight;
 //onst [selectedBuilding, setSelectedBuilding] = useState({});
 
 // const imageSource = require("./assets/campus1.jpg"); // Replace with your image path

@@ -23,6 +23,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogoutScreen from "./Logout";
 import UpcomingBookings from "./UpcomingBookings";
+import AIRooomFinder from "./AIRoomFinder";
+import Confirmation from "./Confirmation";
 const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
@@ -44,19 +46,23 @@ const HomeScreen = ({ navigation }) => {
   <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Room" component={AIRooomFinder} />
+      <Stack.Screen name="Confirmation" component={Confirmation} />
       <Stack.Screen name="Logout" component={LogoutScreen} />
     </Stack.Navigator>
   </NavigationContainer>;
 
-  const handleButtonPress = () => {
-    if (selectedBuilding && selectedDate && selectedTime) {
-      Alert.alert("Success, all options are selected");
-    } else {
-      Alert.alert(
-        "Error, please select all mandatory options (date, time, location)."
-      );
+  /*
+    const handleButtonPress = () => {
+      if((selectedBuilding && selectedDate) && selectedTime) {
+        //Alert.alert('Success, all options are selected');
+        navigation.navigate('Confirmation')
+      }
+      else{
+        Alert.alert('Error, please select all mandatory options (date, time, location).');
+            }
     }
-  };
+    */
 
   const renderBookingPanel = (booking) => {
     return (
@@ -205,10 +211,9 @@ const HomeScreen = ({ navigation }) => {
                 // clendar props and customization options here
                 style={{
                   height: screenHeight * 0.38,
-                  // borderTopWidth: 1,
-                  // borderTopColor: "white",
+                  borderTopWidth: 1,
+                  borderTopColor: "gray",
                   marginBottom: 30,
-                  // backgroundColor: "red"
                 }}
                 onDayPress={(day) => handleDateSelection(day)}
                 markedDates={selectedDates}
@@ -240,20 +245,11 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  //this is for the tab at the top of calendar
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{
-        backgroundColor: "#0B7DF1",
-        width: 75,
-        marginLeft: 71,
-      }}
-      style={{
-        backgroundColor: "white",
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-      }}
+      indicatorStyle={{ backgroundColor: "#0B7DF1" }}
+      style={{ backgroundColor: "white" }}
       activeColor={"#0B7DF1"}
       inactiveColor={"gray"}
     />
@@ -320,11 +316,9 @@ const HomeScreen = ({ navigation }) => {
       {
         //nothing goes here
       }
-
-      <View style={{ flex: 3.5, backgroundColor: "#6c9A8b" }}>
+      <View style={{ flex: 3.5 }}>
         {
           //title for Upcoming Bookings
-          //try this
           <UpcomingBookings></UpcomingBookings>
           //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
           //followed by panels for Upcoming bookings
@@ -413,8 +407,8 @@ const HomeScreen = ({ navigation }) => {
                   label="Whiteboard"
                   checked={isCheckbox1Checked}
                   onToggle={() => setIsCheckbox1Checked(!isCheckbox1Checked)}
-                /> */}
-                {/* <Checkbox
+                />
+                <Checkbox
                   label="Accessible"
                   checked={isCheckbox2Checked}
                   onToggle={() => setIsCheckbox2Checked(!isCheckbox2Checked)}
@@ -436,7 +430,7 @@ const HomeScreen = ({ navigation }) => {
                       <View>
                         <Button
                           title="Find Room"
-                          onPress={handleButtonPress}
+                          onPress={() => navigation.navigate("Confirmation")}
                           color="#0B7DF1"
                           style={{ marginTop: -20 }}
                         />
@@ -468,7 +462,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    //this is for the times
     width: "95%",
     justifyContent: "center",
     alignItems: "center",
