@@ -115,7 +115,7 @@ const HomeScreen = ({ navigation }) => {
     { key: "location", title: "Location" },
   ]);
 
-  const handleBuildingPress = (buildingName) => {
+  const handleBuildingPress = () => {
     alert(`Selected: ${buildingName}`);
   };
 
