@@ -78,6 +78,7 @@ export default function App() {
         <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
         <Tab.Screen name="Room" component={AIRoomFinder} />
         <Tab.Screen name="Confirm" component={Confirmation} />
+        <Tab.Screen name="Login"  component={Login} />
 
       
 
