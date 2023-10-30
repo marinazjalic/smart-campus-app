@@ -36,6 +36,8 @@ import Login from './Login';
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AIRoomFinder from './AIRoomFinder';
+import Confirmation from './Confirmation';
 //import { createStackNavigator } from '@react-navigation/stack';
 
 
@@ -74,6 +76,11 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
+        <Tab.Screen name="Room" component={AIRoomFinder} />
+        <Tab.Screen name="Confirm" component={Confirmation} />
+
+      
+
         <Tab.Screen 
         name="Logout" 
         component={Logout} 

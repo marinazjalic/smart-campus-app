@@ -2,30 +2,21 @@ import React from 'react';
 import { Text, View, StyleSheet} from 'react-native';
 import { Button } from 'react-native-elements';
 
-function AIRoomFinder() {
+function Confirmation() {
 
-    function handleReservation() {
-            //bring you to confirmation page here
-    }
-    function handleGoBack() {
+  
+    function handleGoBackHome() {
         //goes back to home page
     }
 
     return(
-        <View style={{ flex: 3, backgroundColor:'white', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 3, backgroundColor:'white', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             <View style={styles.container}>
-            
             <View style={styles.card}>
-            <Text style={{fontSize: 24, marginTop:60 }}>Sorry,</Text>
-            <Text style={{fontSize: 18 }}>there are no available rooms</Text>
-            <Text style={{fontSize: 18, marginBottom: 20}}>with those preferences...</Text>
-        
-        
-          <Text style={styles.text}>Would you like to book this instead?</Text>
+            <Text style={{fontSize: 24, marginTop:60, width: '90%'}}>RESERVED</Text>
           <Text> Room location</Text>
           <Text style= {{ marginBottom: 30}}>Day and time</Text>
-          <Button title='Reserve room' onPress={handleReservation} color="#0B7DF1" style={{marginBottom:10}}/>
-          <Button title='Go back' onPress={handleGoBack} color="#0B7DF1" />
+          <Button title='Go home' onPress={handleGoBackHome} color="#0B7DF1" />
 
         </View>
 
@@ -35,7 +26,7 @@ function AIRoomFinder() {
     );
 }
 
-export default AIRoomFinder;
+export default Confirmation;
 
 const styles = StyleSheet.create({
     container: {

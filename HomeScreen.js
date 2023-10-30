@@ -11,6 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LogoutScreen from './Logout';
 import UpcomingBookings from './UpcomingBookings';
+import AIRooomFinder from './AIRoomFinder';
+import Confirmation from './Confirmation';
 const Stack = createStackNavigator();
 
 
@@ -34,18 +36,23 @@ const HomeScreen = ({ navigation }) => {
 <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Room" component={AIRooomFinder} />
+        <Stack.Screen name="Confirmation" component={Confirmation} /> 
         <Stack.Screen name="Logout" component={LogoutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
 
+/*
     const handleButtonPress = () => {
       if((selectedBuilding && selectedDate) && selectedTime) {
-        Alert.alert('Success, all options are selected');
+        //Alert.alert('Success, all options are selected');
+        navigation.navigate('Confirmation')
       }
       else{
         Alert.alert('Error, please select all mandatory options (date, time, location).');
             }
     }
+    */
     
     const renderBookingPanel = (booking) => {
       return (
@@ -368,7 +375,8 @@ const HomeScreen = ({ navigation }) => {
       {selectedTime && selectedDate && selectedBuilding && (  //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
       //onPress={() => navigation.navigate('Logout')} for the find a room button
       <View>
-      <Button title="Find Room" onPress={handleButtonPress} color="#0B7DF1" style={{ marginTop: -20}} /> 
+      <Button title="Find Room" onPress={() => navigation.navigate('Confirmation')}
+ color="#0B7DF1" style={{ marginTop: -20}} /> 
       <Text style={{ marginRight: 16 }} >Selected Time: {selectedTime}</Text>
       <Text style={{ marginRight: 16 }}>Selected Building: {selectedBuilding} </Text>
     </View>
