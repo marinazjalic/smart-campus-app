@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Text, View, ScrollView, TextInput, Button, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, TextInput, Button, StyleSheet, Keyboard } from 'react-native';
 import Navigation from './Navigation';
-//import Login from './Login';
+import { useState } from 'react';
+import Login from './Login';
 
-export default function SignUp({ navigate }) {
+export default function SignUp({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     
@@ -11,6 +12,7 @@ export default function SignUp({ navigate }) {
         console.log('Email:', username);
         console.log('Password:', password);
         Keyboard.dismiss();
+        navigation.popToTop();
     };
     return (
         <ScrollView
@@ -35,7 +37,7 @@ export default function SignUp({ navigate }) {
     onChangeText={(text) => setPassword(text)}
     style={styles.input}
     />
-    <Button title="Sign up" onPress={handleLogin} />
+    <Button title="Sign up" onPress={handleSignUp} />
     </View>
     </View>
     </View>

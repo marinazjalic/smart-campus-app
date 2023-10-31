@@ -6,9 +6,9 @@ import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
-    <NavigationContainer>
+    
       <Navigation />
-      </NavigationContainer>
+      
     
   );
 }
@@ -38,77 +38,94 @@ import {createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AIRoomFinder from './AIRoomFinder';
 import Confirmation from './Confirmation';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignUp from './SignUp';
 //import { createStackNavigator } from '@react-navigation/stack';
 
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator(); 
+
+function TabNavigator() {
+  return (
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = focused
+            ? 'ios-home'
+            : 'ios-home-outline';
+        } else if (route.name === 'Logout') {
+          iconName = focused ? 'ios-close' : 'ios-close-outline';
+        }else if (route.name == 'Manage Bookings') {
+          iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
+        }
+        else if (route.name === 'Logout') {
+          iconName = focused ? 'ios-person' : 'ios-person-outline';
+        }
+
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: 'blue',
+      tabBarInactiveTintColor: 'gray',
+    })}
+  >
+    <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
+    <Tab.Screen name="Confirm" component={Confirmation} />
+    <Tab.Screen name="Login"  component={Login} />
+
+  
+
+    <Tab.Screen 
+    name="Logout" 
+    component={Logout} 
+    listeners={({ navigation }) => ({
+      tabPress: e => {
+        // Prevent default action
+        e.preventDefault();
+        
+        Alert.alert(
+          "Logout",
+          "Are you sure you want to logout?",
+          [
+            {
+              text: "No",
+              style: "cancel"
+            },
+            {
+              text: "Yes",
+              onPress: () => navigation.navigate('Login')
+            }
+          ]
+        );
+      },
+    })}
+    />
+    
+  </Tab.Navigator>
+);
+}
+
 
 export default function App() {
   return (
+    //initialRouteName was "Home"
+    //Stack.Screen 1st was "Home" component={HomeScreen}
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'ios-home'
-                : 'ios-home-outline';
-            } else if (route.name === 'Logout') {
-              iconName = focused ? 'ios-close' : 'ios-close-outline';
-            }else if (route.name == 'Manage Bookings') {
-              iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
-            }
-            else if (route.name === 'Logout') {
-              iconName = focused ? 'ios-person' : 'ios-person-outline';
-            }
-
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'blue',
-          tabBarInactiveTintColor: 'gray',
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
-        <Tab.Screen name="Room" component={AIRoomFinder} />
-        <Tab.Screen name="Confirm" component={Confirmation} />
-        <Tab.Screen name="Login"  component={Login} />
-
-      
-
-        <Tab.Screen 
-        name="Logout" 
-        component={Logout} 
-        listeners={({ navigation }) => ({
-          tabPress: e => {
-            // Prevent default action
-            e.preventDefault();
-            
-            Alert.alert(
-              "Logout",
-              "Are you sure you want to logout?",
-              [
-                {
-                  text: "No",
-                  style: "cancel"
-                },
-                {
-                  text: "Yes",
-                  onPress: () => navigation.navigate('Login')
-                }
-              ]
-            );
-          },
-        })}
-        />
-        
-      </Tab.Navigator>
+      <Stack.Navigator initialRouteName="TabNavigator">
+        <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Confirmation" component={Confirmation} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        {/* Add other screens as needed */}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

@@ -18,6 +18,7 @@ import { TouchableOpacity } from "react-native";
 //import { Dimensions } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import the date-time picker
 import CampusMap1 from "./CampusMap1";
+import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -25,9 +26,11 @@ import LogoutScreen from "./Logout";
 import UpcomingBookings from "./UpcomingBookings";
 import AIRooomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
+import Login from "./Login";
 const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
+  //const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [selectedTime, setSelectedTime] = useState(null); // State to store the selected date
@@ -41,6 +44,12 @@ const HomeScreen = ({ navigation }) => {
   const [showError, setShowError] = useState(false);
   const inputRef = useRef(null);
   const [markedDates, setMarkedDates] = useState({});
+
+  const resetSelections = () => {
+    setSelectedDate("");
+    setSelectedTime("");
+    setSelectedBuilding("");
+  };
 
   //i couldnt get stack container for the longest time but i tried it here and it works?
   <NavigationContainer>
@@ -64,39 +73,12 @@ const HomeScreen = ({ navigation }) => {
     }
     */
 
-  //first I need to getUserID then pass it in to this function
-  // const getUpcomingBookings = () => {
-  //   axios
-  //     .get("http://192.168.50.163:3000/bookings/by-user")
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // const getUserID = () => {
-  //   axios
-  //     .get("http://192.168.50.163:3000/bookings/get-id", {
-  //       params: {
-  //         user: "user2del",
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log("SUCCESS");
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
   const renderBookingPanel = (booking) => {
     return (
       <View key={booking.id} style={styles.bookingPanel}>
         <Text>Date: {booking.date}</Text>
         <Text>Building: {booking.building}</Text>
+        <Text>Username: {username}</Text>
         {/* Add more booking details as needed */}
       </View>
     );
@@ -431,7 +413,7 @@ const HomeScreen = ({ navigation }) => {
                   )}
                 </View>
 
-                {/* <Checkbox //checkboxes
+                <Checkbox //checkboxes
                   label="Whiteboard"
                   checked={isCheckbox1Checked}
                   onToggle={() => setIsCheckbox1Checked(!isCheckbox1Checked)}
@@ -440,7 +422,7 @@ const HomeScreen = ({ navigation }) => {
                   label="Accessible"
                   checked={isCheckbox2Checked}
                   onToggle={() => setIsCheckbox2Checked(!isCheckbox2Checked)}
-                /> */}
+                />
               </View>
 
               <View
@@ -452,13 +434,18 @@ const HomeScreen = ({ navigation }) => {
               >
                 <View style={{ backgroundColor: "white" }}>
                   {selectedTime &&
-                    selectedDate &&
-                    selectedBuilding && ( //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
+                    selectedDate && ( //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
                       //onPress={() => navigation.navigate('Logout')} for the find a room button
+
+                      //try console logs to see specifically where error is, try converting to string
+
                       <View>
                         <Button
                           title="Find Room"
-                          onPress={() => navigation.navigate("Confirmation")}
+                          onPress={() => {
+                            resetSelections();
+                            navigation.navigate("Confirmation");
+                          }}
                           color="#0B7DF1"
                           style={{ marginTop: -20 }}
                         />

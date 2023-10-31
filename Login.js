@@ -13,7 +13,7 @@ import ActivityIndicator from "react-native";
 import axios from "axios";
 //import Navigation from './Navigation';
 
-const Login = ({ navigation }) => {
+function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,6 +26,93 @@ const Login = ({ navigation }) => {
     // getUserID();
 
     Keyboard.dismiss();
+    navigation.navigate("Home", this.state);
+  };
+
+  //function called on login
+  const validateCredentials = () => {
+    const params = JSON.stringify({
+      username: username,
+      password: password,
+    });
+
+    axios
+      .post("http://192.168.50.163:3000/users/validate-credentials", params, {
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.data == true) {
+          // navigation.navigate("Home");
+          // setUsername(username)
+          //navigate to home page here
+          console.log("valid user");
+        } else if (response.data == false) {
+          //display some kind of error message indicating invalid credentials
+          console.log("incorrect pw");
+        } else {
+          //display error message indicating that the user doesn't exist - "did you mean to sign up?"
+          console.log("user does not exist");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  //move to home page, this should be called once the user has logged in and the state has changed
+  const getUserID = () => {
+    axios
+      .get("http://192.168.50.163:3000/users/get-id", {
+        params: {
+          user: username,
+        },
+      })
+      .then((response) => {
+        getUpcomingBookings(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getUpcomingBookings = (userID) => {
+    axios
+      .get("http://192.168.50.163:3000/bookings/by-user", {
+        params: {
+          user_id: userID,
+        },
+      })
+      .then((response) => {
+        console.log("here");
+        for (let i = 0; i < response.data.length; i++) {
+          booking_id++;
+          //will need to do some kind of conversion here with the times
+          let time_slot =
+            response.data[i].start_time + " - " + response.data[i].end_time;
+
+          let parsedDate = response.data[i].date.toString().split("-");
+          //   //also want to add other properties here like room num
+          let booking_obj = {
+            id: booking_id.toString(),
+            date:
+              parsedDate[1] +
+              "-" +
+              parsedDate[2].split("T")[0] +
+              "-" +
+              parsedDate[0],
+            time: time_slot,
+            location: "", //need to get this info from different api
+          };
+          bookings_arr.push(booking_obj);
+        }
+
+        // console.log(bookings_arr);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //function called on login
@@ -158,7 +245,7 @@ const Login = ({ navigation }) => {
       </View>
     </ScrollView>
   );
-};
+}
 
 //STYLESHEET
 

@@ -1,12 +1,31 @@
 import React from 'react';
 import { Text, View, StyleSheet} from 'react-native';
 import { Button } from 'react-native-elements';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LogoutScreen from './Logout';
+import UpcomingBookings from './UpcomingBookings';
+import AIRooomFinder from './AIRoomFinder';
+import HomeScreen from './HomeScreen';
+import App from './App';
+//const Stack1 = createStackNavigator();
 
-function Confirmation() {
 
-  
+function Confirmation({ navigation }) {
+/*
+  <NavigationContainer>
+      <Stack1.Navigator initialRouteName="Home">
+        <Stack1.Screen name="Home" component={HomeScreen} />
+        <Stack1.Screen name="App" component={App} />
+        <Stack1.Screen name="Room" component={AIRooomFinder} />
+        <Stack1.Screen name="Confirmation" component={Confirmation} /> 
+        <Stack1.Screen name="Logout" component={LogoutScreen} />
+      </Stack1.Navigator>
+    </NavigationContainer>
+  */
     function handleGoBackHome() {
-        //goes back to home page
+        
+
     }
 
     return(
@@ -16,7 +35,7 @@ function Confirmation() {
             <Text style={{fontSize: 24, marginTop:60, width: '90%'}}>RESERVED</Text>
           <Text> Room location</Text>
           <Text style= {{ marginBottom: 30}}>Day and time</Text>
-          <Button title='Go home' onPress={handleGoBackHome} color="#0B7DF1" />
+          <Button title='Go home' onPress={() => navigation.navigate('Home')} color="#0B7DF1" />
 
         </View>
 
