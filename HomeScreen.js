@@ -64,6 +64,34 @@ const HomeScreen = ({ navigation }) => {
     }
     */
 
+  //first I need to getUserID then pass it in to this function
+  // const getUpcomingBookings = () => {
+  //   axios
+  //     .get("http://192.168.50.163:3000/bookings/by-user")
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // const getUserID = () => {
+  //   axios
+  //     .get("http://192.168.50.163:3000/bookings/get-id", {
+  //       params: {
+  //         user: "user2del",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log("SUCCESS");
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   const renderBookingPanel = (booking) => {
     return (
       <View key={booking.id} style={styles.bookingPanel}>
