@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet, ScrollView, Keyboard  } from 'react-native';
 import SignUp from './SignUp';
+import App from './App';
+//import HomeScreen from './HomeScreen';
 //import Navigation from './Navigation';
-const Login = ({ navigation }) => {  
+
+function Login({ navigation }) {  
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 
@@ -12,6 +15,7 @@ const handleLogin = () => {
     console.log('Email:', username);
     console.log('Password:', password);
     Keyboard.dismiss();
+    navigation.navigate('Home', this.state);
   };
 
   const handleSignUp = () => {

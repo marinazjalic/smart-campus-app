@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, View, StyleSheet} from 'react-native';
 import { Button } from 'react-native-elements';
+import Confirmation from './Confirmation';
 
-function AIRoomFinder() {
+function AIRoomFinder({ navigation }) {
 
     function handleReservation() {
             //bring you to confirmation page here
@@ -24,7 +25,7 @@ function AIRoomFinder() {
           <Text style={styles.text}>Would you like to book this instead?</Text>
           <Text> Room location</Text>
           <Text style= {{ marginBottom: 30}}>Day and time</Text>
-          <Button title='Reserve room' onPress={handleReservation} color="#0B7DF1" style={{marginBottom:10}}/>
+          <Button title='Reserve room' onPress={() => navigation.navigate('Confirmation')} color="#0B7DF1" style={{marginBottom:10}}/>
           <Button title='Go back' onPress={handleGoBack} color="#0B7DF1" />
 
         </View>
