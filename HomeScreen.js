@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, Button, Image, Dimensions, TextInput, Touchable
 import { TabView, TabBar } from 'react-native-tab-view';
 import { Calendar } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native';
-//import { Dimensions } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; // Import the date-time picker
 import  CampusMap1  from './CampusMap1';
 import { useNavigation } from '@react-navigation/native';
@@ -15,18 +14,31 @@ import UpcomingBookings from './UpcomingBookings';
 import AIRooomFinder from './AIRoomFinder';
 import Confirmation from './Confirmation';
 import Login from './Login';
+import { useAppContext } from './AppContext';
+
 const Stack = createStackNavigator();
 
-
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation, route }) => { 
   //const navigation = useNavigation();
+  console.log('HomeScreen route params:', route.params);
+  
+
+  //this is how you get username from the Login page, after you use navigation.navigate('Home', {username} over there)
+  //for example you can print the username somewhere on HomeScreen
+  const username = route.params?.username;
+
+
+  //startTime = selectedTime
+  const { selectedDate, setSelectedDate, selectedBuilding, setSelectedBuilding } = useAppContext();
   const [index, setIndex] = useState(0);
-  const [isTimePickerVisible, setTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
-  const [selectedTime, setSelectedTime] = useState(null); // State to store the selected date
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
+  const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
+  const [startTime, setStartTime] = useState(null); // State to store the selected date
+  const [endTime, setEndTime] = useState(null);
+  //const [selectedDate, setSelectedDate] = useState(null);
   const [selectedDates, setSelectedDates] = useState({});
   const [selectedStyle, setSelectedStyle] = useState({});
-  const [selectedBuilding, setSelectedBuilding] = useState({});
+  //const [selectedBuilding, setSelectedBuilding] = useState({});
   const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
   const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
   const [roomCapacity, setRoomCapacity] = useState('');
@@ -36,11 +48,14 @@ const HomeScreen = ({navigation}) => {
 
   const resetSelections = () => {
     setSelectedDate('');
-    setSelectedTime('');
+    setStartTime('');
+    setEndTime('');
     setSelectedBuilding('');
+    setIsCheckbox1Checked(false);
+    setIsCheckbox2Checked(false);
   };
   
-
+/*
 //i couldnt get stack container for the longest time but i tried it here and it works?
 <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -50,17 +65,6 @@ const HomeScreen = ({navigation}) => {
         <Stack.Screen name="Logout" component={LogoutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-
-/*
-    const handleButtonPress = () => {
-      if((selectedBuilding && selectedDate) && selectedTime) {
-        //Alert.alert('Success, all options are selected');
-        navigation.navigate('Confirmation')
-      }
-      else{
-        Alert.alert('Error, please select all mandatory options (date, time, location).');
-            }
-    }
     */
     
     const renderBookingPanel = (booking) => {
@@ -68,13 +72,11 @@ const HomeScreen = ({navigation}) => {
         <View key={booking.id} style={styles.bookingPanel}>
           <Text>Date: {booking.date}</Text>
           <Text>Building: {booking.building}</Text>
-          <Text>Username: {username}</Text>
+        
           {/* Add more booking details as needed */}
         </View>
       );
     };
-    
-
 
   useEffect(() => {
     // Function to generate the next 14 days
@@ -122,15 +124,6 @@ const HomeScreen = ({navigation}) => {
   const handleBuildingPress = () => {
     alert(`Selected: ${buildingName}`);
   };
-
-/*
-  const onDayPress = (day) => {
-    const dayToCheck = new Date(day.year, day.month - 1, day.day);
-    if(dayToCheck >= today && dayToCheck <= maxDate) {
-      setSelectedDate(day.dateString);
-    }
-  };
-  */
 
   const today = new Date();
   const maxDate = new Date();
@@ -204,11 +197,8 @@ const HomeScreen = ({navigation}) => {
               // clendar props and customization options here
             style={{ height: screenHeight * 0.38, borderTopWidth: 1, borderTopColor: 'gray', marginBottom: 30 }}
              onDayPress={(day) => handleDateSelection(day)} markedDates={selectedDates}
-              
               />
-            
           }
-        
           </View>
         );
       case 'location':
@@ -241,59 +231,98 @@ const HomeScreen = ({navigation}) => {
   const isTimeTabActive = index === 0;
   const isLocationTabActive = index == 1;
 
-  const showTimePicker = () => {
-    setTimePickerVisible(true);
+  const showStartTimePicker = () => {
+    setStartTimePickerVisible(true);
   };
 
-  const hideTimePicker = () => {
-    setTimePickerVisible(false);
+  const showEndTimePicker = () => {
+    setEndTimePickerVisible(true);
   };
+
+  const hideStartTimePicker = () => {
+    setStartTimePickerVisible(false);
+  };
+
+  const hideEndTimePicker = () => {
+    setEndTimePickerVisible(false);
+  };
+
+  useEffect(() => {
+    if (startTime !== null) {
+      console.log('Selected start Time has been updated:', startTime);
+      console.log('Selected start Time:', startTime, 'Type:', typeof startTime);
+
+    }
+  }, [startTime]);
+
+  useEffect(() => {
+    if (endTime !== null) {
+      console.log('Selected end Time has been updated:', endTime);
+      console.log('Selected end Time:', endTime, 'Type:', typeof endTime);
+
+    }
+  }, [endTime]);
 
   const handleTimePicked = (time) => {
-    // Handle the selected time here
-    setSelectedTime(time.toLocaleTimeString()); // Format and store the selected time
-    hideTimePicker();
-  };
-
-  
-  const handleDateSelection = (day) => {
-    const selectedDay = new Date(day.dateString);
-    const today = new Date();
-    const fourteenDaysLater = new Date(today);
-    fourteenDaysLater.setDate(today.getDate() + 14);
-
-    if ((selectedDay >= today && selectedDay < fourteenDaysLater) || selectedDay == today.getDate() || selectedDay == today.getDate() -1 ) {
-      //setSelectedDate(day.dateString);
-      if (selectedDate) {
-        const updatedSelectedDates = { ...selectedDates };
-        delete updatedSelectedDates[selectedDate];
-        setSelectedDates(updatedSelectedDates);
-      }
-  
-      // make a new style for the selected date
-      const newStyle = {
-        selected: true,
-        selectedColor: '#0B7DF1',
-        //color: 'red'
-        //selected
-      };
-  
-      // update state with the selected date and style
-      setSelectedDate(day.dateString);
-      setSelectedStyle(newStyle);
-  
-      // update the marked dates state
-      setSelectedDates({ [day.dateString]: newStyle });
-      
+    console.log("Start Time:", time);  // Log the entire time object
+    if (time instanceof Date) {
+      const timeString = time.toLocaleTimeString();
+      console.log("Selected start Time String:", timeString);  // Log the time string
+      setStartTime(timeString);  // This should be a string
+      //console.log('Selected Time:', selectedTime, 'Type:', typeof selectedTime);
     } else {
-      // if user doesnt pick a day within 14 days, nothing happens they just cant pick it
+      console.error("Invalid time received:", time);
     }
+    hideStartTimePicker();
+  };
+
+
+  const handleEndTimePicked = (time) => {
+    console.log("End Time:", time);  // Log the entire time object
+    if (time instanceof Date) {
+      const timeString = time.toLocaleTimeString();
+      console.log("Selected end Time String:", timeString);  // Log the time string
+      setEndTime(timeString);  // This should be a string
+      //console.log('Selected Time:', selectedTime, 'Type:', typeof selectedTime);
+    } else {
+      console.error("Invalid time received:", time);
+    }
+    hideEndTimePicker();
   };
   
+  useEffect(() => {
+    if (selectedBuilding !== null) {
+      console.log('Selected Building has been updated:', selectedBuilding);
+      console.log("Selected Building String:", selectedBuilding);  // Log the dateString
+      // ... any other code you want to run when selectedDate changes
+    }
+  }, [selectedBuilding]);
 
-  
-  
- 
+
+  useEffect(() => {
+    if (selectedDate !== null) {
+      console.log('Selected Building has been updated:', selectedBuilding);
+      console.log('Selected start Time:', startTime, 'Type:', typeof startTime);
+      console.log('Selected end Time:', endTime, 'Type:', typeof endTime);
+      console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
+      console.log('Selected Date:', selectedDate, 'Type:', typeof selectedDate);
+      console.log('Selected Date has been updated:', selectedDate);
+      console.log("Selected Date String:", selectedDate);  // Log the dateString
+      // ... any other code you want to run when selectedDate changes
+    }
+  }, [selectedDate]);
+
+  const handleDateSelection = (day) => {
+    console.log("Selected Day:", day);  // Log the entire day object
+    if (day && day.dateString) {
+      //console.log("Selected Date String:", day.dateString);  // Log the dateString
+      setSelectedDate(day.dateString);  // This should be a string
+      setSelectedBuilding(" ");
+    } else {
+      console.error("Invalid day object received:", day);
+    }
+    // ... rest of your code
+  };
   
   return (
     <View style={{ flex: 1}}>
@@ -303,10 +332,12 @@ const HomeScreen = ({navigation}) => {
       <View style={{ flex: 3.5}}>
         { //title for Upcoming Bookings
         <UpcomingBookings>
-          
+
         </UpcomingBookings>
           //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
          //followed by panels for Upcoming bookings 
+         
+
         }
 
         </View>
@@ -320,16 +351,22 @@ const HomeScreen = ({navigation}) => {
           style={{ flex: 1 }}  // Fixed height
         />
         
-        <View style={{ backgroundColor: 'white', alignItems: 'center' }}>  
+        <View style={{ backgroundColor: 'white', alignItems: 'center', height:'30%', marginBottom:-30}}>  
         {isDateTabActive && (  
           <View style={styles.card}>
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button title="Select a Time" onPress={showTimePicker} /> 
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Button title="Start Time" onPress={setStartTimePickerVisible} style={{marginBottom:1}} /> 
           
-          {selectedDate && selectedTime && (  //if date and time are selected, show them both
-          <View>
-          <Text style={{ marginRight: 16 }} >Selected Time: {selectedTime}</Text>
-          <Text style={{ marginRight: 16 }}>Selected Date: {selectedDate} </Text>
+          <Button title="End Time" onPress={setEndTimePickerVisible} /> 
+          
+          {selectedDate && startTime && endTime && (  //if date and time are selected, show them both
+          <View style={{ alignItems: 'center'}}>
+          <Text style={{ marginRight: 16}} >Start Time: {startTime}</Text>
+          <Text style={{ marginRight: 16 }} >End Time: {endTime}</Text>
+          <Text style={{ marginRight: 16, marginBottom:0 }}>Selected Date: {selectedDate} </Text>
+        
+          
+          
         </View>
           )}
         </View>  
@@ -338,14 +375,20 @@ const HomeScreen = ({navigation}) => {
   </View>
        
        <DateTimePickerModal
-        isVisible={isTimePickerVisible}
+        isVisible={isStartTimePickerVisible}
         mode="time"
+        minuteInterval={30}
         onConfirm={handleTimePicked}
-        onCancel={hideTimePicker}  //will hide time picker if you press cancel
+        onCancel={hideStartTimePicker}  //will hide time picker if you press cancel
+      />
+        <DateTimePickerModal
+        isVisible={isEndTimePickerVisible}
+        mode="time"
+        minuteInterval={30}
+        onConfirm={handleEndTimePicked}
+        onCancel={hideEndTimePicker}  //will hide time picker if you press cancel
       />
 
-
-      
     
     <View> 
     {isLocationTabActive && (
@@ -376,29 +419,31 @@ const HomeScreen = ({navigation}) => {
             />
         </View>
       
-        <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-       
-
-
-      <View style= {{ backgroundColor: 'white' }}>
-
+      <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', backgroundColor:'white' }}>
       
-      {selectedTime && selectedDate && (  //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
+      { //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
       //onPress={() => navigation.navigate('Logout')} for the find a room button
-
-      //try console logs to see specifically where error is, try converting to string
-
-      <View>
+      //try console logs to see specifically where error is, try converting to strin
+}
+      {startTime && selectedDate && endTime && (
+      <View style= {{ alignItems: 'center'}}>
       <Button title="Find Room" onPress={() => {
+      console.log('------------');
+      console.log('Selected start Time:', startTime, 'Type:', typeof startTime);
+      console.log('Selected end Time:', endTime, 'Type:', typeof endTime);
+      console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
+      console.log('Selected Date:', selectedDate, 'Type:', typeof selectedDate);
+ 
       resetSelections();
       navigation.navigate('Confirmation')}} color="#0B7DF1" style={{ marginTop: -20}} /> 
-      <Text style={{ marginRight: 16 }} >Selected Time: {selectedTime}</Text>
+      <Text style={{ marginRight: 16 }} >Start Time: {startTime}</Text>
+      <Text style={{ marginRight: 16 }} >Start Time: {endTime}</Text>
       <Text style={{ marginRight: 16 }}>Selected Building: {selectedBuilding} </Text>
       
     </View>
-      )}
-    </View>
       
+      
+      )}
       </View>
   </View>
     )}

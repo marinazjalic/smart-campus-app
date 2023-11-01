@@ -16,6 +16,8 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
 
   const handleBuildingPress = (buildingName) => {
     onBuildingPress(buildingName);
+    console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
+
     // Do anything else you need with the selected building name.
     // For example, send it to a backend or store it
   }

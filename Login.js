@@ -15,7 +15,8 @@ const handleLogin = () => {
     console.log('Email:', username);
     console.log('Password:', password);
     Keyboard.dismiss();
-    navigation.navigate('Home', this.state);
+    console.log('Navigating with username:', username);
+    navigation.navigate('Home', { username });
   };
 
   const handleSignUp = () => {
