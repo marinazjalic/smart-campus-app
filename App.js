@@ -1,31 +1,3 @@
-/*
-import * as React from 'react';
-import Navigation from './Navigation';
-import { NavigationContainer } from '@react-navigation/native';
-
-
-export default function App() {
-  return (
-    
-      <Navigation />
-      
-    
-  );
-}
-
-/*
-import React from 'react';
-import Navigation from './Navigation'; // Adjust the path as needed
-
-const App = ({ navigate}) => {
-  return (
-  <Navigation />
-  );
-}
-
-export default App;
-*/
-
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Alert, View } from "react-native";
@@ -40,9 +12,7 @@ import AIRoomFinder from './AIRoomFinder';
 import Confirmation from './Confirmation';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './SignUp';
-//import { createStackNavigator } from '@react-navigation/stack';
-
-
+import { AppProvider } from './AppContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator(); 
@@ -118,8 +88,9 @@ export default function App() {
   return (
     //initialRouteName was "Home"
     //Stack.Screen 1st was "Home" component={HomeScreen}
+    <AppProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TabNavigator">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Confirmation" component={Confirmation} />
@@ -127,6 +98,7 @@ export default function App() {
         {/* Add other screens as needed */}
       </Stack.Navigator>
     </NavigationContainer>
+    </AppProvider>
   );
 }
 
