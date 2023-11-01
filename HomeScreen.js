@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   Text,
   View,
@@ -20,16 +20,22 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import 
 import CampusMap1 from "./CampusMap1";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogoutScreen from "./Logout";
 import UpcomingBookings from "./UpcomingBookings";
 import AIRooomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
 import Login from "./Login";
+// import { useContext } from "react";
+import { MyContext } from "./MyContext";
+import { UserContext } from "./global/UserContext";
 const Stack = createStackNavigator();
+// var networkInfo = require("react-native-network-info");
+// import {NetworkIn }
+import { NetworkInfo } from "react-native-network-info";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route, navigation }) => {
   //const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
@@ -45,21 +51,29 @@ const HomeScreen = ({ navigation }) => {
   const inputRef = useRef(null);
   const [markedDates, setMarkedDates] = useState({});
 
+  // const { val, setVal } = useContext(MyContext);
+
+  const { bookings, setBookings } = useContext(UserContext);
+
   const resetSelections = () => {
     setSelectedDate("");
     setSelectedTime("");
     setSelectedBuilding("");
   };
 
+  const renderFunc = () => {
+    console.log("rendering");
+  };
+
   //i couldnt get stack container for the longest time but i tried it here and it works?
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Room" component={AIRooomFinder} />
-      <Stack.Screen name="Confirmation" component={Confirmation} />
-      <Stack.Screen name="Logout" component={LogoutScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>;
+  // <NavigationContainer>
+  //   <Stack.Navigator initialRouteName="Home">
+  //     <Stack.Screen name="Home" component={HomeScreen} />
+  //     <Stack.Screen name="Room" component={AIRooomFinder} />
+  //     <Stack.Screen name="Confirmation" component={Confirmation} />
+  //     <Stack.Screen name="Logout" component={LogoutScreen} />
+  //   </Stack.Navigator>
+  // </NavigationContainer>;
 
   /*
     const handleButtonPress = () => {
@@ -73,16 +87,17 @@ const HomeScreen = ({ navigation }) => {
     }
     */
 
-  const renderBookingPanel = (booking) => {
-    return (
-      <View key={booking.id} style={styles.bookingPanel}>
-        <Text>Date: {booking.date}</Text>
-        <Text>Building: {booking.building}</Text>
-        <Text>Username: {username}</Text>
-        {/* Add more booking details as needed */}
-      </View>
-    );
-  };
+  // const renderBookingPanel = (booking) => {
+  //   console.log("Rendering booking panel");
+  //   return (
+  //     <View key={booking.id} style={styles.bookingPanel}>
+  //       <Text>Date: {booking.date}</Text>
+  //       <Text>Building: {booking.building}</Text>
+  //       <Text>Username: {username}</Text>
+  //       {/* Add more booking details as needed */}
+  //     </View>
+  //   );
+  // };
 
   useEffect(() => {
     // Function to generate the next 14 days
@@ -271,6 +286,7 @@ const HomeScreen = ({ navigation }) => {
   const isLocationTabActive = index == 1;
 
   const showTimePicker = () => {
+    console.log("time");
     setTimePickerVisible(true);
   };
 
@@ -326,15 +342,17 @@ const HomeScreen = ({ navigation }) => {
       {
         //nothing goes here
       }
+
       <View style={{ flex: 3.5 }}>
         {
+          //upcoming booking render is here
           //title for Upcoming Bookings
-          <UpcomingBookings></UpcomingBookings>
+          // <UpcomingBookings></UpcomingBookings>
+          <UpcomingBookings bookings={route.params.userBookings} />
           //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
           //followed by panels for Upcoming bookings
         }
       </View>
-
       <View style={{ flex: 6.5 }}>
         <TabView //this is the tab for 'Date' and 'Location'
           navigationState={{ index, routes }}

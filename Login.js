@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Text,
   View,
@@ -11,22 +11,22 @@ import {
 import SignUp from "./SignUp";
 import ActivityIndicator from "react-native";
 import axios from "axios";
+import { UserContext } from "./global/UserContext";
 //import Navigation from './Navigation';
 
 function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [data, setData] = useState(null);
+
+  const { bookings, setBookings } = useContext(UserContext);
 
   const bookings_arr = [];
   let booking_id = 0;
 
   const handleLogin = () => {
     validateCredentials();
-    console.log("reached");
-    // getUserID();
-
     Keyboard.dismiss();
-    navigation.navigate("Home", this.state);
   };
 
   //function called on login
@@ -44,10 +44,8 @@ function Login({ navigation }) {
       })
       .then((response) => {
         if (response.data == true) {
-          // navigation.navigate("Home");
-          // setUsername(username)
-          //navigate to home page here
           console.log("valid user");
+          getUserID();
         } else if (response.data == false) {
           //display some kind of error message indicating invalid credentials
           console.log("incorrect pw");
@@ -61,7 +59,6 @@ function Login({ navigation }) {
       });
   };
 
-  //move to home page, this should be called once the user has logged in and the state has changed
   const getUserID = () => {
     axios
       .get("http://192.168.50.163:3000/users/get-id", {
@@ -70,56 +67,90 @@ function Login({ navigation }) {
         },
       })
       .then((response) => {
-        getUpcomingBookings(response.data);
+        getUserBookings(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const getUpcomingBookings = (userID) => {
-    axios
-      .get("http://192.168.50.163:3000/bookings/by-user", {
+  /*function to get user bookings and room details for each booking.
+  combine the details into an object to make the bookings array */
+  const getUserBookings = async (userID) => {
+    const upcomingBookings = await getUpcomingBookings(userID);
+    for (let i = 0; i < upcomingBookings.length; i++) {
+      booking_id++;
+      let time_slot =
+        upcomingBookings[i].start_time + " - " + upcomingBookings[i].end_time;
+      let parsedDate = upcomingBookings[i].date.toString().split("-");
+
+      const room_details = await getRoomDetails(upcomingBookings[i].room_id);
+
+      let booking_obj = {
+        id: booking_id.toString(),
+        date:
+          parsedDate[1] +
+          "-" +
+          parsedDate[2].split("T")[0] +
+          "-" +
+          parsedDate[0],
+        time: time_slot,
+        room_num: room_details.room_num,
+        location: room_details.location,
+        accessibility: room_details.accessibility,
+        utilities: room_details.utilities,
+        capacity: room_details.capacity,
+        bookingId: upcomingBookings[i]._id,
+      };
+
+      bookings_arr.push(booking_obj);
+    }
+    setBookings(bookings_arr);
+    setData(bookings_arr);
+
+    navigation.navigate("Home", {
+      screen: "Home",
+      params: { userBookings: bookings_arr },
+    });
+  };
+
+  //async function to get all bookings associated to user
+  const getUpcomingBookings = async (userID) => {
+    const response = await axios.get(
+      "http://192.168.50.163:3000/bookings/by-user",
+      {
         params: {
           user_id: userID,
         },
-      })
-      .then((response) => {
-        console.log("here");
-        for (let i = 0; i < response.data.length; i++) {
-          booking_id++;
-          //will need to do some kind of conversion here with the times
-          let time_slot =
-            response.data[i].start_time + " - " + response.data[i].end_time;
-
-          let parsedDate = response.data[i].date.toString().split("-");
-          //   //also want to add other properties here like room num
-          let booking_obj = {
-            id: booking_id.toString(),
-            date:
-              parsedDate[1] +
-              "-" +
-              parsedDate[2].split("T")[0] +
-              "-" +
-              parsedDate[0],
-            time: time_slot,
-            location: "", //need to get this info from different api
-          };
-          bookings_arr.push(booking_obj);
-        }
-
-        // console.log(bookings_arr);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    );
+    const data = await response.data;
+    return data;
   };
 
   const handleSignUp = () => {
     //navigation.navigate('SignUp'); //navigate to sign up page
     console.log("Email:", username);
     console.log("Password:", password);
+
     Keyboard.dismiss();
+  };
+
+  const getRoomDetails = async (roomID) => {
+    // console.log("hit api");
+    // console.log(roomID);
+
+    const response = await axios.get(
+      "http://192.168.50.163:3000/rooms/get-room",
+      {
+        params: {
+          id: roomID,
+        },
+      }
+    );
+
+    const obj = await response.data;
+    return obj;
   };
 
   // const getContent = () => {
