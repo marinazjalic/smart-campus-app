@@ -1,32 +1,4 @@
-/*
-import * as React from 'react';
-import Navigation from './Navigation';
-import { NavigationContainer } from '@react-navigation/native';
-
-
-export default function App() {
-  return (
-    
-      <Navigation />
-      
-    
-  );
-}
-
-/*
 import React from 'react';
-import Navigation from './Navigation'; // Adjust the path as needed
-
-const App = ({ navigate}) => {
-  return (
-  <Navigation />
-  );
-}
-
-export default App;
-*/
-
-import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Alert, View } from "react-native";
 import HomeScreen from "./HomeScreen";
@@ -44,6 +16,18 @@ import { ContextProvider, MyContext } from "./MyContext";
 
 import { UserContext, UserProvider } from "./global/UserContext";
 //import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './HomeScreen';
+import ManageBookings from './ManageBookings';
+import Logout from './Logout';
+import Login from './Login';
+import { NavigationContainer } from '@react-navigation/native';
+import {createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AIRoomFinder from './AIRoomFinder';
+import Confirmation from './Confirmation';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignUp from './SignUp';
+import { AppProvider } from './AppContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -116,21 +100,17 @@ export default function App() {
   return (
     //initialRouteName was "Home"
     //Stack.Screen 1st was "Home" component={HomeScreen}
-    <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Home"
-            component={TabNavigator}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Confirmation" component={Confirmation} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          {/* Add other screens as needed */}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </UserProvider> //added this here
+    <AppProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Confirmation" component={Confirmation} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        {/* Add other screens as needed */}
+      </Stack.Navigator>
+    </NavigationContainer>
+    </AppProvider>
   );
 }
 

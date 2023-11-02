@@ -51,6 +51,8 @@ function Login({ navigation }) {
   const handleLogin = () => {
     validateCredentials();
     Keyboard.dismiss();
+    console.log('Navigating with username:', username);
+    navigation.navigate('Home', { username });
   };
 
   const validateCredentials = () => {
