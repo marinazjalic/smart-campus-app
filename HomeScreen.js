@@ -61,10 +61,6 @@ const HomeScreen = ({ route, navigation }) => {
     setSelectedBuilding("");
   };
 
-  const renderFunc = () => {
-    console.log("rendering");
-  };
-
   //i couldnt get stack container for the longest time but i tried it here and it works?
   // <NavigationContainer>
   //   <Stack.Navigator initialRouteName="Home">
@@ -273,9 +269,13 @@ const HomeScreen = ({ route, navigation }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: "#0B7DF1" }}
-      style={{ backgroundColor: "white" }}
-      activeColor={"#0B7DF1"}
+      indicatorStyle={{ backgroundColor: "#EF6461" }}
+      style={{
+        backgroundColor: "white", //added more styling here
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+      }}
+      activeColor={"#EF6461"} //COLOR FOR DATE/LOC TAB BAR
       inactiveColor={"gray"}
     />
   );
@@ -338,7 +338,7 @@ const HomeScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#3A5683" }}>
       {
         //nothing goes here
       }
@@ -353,6 +353,7 @@ const HomeScreen = ({ route, navigation }) => {
           //followed by panels for Upcoming bookings
         }
       </View>
+      <View></View>
       <View style={{ flex: 6.5 }}>
         <TabView //this is the tab for 'Date' and 'Location'
           navigationState={{ index, routes }}

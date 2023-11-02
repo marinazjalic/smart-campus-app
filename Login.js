@@ -12,9 +12,33 @@ import SignUp from "./SignUp";
 import ActivityIndicator from "react-native";
 import axios from "axios";
 import { UserContext } from "./global/UserContext";
+import Strings from "./constants/Strings";
 //import Navigation from './Navigation';
 
 function Login({ navigation }) {
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
@@ -29,7 +53,6 @@ function Login({ navigation }) {
     Keyboard.dismiss();
   };
 
-  //function called on login
   const validateCredentials = () => {
     const params = JSON.stringify({
       username: username,
@@ -37,14 +60,17 @@ function Login({ navigation }) {
     });
 
     axios
-      .post("http://192.168.50.163:3000/users/validate-credentials", params, {
-        headers: {
-          "content-type": "application/json",
-        },
-      })
+      .post(
+        `http://${Strings.ip_address}:3000/users/validate-credentials`,
+        params,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         if (response.data == true) {
-          console.log("valid user");
           getUserID();
         } else if (response.data == false) {
           //display some kind of error message indicating invalid credentials
@@ -61,7 +87,7 @@ function Login({ navigation }) {
 
   const getUserID = () => {
     axios
-      .get("http://192.168.50.163:3000/users/get-id", {
+      .get(`http://${Strings.ip_address}:3000/users/get-id`, {
         params: {
           user: username,
         },
@@ -83,11 +109,19 @@ function Login({ navigation }) {
       let time_slot =
         upcomingBookings[i].start_time + " - " + upcomingBookings[i].end_time;
       let parsedDate = upcomingBookings[i].date.toString().split("-");
+      let newDate = new Date(upcomingBookings[i].date.split("T")[0]);
 
+      let formattedDate =
+        weekdays[newDate.getDay()] +
+        ", " +
+        months[parsedDate[1] - 1] +
+        " " +
+        (Number(newDate.getDate()) + 1).toString();
       const room_details = await getRoomDetails(upcomingBookings[i].room_id);
 
       let booking_obj = {
         id: booking_id.toString(),
+        dateText: formattedDate,
         date:
           parsedDate[1] +
           "-" +
@@ -101,6 +135,7 @@ function Login({ navigation }) {
         utilities: room_details.utilities,
         capacity: room_details.capacity,
         bookingId: upcomingBookings[i]._id,
+        room_id: upcomingBookings[i].room_id,
       };
 
       bookings_arr.push(booking_obj);
@@ -114,10 +149,10 @@ function Login({ navigation }) {
     });
   };
 
-  //async function to get all bookings associated to user
+  //function to get all bookings associated to user
   const getUpcomingBookings = async (userID) => {
     const response = await axios.get(
-      "http://192.168.50.163:3000/bookings/by-user",
+      `http://${Strings.ip_address}:3000/bookings/by-user`,
       {
         params: {
           user_id: userID,
@@ -137,11 +172,8 @@ function Login({ navigation }) {
   };
 
   const getRoomDetails = async (roomID) => {
-    // console.log("hit api");
-    // console.log(roomID);
-
     const response = await axios.get(
-      "http://192.168.50.163:3000/rooms/get-room",
+      `http://${Strings.ip_address}:3000/rooms/get-room`,
       {
         params: {
           id: roomID,
@@ -153,17 +185,12 @@ function Login({ navigation }) {
     return obj;
   };
 
-  // const getContent = () => {
-  //   return <ActivityIndicator size="large" />;
-  // };
-
   return (
     <ScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.container}>
-        {/* {getContent()} */}
         <View style={styles.centeredContent}>
           <Text style={styles.topText}>Welcome to Smart Campus</Text>
           <View style={styles.inputContainer}>

@@ -24,10 +24,6 @@ import { UserContext } from "./global/UserContext";
 
 const UpcomingBookings = () => {
   const { bookings, setBookings } = useContext(UserContext);
-  // console.log("PROPS");
-  // console.log(props.bookings);
-  // console.log("done");
-  // let newBookings = props.bookings;
   return (
     <View style={{ height: "70%", marginTop: "16%" }}>
       <Text
@@ -63,7 +59,7 @@ const UpcomingBookings = () => {
                 shadowRadius: 2.99,
               }}
             >
-              <Card.Title>{booking.date}</Card.Title>
+              <Card.Title>{booking.dateText}</Card.Title>
               <Card.Divider />
               <Text>Time: {booking.time}</Text>
               <Text>Location: {booking.location}</Text>
