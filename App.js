@@ -49,7 +49,7 @@ function TabNavigator() {
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
     <Tab.Screen name="Confirm" component={Confirmation} />
-    <Tab.Screen name="Login"  component={Login} />
+    <Tab.Screen name="Login"  component={Login} options={{ headerShown: false}} />
 
   
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, Button, Image, Dimensions, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, Alert } from 'react-native';
+import { Text, View, StyleSheet, Button, ActivityIndicator, Dimensions, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { Calendar } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; // Import the date-time picker
 import  CampusMap1  from './CampusMap1';
+import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
-import Checkbox from './Checkbox';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LogoutScreen from './Logout';
@@ -15,6 +15,8 @@ import AIRooomFinder from './AIRoomFinder';
 import Confirmation from './Confirmation';
 import Login from './Login';
 import { useAppContext } from './AppContext';
+
+
 
 const Stack = createStackNavigator();
 
@@ -35,24 +37,23 @@ const HomeScreen = ({ navigation, route }) => {
   const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [startTime, setStartTime] = useState(null); // State to store the selected date
   const [endTime, setEndTime] = useState(null);
-  //const [selectedDate, setSelectedDate] = useState(null);
   const [selectedDates, setSelectedDates] = useState({});
-  const [selectedStyle, setSelectedStyle] = useState({});
-  //const [selectedBuilding, setSelectedBuilding] = useState({});
-  const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
-  const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
+  const [text, setText] = useState('');
   const [roomCapacity, setRoomCapacity] = useState('');
-  const [showError, setShowError] = useState(false);
   const inputRef = useRef(null);
+  const [isLoad, setIsLoad] = useState(false);
   const [markedDates, setMarkedDates] = useState({});
+  const [showError, setShowError] = useState(false);
+  const [isWhiteboardSelected, setIsWhiteboardSelected] = useState(false);
+  const [isAccessibleSelected, setIsAccessibleSelected] = useState(false);
 
   const resetSelections = () => {
     setSelectedDate('');
     setStartTime('');
     setEndTime('');
     setSelectedBuilding('');
-    setIsCheckbox1Checked(false);
-    setIsCheckbox2Checked(false);
+    setIsWhiteboardSelected(false);
+    setIsAccessibleSelected(false);
   };
   
 /*
@@ -66,6 +67,8 @@ const HomeScreen = ({ navigation, route }) => {
       </Stack.Navigator>
     </NavigationContainer>
     */
+
+
     
     const renderBookingPanel = (booking) => {
       return (
@@ -98,10 +101,11 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   const handleFindRoomPress = () => {
-    // 
-    console.log('Find Room button pressed');
+    resetSelections();
+    navigation.navigate('Confirmation');
   };
   
+  /*
   const handleInputChange = (value) => {
     setRoomCapacity(value);
   
@@ -111,6 +115,12 @@ const HomeScreen = ({ navigation, route }) => {
       setShowError(true);
     } else {
       setShowError(false);
+    }
+  };
+  */
+  const handleInputChange = (text) => {
+    if (text >= 1 && text <= 8) {
+      setRoomCapacity(text);
     }
   };
   
@@ -203,11 +213,8 @@ const HomeScreen = ({ navigation, route }) => {
         );
       case 'location':
         return (
-          <View style={{ width: "100%", height: "70%", flex:1, margin: 0, padding:0, backgroundColor: 'white' }}>
-            <CampusMap1
-              selectedBuilding={selectedBuilding} 
-              onBuildingPress={setSelectedBuilding}
-            />
+          <View style={{ width: "100%", height: "80%", flex:1, margin: 0, backgroundColor:'red', padding:0 }}>
+            
           {/**/ }
           </View>
         );
@@ -219,9 +226,9 @@ const HomeScreen = ({ navigation, route }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: '#0B7DF1' }}
+      indicatorStyle={{ backgroundColor: '#CE8D66' }}
       style={{ backgroundColor: 'white' }}
-      activeColor={'#0B7DF1'}
+      activeColor={'#CE8D66'}
       inactiveColor={'gray'}
     />
   );
@@ -238,6 +245,7 @@ const HomeScreen = ({ navigation, route }) => {
   const showEndTimePicker = () => {
     setEndTimePickerVisible(true);
   };
+
 
   const hideStartTimePicker = () => {
     setStartTimePickerVisible(false);
@@ -329,7 +337,7 @@ const HomeScreen = ({ navigation, route }) => {
       {
       //nothing goes here
       }
-      <View style={{ flex: 3.5}}>
+      <View style={{ flex: 3.5, backgroundColor:'#3E92CC'}}>
         { //title for Upcoming Bookings
         <UpcomingBookings>
 
@@ -351,19 +359,31 @@ const HomeScreen = ({ navigation, route }) => {
           style={{ flex: 1 }}  // Fixed height
         />
         
-        <View style={{ backgroundColor: 'white', alignItems: 'center', height:'30%', marginBottom:-30}}>  
+        <View style={{ backgroundColor: 'white', alignItems: 'center', height:'30%', marginBottom:-33}}>  
         {isDateTabActive && (  
           <View style={styles.card}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button title="Start Time" onPress={setStartTimePickerVisible} style={{marginBottom:1}} /> 
+
+          <TouchableOpacity
+        style= {{ padding:16, marginTop: 6, marginRight: 2, marginBottom: 1, backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={setStartTimePickerVisible}
+      >
+        <Text style={{ fontSize:12, color:'white'}}>Start Time</Text>
+  </TouchableOpacity>
           
-          <Button title="End Time" onPress={setEndTimePickerVisible} /> 
+
+          <TouchableOpacity
+        style= {{ padding:16, marginTop: 6, marginLeft: 2, marginBottom: 1, backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={setEndTimePickerVisible}
+      >
+        <Text style={{ fontSize:12, color:'white'}}>End Time</Text>
+  </TouchableOpacity>
           
           {selectedDate && startTime && endTime && (  //if date and time are selected, show them both
           <View style={{ alignItems: 'center'}}>
-          <Text style={{ marginRight: 16}} >Start Time: {startTime}</Text>
-          <Text style={{ marginRight: 16 }} >End Time: {endTime}</Text>
-          <Text style={{ marginRight: 16, marginBottom:0 }}>Selected Date: {selectedDate} </Text>
+          <Text style={{ marginRight: 16, marginLeft:4}} >Start Time: {startTime}</Text>
+          <Text style={{ marginRight: 16 ,marginLeft:4}} >End Time: {endTime}</Text>
+          <Text style={{ marginRight: 16, marginLeft:4 ,marginBottom:0 }}>Date: {selectedDate} </Text>
         
           
           
@@ -372,6 +392,8 @@ const HomeScreen = ({ navigation, route }) => {
         </View>  
         </View> 
   )}
+ </View>
+ <View>
   </View>
        
        <DateTimePickerModal
@@ -389,58 +411,75 @@ const HomeScreen = ({ navigation, route }) => {
         onCancel={hideEndTimePicker}  //will hide time picker if you press cancel
       />
 
-    
-    <View> 
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <View style={{backgroundColor: '#FF7F50'} }> 
     {isLocationTabActive && (
 
-      <View style={{ justifyContent: 'space-between', backgroundColor: 'white' }}>  
+      <View style={{ justifyContent: 'space-between', backgroundColor: 'white', marginBottom:0, marginTop:-120 }}>  
       <View style={{ paddingLeft: 10, marginTop:0 }} onPress={() => inputRef.current.focus()}>
-      <View style={{ marginBottom: 5 }}>
+      <View style={{ flexDirection: 'row', justifyContent:'space-around', marginBottom: 70 }}>
+
+      <TouchableOpacity
+        style={[styles.filterButton, isWhiteboardSelected && styles.selectedButton]}
+        onPress={() => setIsWhiteboardSelected(!isWhiteboardSelected)}
+        >
+          <Text style={{ fontSize:12}}>Whiteboard</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.filterButton, isAccessibleSelected && styles.selectedButton]}
+        onPress={() => setIsAccessibleSelected(!isAccessibleSelected)}
+      >
+        <Text style={{ fontSize:12}}>Accessible</Text>
+      </TouchableOpacity>
+
+     
       <TextInput //this is for the capacity thing
         ref = {inputRef}
         value={roomCapacity}
         onChangeText={handleInputChange}
         keyboardType="numeric"
         placeholder="Capacity (1-8 ppl)"
-        style={{borderWidth: 1, padding: 5, borderColor:'transparent', borderBottomColor: '#ccc', width: '40%'}}
+        style={{borderWidth: 1, textAlign:'center', padding: 5, borderColor:'transparent', borderBottomColor: '#ccc', width: '40%'}}
       />
         {showError && <Text style={{ color: 'red', marginTop: 8 }}>Enter a number between 1-8.</Text>} 
+      
         </View>
+      </View>
       
-      <Checkbox //checkboxes
-            label = "Whiteboard"
-            checked={isCheckbox1Checked}
-            onToggle={() => setIsCheckbox1Checked(!isCheckbox1Checked)}
-            />
-      <Checkbox 
-            label = "Accessible"
-            checked={isCheckbox2Checked}
-            onToggle={() => setIsCheckbox2Checked(!isCheckbox2Checked)}
-            />
-        </View>
       
-      <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', backgroundColor:'white' }}>
+        
       
-      { //if building and time are selected, show both to the user, the user presses Find a Room which brings them to Logout (for now)
-      //onPress={() => navigation.navigate('Logout')} for the find a room button
-      //try console logs to see specifically where error is, try converting to strin
-}
-      {startTime && selectedDate && endTime && (
-      <View style= {{ alignItems: 'center'}}>
-      <Button title="Find Room" onPress={() => {
-      console.log('------------');
-      console.log('Selected start Time:', startTime, 'Type:', typeof startTime);
-      console.log('Selected end Time:', endTime, 'Type:', typeof endTime);
-      console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
-      console.log('Selected Date:', selectedDate, 'Type:', typeof selectedDate);
- 
-      resetSelections();
-      navigation.navigate('Confirmation')}} color="#0B7DF1" style={{ marginTop: -20}} /> 
+      <View style={{ height: 90 , flexDirection: 'column', position:'relative', justifyContent: 'space-between', alignItems: 'center', backgroundColor:'white' }}>
+          {startTime && selectedDate && endTime && (
+              <>
+       <View style={{ justifyContent: 'center', position:'absolute', alignItems:'center',marginBottom:4}}> 
+      
+
+<TouchableOpacity
+        style= {{ padding:16, marginTop: -20,marginBottom:4,backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={() => {
+          console.log('------------');
+          console.log('Selected start Time:', startTime, 'Type:', typeof startTime);
+          console.log('Selected end Time:', endTime, 'Type:', typeof endTime);
+          console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
+          console.log('Selected Date:', selectedDate, 'Type:', typeof selectedDate);
+     
+          {handleFindRoomPress}}}
+    
+  
+      >
+        <Text style={{ fontSize:12, color:'white'}}>Find Room</Text>
+  </TouchableOpacity>
+
       <Text style={{ marginRight: 16 }} >Start Time: {startTime}</Text>
       <Text style={{ marginRight: 16 }} >Start Time: {endTime}</Text>
       <Text style={{ marginRight: 16 }}>Selected Building: {selectedBuilding} </Text>
       
-    </View>
+      </View>
+      
+   
+    </>
       
       
       )}
@@ -448,8 +487,12 @@ const HomeScreen = ({ navigation, route }) => {
   </View>
     )}
 </View>
+</TouchableWithoutFeedback>
+
   </View>
   </View>
+
+
   );
 };
 
@@ -491,4 +534,16 @@ export default HomeScreen;
       marginTop: 8,
       fontSize: 14,
     },
+    filterButton: {
+      padding: 10,
+      borderWidth: 1,
+      borderRadius:10,
+      borderColor: '#ccc',
+    },
+    selectedButton: {
+      backgroundColor: '#CE8D66',
+    },
+    
+    
+    
 });
