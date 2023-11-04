@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Image, Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const tabHeight = 0.65 * screenHeight;
-const imageHeight = 0.9 * tabHeight;
+const imageHeight = 0.7 * tabHeight;
 //onst [selectedBuilding, setSelectedBuilding] = useState({});
 
 // const imageSource = require("./assets/campus1.jpg"); // Replace with your image path
@@ -13,7 +13,12 @@ const imageSource = require("./assets/test2.png"); // Replace with your image pa
 export default function CampusMap({ selectedBuilding, onBuildingPress }) {
   const handleBuildingPress = (buildingName) => {
     onBuildingPress(buildingName);
-    console.log('Selected Building:', selectedBuilding, 'Type:', typeof selectedBuilding);
+    console.log(
+      "Selected Building:",
+      selectedBuilding,
+      "Type:",
+      typeof selectedBuilding
+    );
 
     // Do anything else you need with the selected building name.
     // For example, send it to a backend or store it
@@ -23,7 +28,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
     <View
       style={{ width: screenWidth, height: imageHeight, position: "relative" }}
     >
-      <Image source={imageSource} style={{ width: "100%", height: "70%" }} />
+      <Image source={imageSource} style={{ width: "100%", height: "90%" }} />
 
       <TouchableOpacity
         style={{

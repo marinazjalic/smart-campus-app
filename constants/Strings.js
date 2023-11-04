@@ -1,3 +1,3 @@
 export default {
-  ip_address: "XXX.XXX.XX.XXX",
+  ip_address: "192.168.50.163",
 };

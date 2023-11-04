@@ -1,4 +1,8 @@
-import React from 'react';
+// import { ContextProvider, MyContext } from "./MyContext";
+
+// import { UserContext, UserProvider } from "./global/UserContext";
+//import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Alert, View } from "react-native";
 import HomeScreen from "./HomeScreen";
@@ -12,22 +16,10 @@ import AIRoomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignUp from "./SignUp";
+import { AppProvider } from "./AppContext";
 import { ContextProvider, MyContext } from "./MyContext";
 
 import { UserContext, UserProvider } from "./global/UserContext";
-//import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './HomeScreen';
-import ManageBookings from './ManageBookings';
-import Logout from './Logout';
-import Login from './Login';
-import { NavigationContainer } from '@react-navigation/native';
-import {createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AIRoomFinder from './AIRoomFinder';
-import Confirmation from './Confirmation';
-import { createStackNavigator } from '@react-navigation/stack';
-import SignUp from './SignUp';
-import { AppProvider } from './AppContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -66,7 +58,12 @@ function TabNavigator() {
       <Tab.Screen
         name="Manage Bookings"
         component={ManageBookings}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          // headerTitleStyle: { fontFamily: "Avenir" },
+          headerStyle: { backgroundColor: "#3A5683" },
+        }}
       />
       <Tab.Screen name="Confirm" component={Confirmation} />
       <Tab.Screen name="Login" component={Login} />
@@ -101,15 +98,21 @@ export default function App() {
     //initialRouteName was "Home"
     //Stack.Screen 1st was "Home" component={HomeScreen}
     <AppProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Confirmation" component={Confirmation} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        {/* Add other screens as needed */}
-      </Stack.Navigator>
-    </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Home"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Confirmation" component={Confirmation} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            {/* Add other screens as needed */}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserProvider>
     </AppProvider>
   );
 }

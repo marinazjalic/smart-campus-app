@@ -7,6 +7,8 @@ import {
   StyleSheet,
   ScrollView,
   Keyboard,
+  ImageBackground,
+  Dimensions,
 } from "react-native";
 import SignUp from "./SignUp";
 import ActivityIndicator from "react-native";
@@ -39,11 +41,13 @@ function Login({ navigation }) {
     "November",
     "December",
   ];
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
 
   const { bookings, setBookings } = useContext(UserContext);
+  const { userId, setUserId } = useContext(UserContext);
 
   const bookings_arr = [];
   let booking_id = 0;
@@ -51,8 +55,8 @@ function Login({ navigation }) {
   const handleLogin = () => {
     validateCredentials();
     Keyboard.dismiss();
-    console.log('Navigating with username:', username);
-    navigation.navigate('Home', { username });
+    console.log("Navigating with username:", username);
+    navigation.navigate("Home", { username });
   };
 
   const validateCredentials = () => {
@@ -78,7 +82,7 @@ function Login({ navigation }) {
           //display some kind of error message indicating invalid credentials
           console.log("incorrect pw");
         } else {
-          //display error message indicating that the user doesn't exist - "did you mean to sign up?"
+          //display error message indicating that the user doesn't exist
           console.log("user does not exist");
         }
       })
@@ -95,7 +99,14 @@ function Login({ navigation }) {
         },
       })
       .then((response) => {
+        // console.log("user id");
+        // console.log(response.data);
+        setUserId(response.data);
         getUserBookings(response.data);
+        navigation.navigate("Home", {
+          screen: "Home",
+          params: { userBookings: bookings_arr },
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -124,12 +135,13 @@ function Login({ navigation }) {
       let booking_obj = {
         id: booking_id.toString(),
         dateText: formattedDate,
-        date:
-          parsedDate[1] +
-          "-" +
-          parsedDate[2].split("T")[0] +
-          "-" +
-          parsedDate[0],
+        dateObj: new Date(upcomingBookings[i].date),
+        // date:
+        //   parsedDate[1] +
+        //   "-" +
+        //   parsedDate[2].split("T")[0] +
+        //   "-" +
+        //   parsedDate[0],
         time: time_slot,
         room_num: room_details.room_num,
         location: room_details.location,
@@ -139,16 +151,14 @@ function Login({ navigation }) {
         bookingId: upcomingBookings[i]._id,
         room_id: upcomingBookings[i].room_id,
       };
-
       bookings_arr.push(booking_obj);
     }
     setBookings(bookings_arr);
     setData(bookings_arr);
-
-    navigation.navigate("Home", {
-      screen: "Home",
-      params: { userBookings: bookings_arr },
-    });
+    // navigation.navigate("Home", {
+    //   screen: "Home",
+    //   params: { userBookings: bookings_arr },
+    // });
   };
 
   //function to get all bookings associated to user
@@ -188,36 +198,35 @@ function Login({ navigation }) {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={styles.container}>
-        <View style={styles.centeredContent}>
-          <Text style={styles.topText}>Welcome to Smart Campus</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Enter your email"
-              value={username}
-              onChangeText={(text) => setUsername(text)}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Enter your password"
-              secureTextEntry={true} // Mask the input for passwords
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              style={styles.input}
-            />
-            <Button title="Login" onPress={handleLogin} />
-            <Button
-              title="Sign up"
-              onPress={() => navigation.navigate("SignUp")}
-            />
-          </View>
-        </View>
+    // <ScrollView
+    //   contentContainerStyle={styles.container}
+    //   keyboardShouldPersistTaps="handled"
+    // >
+
+    <View style={styles.container}>
+      {/* <View style={styles.topContainer}> */}
+      {/* <View style={styles.topContainer}> */}
+      <View style={styles.inputContainer}>
+        <Button title="Login" onPress={handleLogin} />
+        <Button title="Sign up" onPress={() => navigation.navigate("SignUp")} />
+        <TextInput
+          placeholder="Enter your email"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Enter your password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.input}
+        />
+        {/* </View> */}
+        {/* </View> */}
       </View>
-    </ScrollView>
+      <View style={styles.bottomContainer}></View>
+    </View>
   );
 }
 
@@ -226,8 +235,11 @@ function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // flexDirection: "row",
+    // overflow: "hidden",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // backgroundColor: "#3A5683",
   },
   topTextContainer: {
     flex: 1, // Take up some vertical space
@@ -239,30 +251,55 @@ const styles = StyleSheet.create({
     //paddingTop: 60,
     paddingBottom: 20,
   },
-  centeredContent: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  // centeredContent: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: "red",
+  // },
   verticalCenter: {
     flex: 1,
     justifyContent: "center",
   },
 
   inputContainer: {
-    width: "100%", // Adjust as needed
+    width: "100%",
+    backgroundColor: "white",
   },
   input: {
     //borderWidth: 1,
-    height: 50,
-    width: 270,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    height: "%5",
+    width: 280,
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#ccc",
     padding: 10,
     marginBottom: 10,
   },
   lineInput: {
     borderWidth: 0,
+  },
+  background: {
+    resizeMode: "stretch",
+  },
+  topContainer: {
+    height: 100,
+    // width: "%100",
+    flex: 1,
+    backgroundColor: "#3A5683",
+    // transform: [{ skewY: "-45deg" }],
+  },
+  bottomContainer: {
+    flex: 1,
+    // backgroundColor: "green",
+    height: "%100",
+    // transform: [{ skewY: "-45deg" }],
+  },
+  bottomContainer2: {
+    height: "%50",
+    backgroundColor: "blue",
   },
 });
 

@@ -12,42 +12,10 @@ import { UserContext } from "./global/UserContext";
 import axios from "axios";
 import { Card } from "react-native-elements";
 import Strings from "./constants/Strings";
-// import { MyContext } from "./MyContext";
-
-/*
-const bookingsData = [
-  { id: '1', date: '2023-10-15', building: 'Leddy Main', canceled: false},
-  { id: '2', date: '2023-10-18', building: 'Engineering', canceled: false },
-  { id: '3', date: '2023-10-18', building: 'Odette', canceled: false },
-  { id: '4', date: '2023-10-18', building: 'Law', canceled: false },
-  { id: '5', date: '2023-10-18', building: 'Leddy West', canceled: false },
-  { id: '6', date: '2023-10-18', building: 'Law', canceled: false },
-  { id: '7', date: '2023-10-18', building: 'Engineering', canceled: false },
-  { id: '8', date: '2023-10-18', building: 'Leddy Main', canceled: false },
-  { id: '9', date: '2023-10-18', building: 'Odette', canceled: false }
-  // tester
-];
-*/
 
 const ManageBookings = () => {
-  // const { val, setVal } = useContext(MyContext);
-  // const [bookings, setBookings] = useState(bookingsData);
-
   const { bookings, setBookings } = useContext(UserContext);
-
-  //can get rid of this now
-  // const [bookingsData, setTempBookings] = useState([
-  //   { id: "1", date: "2023-10-15", building: "Leddy Main", canceled: false },
-  //   { id: "2", date: "2023-10-18", building: "Engineering", canceled: false },
-  //   { id: "3", date: "2023-10-18", building: "Odette", canceled: false },
-  //   { id: "4", date: "2023-10-18", building: "Law", canceled: false },
-  //   { id: "5", date: "2023-10-18", building: "Leddy West", canceled: false },
-  //   { id: "6", date: "2023-10-18", building: "Law", canceled: false },
-  //   { id: "7", date: "2023-10-18", building: "Engineering", canceled: false },
-  //   { id: "8", date: "2023-10-18", building: "Leddy Main", canceled: false },
-  //   { id: "9", date: "2023-10-18", building: "Odette", canceled: false },
-  // ]);
-
+  const { forceUpdate, setForceUpdate } = useContext(UserContext);
   const handleCancelBooking = (bookingId) => {
     console.log("Cancel button pressed for bookingId:", bookingId);
     Alert.alert(
@@ -70,29 +38,17 @@ const ManageBookings = () => {
             cancelUserBooking(
               bookingId,
               bookingObj[0].room_id,
-              bookingObj[0].date.toString(),
+              bookingObj[0].date.toString(), //i think this needs to be changed to dateObj ???
               bookingObj[0].time
             );
           },
         },
       ]
     );
-
-    /*
-    const updatedBookings = bookingsData.map((bookings) => {
-      if (bookings.id === bookingId) {
-        return { ...bookings, canceled: true };
-      }
-      return bookings;
-    });
-    */
-    // const activeBookings = bookingsData.filter((booking) => !booking.canceled);
-    // return setTempBookings(activeBookings);
   };
 
   /* async function to delete a booking from the database */
   const deleteBooking = async (bookingID) => {
-    console.log("is deleted" + bookingID);
     try {
       const response = await axios.delete(
         `http://${Strings.ip_address}:3000/bookings/delete-booking`,
@@ -111,7 +67,6 @@ const ManageBookings = () => {
   };
 
   //function to delete the selected booking from DB
-  //will need to modify the context data AND also modify the availability record for that booking (do this later)
   const cancelUserBooking = async (bookingId, room_id, date, time) => {
     var newTime = time.split(" - ");
     const isDeleted = await deleteBooking(bookingId);
@@ -254,20 +209,19 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   canceledText: {
-    //does not do anything?
     color: "white",
     fontWeight: "bold",
     fontFamily: "Avenir",
   },
   cancelButton: {
-    backgroundColor: "#E4B363",
+    backgroundColor: "#0099ff",
     padding: 5,
     border: "red",
-    marginLeft: 110,
+    marginLeft: 50,
     borderRadius: 15,
     marginTop: 25,
     // flexDirection: "row",
-    width: "35%",
+    width: "65%",
     // borderRadius: 4,
     marginBottom: 15,
   },
@@ -293,14 +247,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerStyle: {
-    width: "100%",
+    width: "90%",
     height: "1%",
-    backgroundColor: "#222E50",
+    backgroundColor: "#cccccc",
   },
   splitLeft: {
     // backgroundColor: "red",
-    paddingLeft: 3,
-    width: "45%",
+    paddingLeft: 9,
+    width: "60%",
   },
   bookingCard: {
     backgroundColor: "white",
@@ -311,25 +265,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingRight: 105,
     paddingTop: 5,
-    color: "white",
+    color: "#0099ff",
     fontFamily: "Avenir",
+    fontWeight: "bold",
   },
   buildingText: {
-    color: "black",
+    color: "#999999",
     fontFamily: "Avenir",
     fontSize: 15,
   },
   roomNumText: {
-    color: "black",
+    color: "#999999",
     fontFamily: "Avenir",
-    fontSize: 25,
+    fontSize: 20,
   },
   splitBooking: {
     width: "95%",
     flexDirection: "row",
   },
   splitRight: {
-    width: "55%",
+    width: "30%",
   },
   capacityContainer: {
     // backgroundColor: "grey",
@@ -337,15 +292,16 @@ const styles = StyleSheet.create({
   capacityText: {
     fontFamily: "Avenir",
     fontSize: 15,
-    marginLeft: 160,
-    color: "black",
+    marginLeft: 100,
+    color: "#0099ff",
   },
   dateContainer: {
-    backgroundColor: "#3A5683",
+    backgroundColor: "white",
     // opacity: 80,
-    width: "100%",
+    width: "96%",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+
     // borderRadius: 20,
   },
   dateContainer2: {
@@ -354,7 +310,8 @@ const styles = StyleSheet.create({
   timeText: {
     fontFamily: "Avenir",
     fontSize: 16,
-    color: "#3A5683",
+    color: "#999999",
+    // fontWeight: "bold",
   },
 });
 
