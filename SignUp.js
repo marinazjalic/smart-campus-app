@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   TextInput,
+  TouchableOpacity,
   Button,
   StyleSheet,
   Keyboard,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
   topTextContainer: {
     flex: 1, // Take up some vertical space
@@ -125,6 +127,7 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     width: "100%", // Adjust as needed
+    alignItems: "center",
   },
   input: {
     //borderWidth: 1,

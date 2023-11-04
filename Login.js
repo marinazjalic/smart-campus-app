@@ -44,6 +44,8 @@ function Login({ navigation }) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+const [isLoading, setIsLoading] = useState(false);
+
   const [data, setData] = useState(null);
 
   const { bookings, setBookings } = useContext(UserContext);
@@ -204,104 +206,94 @@ function Login({ navigation }) {
     // >
 
     <View style={styles.container}>
-      {/* <View style={styles.topContainer}> */}
-      {/* <View style={styles.topContainer}> */}
-      <View style={styles.inputContainer}>
-        <Button title="Login" onPress={handleLogin} />
-        <Button title="Sign up" onPress={() => navigation.navigate("SignUp")} />
-        <TextInput
-          placeholder="Enter your email"
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Enter your password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-        />
-        {/* </View> */}
-        {/* </View> */}
-      </View>
-      <View style={styles.bottomContainer}></View>
-    </View>
-  );
+    <View style={styles.centeredContent}>
+    <Text style={styles.topText}>Welcome to Smart Campus</Text>
+    <View style={styles.inputContainer}>
+    <TextInput
+        placeholder="Enter your email"
+        value={username}
+        onChangeText={(text) => setUsername(text)}
+        style={styles.input}
+  />
+  <TextInput
+    placeholder="Enter your password"
+    secureTextEntry={true} // Mask the input for passwords
+    value={password}
+    onChangeText={(text) => setPassword(text)}
+    style={styles.input}
+  />
+  <TouchableOpacity
+        style= {{ padding:16, marginTop:10, paddingHorizontal:20, backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={handleLogin}
+      >
+        <Text style={{ fontSize:12, color: 'white'}}>Login</Text>
+  </TouchableOpacity>
+<>
+  {isLoading && <ActivityIndicator size="small" color="#0000ff" />}
+  </>
+  <TouchableOpacity
+        style= {{ padding:16, marginTop: 6, backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={() => navigation.navigate('SignUp')}
+      >
+        <Text style={{ fontSize:12, color:'white'}}>Sign up</Text>
+  </TouchableOpacity>
+  <Text style={{marginBottom:4, marginTop:6}}>Don't have an account?</Text>
+
+
+
+</View>
+</View>
+</View>
+</ScrollView>
+);
 }
 
 //STYLESHEET
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // flexDirection: "row",
-    // overflow: "hidden",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // backgroundColor: "#3A5683",
-  },
-  topTextContainer: {
-    flex: 1, // Take up some vertical space
-    justifyContent: "center", // Center vertically
-  },
-  topText: {
-    textAlign: "center",
-    fontSize: 24,
-    //paddingTop: 60,
-    paddingBottom: 20,
-  },
-  // centeredContent: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   backgroundColor: "red",
-  // },
-  verticalCenter: {
-    flex: 1,
-    justifyContent: "center",
-  },
-
-  inputContainer: {
-    width: "100%",
-    backgroundColor: "white",
-  },
-  input: {
-    //borderWidth: 1,
-    height: "%5",
-    width: 280,
-    // borderBottomWidth: 1,
-    // borderBottomColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
-  },
-  lineInput: {
-    borderWidth: 0,
-  },
-  background: {
-    resizeMode: "stretch",
-  },
-  topContainer: {
-    height: 100,
-    // width: "%100",
-    flex: 1,
-    backgroundColor: "#3A5683",
-    // transform: [{ skewY: "-45deg" }],
-  },
-  bottomContainer: {
-    flex: 1,
-    // backgroundColor: "green",
-    height: "%100",
-    // transform: [{ skewY: "-45deg" }],
-  },
-  bottomContainer2: {
-    height: "%50",
-    backgroundColor: "blue",
-  },
-});
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+    },
+    topTextContainer: {
+        flex: 1, // Take up some vertical space
+        justifyContent: 'center', // Center vertically
+      },
+    topText: {
+        textAlign:'center',
+        fontSize: 24,
+        //paddingTop: 60,
+        paddingBottom: 20,
+    },
+    centeredContent: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    verticalCenter: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    
+    inputContainer: {
+      width: '100%', // Adjust as needed
+      alignItems: 'center',
+    },
+    input: {
+      //borderWidth: 1,
+      height: 50,
+      width:270,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+      padding: 10,
+      marginBottom: 10,
+    },
+    lineInput: {
+        borderWidth: 0,
+    }
+  });
 
 export default Login;
 /*
