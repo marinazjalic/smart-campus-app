@@ -1,135 +1,310 @@
-import React, { useState } from 'react';
-import { Text, View, ActivityIndicator, TextInput, Button, StyleSheet, ScrollView, Keyboard  } from 'react-native';
-import SignUp from './SignUp';
-import App from './App';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-//import HomeScreen from './HomeScreen';
+import React, { useEffect, useState, useContext } from "react";
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Keyboard,
+  ImageBackground,
+  Dimensions,
+} from "react-native";
+import SignUp from "./SignUp";
+import ActivityIndicator from "react-native";
+import axios from "axios";
+import { UserContext } from "./global/UserContext";
+import Strings from "./constants/Strings";
+import { TouchableOpacity } from "react-native-gesture-handler";
 //import Navigation from './Navigation';
 
-function Login({ navigation }) {  
-const [username, setUsername] = useState('');
-const [password, setPassword] = useState('');
-const [isLoading, setIsLoading] = useState(false);
+function Login({ navigation }) {
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [data, setData] = useState(null);
 
-const handleLogin = async () => {
-    // Handle the login logic here, e.g., send the data to a server
-    setIsLoading(true);
-    console.log('Email:', username);
-    console.log('Password:', password);
+  const { bookings, setBookings } = useContext(UserContext);
+  const { userId, setUserId } = useContext(UserContext);
+
+  const bookings_arr = [];
+  let booking_id = 0;
+
+  const handleLogin = () => {
+    validateCredentials();
     Keyboard.dismiss();
-    setTimeout(() => {
-      setIsLoading(false);
-      // Proceed with  navigation
-      navigation.navigate('Home', { username });
-    }, 3000);
+    console.log("Navigating with username:", username);
+    navigation.navigate("Home", { username });
+  };
 
-    console.log('Navigating with username:', username);
-    //navigation.navigate('Home', { username });
+  const validateCredentials = () => {
+    const params = JSON.stringify({
+      username: username,
+      password: password,
+    });
+
+    axios
+      .post(
+        `http://${Strings.ip_address}:3000/users/validate-credentials`,
+        params,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data == true) {
+          getUserID();
+        } else if (response.data == false) {
+          //display some kind of error message indicating invalid credentials
+          console.log("incorrect pw");
+        } else {
+          //display error message indicating that the user doesn't exist
+          console.log("user does not exist");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getUserID = () => {
+    axios
+      .get(`http://${Strings.ip_address}:3000/users/get-id`, {
+        params: {
+          user: username,
+        },
+      })
+      .then((response) => {
+        // console.log("user id");
+        // console.log(response.data);
+        setUserId(response.data);
+        getUserBookings(response.data);
+        navigation.navigate("Home", {
+          screen: "Home",
+          params: { userBookings: bookings_arr },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  /*function to get user bookings and room details for each booking.
+  combine the details into an object to make the bookings array */
+  const getUserBookings = async (userID) => {
+    const upcomingBookings = await getUpcomingBookings(userID);
+    for (let i = 0; i < upcomingBookings.length; i++) {
+      booking_id++;
+      let time_slot =
+        upcomingBookings[i].start_time + " - " + upcomingBookings[i].end_time;
+      let parsedDate = upcomingBookings[i].date.toString().split("-");
+      let newDate = new Date(upcomingBookings[i].date.split("T")[0]);
+
+      let formattedDate =
+        weekdays[newDate.getDay()] +
+        ", " +
+        months[parsedDate[1] - 1] +
+        " " +
+        (Number(newDate.getDate()) + 1).toString();
+      const room_details = await getRoomDetails(upcomingBookings[i].room_id);
+
+      let booking_obj = {
+        id: booking_id.toString(),
+        dateText: formattedDate,
+        dateObj: new Date(upcomingBookings[i].date),
+        // date:
+        //   parsedDate[1] +
+        //   "-" +
+        //   parsedDate[2].split("T")[0] +
+        //   "-" +
+        //   parsedDate[0],
+        time: time_slot,
+        room_num: room_details.room_num,
+        location: room_details.location,
+        accessibility: room_details.accessibility,
+        utilities: room_details.utilities,
+        capacity: room_details.capacity,
+        bookingId: upcomingBookings[i]._id,
+        room_id: upcomingBookings[i].room_id,
+      };
+      bookings_arr.push(booking_obj);
+    }
+    setBookings(bookings_arr);
+    setData(bookings_arr);
+    // navigation.navigate("Home", {
+    //   screen: "Home",
+    //   params: { userBookings: bookings_arr },
+    // });
+  };
+
+  //function to get all bookings associated to user
+  const getUpcomingBookings = async (userID) => {
+    const response = await axios.get(
+      `http://${Strings.ip_address}:3000/bookings/by-user`,
+      {
+        params: {
+          user_id: userID,
+        },
+      }
+    );
+    const data = await response.data;
+    return data;
   };
 
   const handleSignUp = () => {
     //navigation.navigate('SignUp'); //navigate to sign up page
-    console.log('Email:', username);
-    console.log('Password:', password);
+    console.log("Email:", username);
+    console.log("Password:", password);
+
     Keyboard.dismiss();
   };
 
-return (
-    <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-        > 
+  const getRoomDetails = async (roomID) => {
+    const response = await axios.get(
+      `http://${Strings.ip_address}:3000/rooms/get-room`,
+      {
+        params: {
+          id: roomID,
+        },
+      }
+    );
+
+    const obj = await response.data;
+    return obj;
+  };
+
+  return (
+    // <ScrollView
+    //   contentContainerStyle={styles.container}
+    //   keyboardShouldPersistTaps="handled"
+    // >
+
     <View style={styles.container}>
-    <View style={styles.centeredContent}>
-    <Text style={styles.topText}>Welcome to Smart Campus</Text>
-    <View style={styles.inputContainer}>
-    <TextInput
-        placeholder="Enter your email"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
-        style={styles.input}
-  />
-  <TextInput
-    placeholder="Enter your password"
-    secureTextEntry={true} // Mask the input for passwords
-    value={password}
-    onChangeText={(text) => setPassword(text)}
-    style={styles.input}
-  />
-  <TouchableOpacity
-        style= {{ padding:16, marginTop:10, paddingHorizontal:20, backgroundColor: '#3E92CC', borderRadius: 10}}
-        onPress={handleLogin}
-      >
-        <Text style={{ fontSize:12, color: 'white'}}>Login</Text>
-  </TouchableOpacity>
-<>
-  {isLoading && <ActivityIndicator size="small" color="#0000ff" />}
-  </>
-  <TouchableOpacity
-        style= {{ padding:16, marginTop: 6, backgroundColor: '#3E92CC', borderRadius: 10}}
-        onPress={() => navigation.navigate('SignUp')}
-      >
-        <Text style={{ fontSize:12, color:'white'}}>Sign up</Text>
-  </TouchableOpacity>
-  <Text style={{marginBottom:4, marginTop:6}}>Don't have an account?</Text>
-
-
-
-</View>
-</View>
-</View>
-</ScrollView>
-);
+      <View style={styles.centeredContent}>
+        <Text style={styles.topText}>Welcome to Smart Campus</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Enter your email"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Enter your password"
+            secureTextEntry={true} // Mask the input for passwords
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.input}
+          />
+          <TouchableOpacity
+            style={{
+              padding: 16,
+              marginTop: 10,
+              paddingHorizontal: 20,
+              backgroundColor: "#3E92CC",
+              borderRadius: 10,
+            }}
+            onPress={handleLogin}
+          >
+            <Text style={{ fontSize: 12, color: "white" }}>Login</Text>
+          </TouchableOpacity>
+          <>{isLoading && <ActivityIndicator size="small" color="#0000ff" />}</>
+          <TouchableOpacity
+            style={{
+              padding: 16,
+              marginTop: 6,
+              backgroundColor: "#3E92CC",
+              borderRadius: 10,
+            }}
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            <Text style={{ fontSize: 12, color: "white" }}>Sign up</Text>
+          </TouchableOpacity>
+          <Text style={{ marginBottom: 4, marginTop: 6 }}>
+            Don't have an account?
+          </Text>
+        </View>
+      </View>
+    </View>
+    // </ScrollView>
+  );
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-    },
-    topTextContainer: {
-        flex: 1, // Take up some vertical space
-        justifyContent: 'center', // Center vertically
-      },
-    topText: {
-        textAlign:'center',
-        fontSize: 24,
-        //paddingTop: 60,
-        paddingBottom: 20,
-    },
-    centeredContent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-    verticalCenter: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    
-    inputContainer: {
-      width: '100%', // Adjust as needed
-      alignItems: 'center',
-    },
-    input: {
-      //borderWidth: 1,
-      height: 50,
-      width:270,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-      padding: 10,
-      marginBottom: 10,
-    },
-    lineInput: {
-        borderWidth: 0,
-    }
-  });
+//STYLESHEET
 
-  export default Login;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  topTextContainer: {
+    flex: 1, // Take up some vertical space
+    justifyContent: "center", // Center vertically
+  },
+  topText: {
+    textAlign: "center",
+    fontSize: 24,
+    //paddingTop: 60,
+    paddingBottom: 20,
+  },
+  centeredContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  verticalCenter: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  inputContainer: {
+    width: "100%", // Adjust as needed
+    alignItems: "center",
+  },
+  input: {
+    //borderWidth: 1,
+    height: 50,
+    width: 270,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    padding: 10,
+    marginBottom: 10,
+  },
+  lineInput: {
+    borderWidth: 0,
+  },
+});
+
+export default Login;
 /*
 const styles = StyleSheet.create({
     input: {

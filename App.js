@@ -1,107 +1,121 @@
-import React from 'react';
+// import { ContextProvider, MyContext } from "./MyContext";
+
+// import { UserContext, UserProvider } from "./global/UserContext";
+//import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Alert, View } from "react-native";
-import HomeScreen from './HomeScreen';
-import ManageBookings from './ManageBookings';
-import Logout from './Logout';
-import Login from './Login';
-import { NavigationContainer } from '@react-navigation/native';
-import {createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AIRoomFinder from './AIRoomFinder';
-import Confirmation from './Confirmation';
-import { createStackNavigator } from '@react-navigation/stack';
-import SignUp from './SignUp';
-import { AppProvider } from './AppContext';
+import HomeScreen from "./HomeScreen";
+import ManageBookings from "./ManageBookings";
+import Logout from "./Logout";
+import Login from "./Login";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import AIRoomFinder from "./AIRoomFinder";
+import Confirmation from "./Confirmation";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignUp from "./SignUp";
+import { AppProvider } from "./AppContext";
+import { ContextProvider, MyContext } from "./MyContext";
+
+import { UserContext, UserProvider } from "./global/UserContext";
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator(); 
+const Stack = createStackNavigator();
 
 function TabNavigator() {
   return (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-        if (route.name === 'Home') {
-          iconName = focused
-            ? 'ios-home'
-            : 'ios-home-outline';
-        } else if (route.name === 'Logout') {
-          iconName = focused ? 'ios-close' : 'ios-close-outline';
-        }else if (route.name == 'Manage Bookings') {
-          iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
-        }
-        else if (route.name === 'Logout') {
-          iconName = focused ? 'ios-person' : 'ios-person-outline';
-        }
+          if (route.name === "Home") {
+            iconName = focused ? "ios-home" : "ios-home-outline";
+          } else if (route.name === "Logout") {
+            iconName = focused ? "ios-close" : "ios-close-outline";
+          } else if (route.name == "Manage Bookings") {
+            iconName = focused
+              ? "ios-information-circle"
+              : "ios-information-circle-outline";
+          } else if (route.name === "Logout") {
+            iconName = focused ? "ios-person" : "ios-person-outline";
+          }
 
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "blue",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Manage Bookings"
+        component={ManageBookings}
+        options={{
+          headerShown: true,
+          headerTintColor: "white",
+          // headerTitleStyle: { fontFamily: "Avenir" },
+          headerStyle: { backgroundColor: "#3A5683" },
+        }}
+      />
+      <Tab.Screen name="Confirm" component={Confirmation} />
+      <Tab.Screen name="Login" component={Login} />
 
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: 'blue',
-      tabBarInactiveTintColor: 'gray',
-    })}
-  >
-    <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Manage Bookings" component={ManageBookings} options={{ headerShown: true}} />
-    <Tab.Screen name="Confirm" component={Confirmation} />
-    <Tab.Screen name="Login"  component={Login} options={{ headerShown: false}} />
+      <Tab.Screen
+        name="Logout"
+        component={Logout}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
 
-  
-
-    <Tab.Screen 
-    name="Logout" 
-    component={Logout} 
-    listeners={({ navigation }) => ({
-      tabPress: e => {
-        // Prevent default action
-        e.preventDefault();
-        
-        Alert.alert(
-          "Logout",
-          "Are you sure you want to logout?",
-          [
-            {
-              text: "No",
-              style: "cancel"
-            },
-            {
-              text: "Yes",
-              onPress: () => navigation.navigate('Login')
-            }
-          ]
-        );
-      },
-    })}
-    />
-    
-  </Tab.Navigator>
-);
+            Alert.alert("Logout", "Are you sure you want to logout?", [
+              {
+                text: "No",
+                style: "cancel",
+              },
+              {
+                text: "Yes",
+                onPress: () => navigation.navigate("Login"),
+              },
+            ]);
+          },
+        })}
+      />
+    </Tab.Navigator>
+  );
 }
-
 
 export default function App() {
   return (
     //initialRouteName was "Home"
     //Stack.Screen 1st was "Home" component={HomeScreen}
     <AppProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Confirmation" component={Confirmation} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        {/* Add other screens as needed */}
-      </Stack.Navigator>
-    </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Home"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Confirmation" component={Confirmation} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            {/* Add other screens as needed */}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserProvider>
     </AppProvider>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
