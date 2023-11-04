@@ -32,7 +32,7 @@ function Confirmation({ navigation }) {
         <View style={{ flex: 3, backgroundColor:'white', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             <View style={styles.container}>
             <View style={styles.card}>
-            <Text style={{fontSize: 24, marginTop:60, width: '90%'}}>RESERVED</Text>
+            <Text style={{fontSize: 24, marginTop:60}}>RESERVED</Text>
           <Text> Room location</Text>
           <Text style= {{ marginBottom: 30}}>Day and time</Text>
           <Button title='Go home' onPress={() => navigation.navigate('Home')} color="#0B7DF1" />
@@ -50,6 +50,7 @@ export default Confirmation;
 const styles = StyleSheet.create({
     container: {
       flex: 3,
+      width:'90%',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#fff',

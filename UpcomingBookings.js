@@ -14,11 +14,11 @@ const bookings = [
 const UpcomingBookings = () => {
   return (
     <View style={{ height: '70%', marginTop: '16%' }}>
-      <Text style={{ fontSize: 18, color: '#0B7DF1', fontWeight: '700', height: '15%', /*fontWeight: 'bold',*/ marginLeft: 10}}>Upcoming Bookings</Text>
+      <Text style={{ fontSize: 18, color: 'white', fontWeight: '600', height: '15%', /*fontWeight: 'bold',*/ marginLeft: 10}}>Upcoming Bookings</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
         {bookings.map((booking) => (
           <View key={booking.id} style={{ marginLeft: 10 }}>
-            <Card containerStyle={{ padding: 25, borderRadius: 5, borderColor: '#0B7DF1'}}>
+            <Card containerStyle={{ flex:1, padding: 25, borderRadius: 5, width: 250, borderColor: 'transparent'}}>
               <Card.Title>{booking.date}</Card.Title>
               <Card.Divider />
               <Text>Time: {booking.time}</Text>

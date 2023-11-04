@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, ScrollView, TextInput, Button, StyleSheet, Keyboard } from 'react-native';
+import { Text, View, ScrollView, TextInput, TouchableOpacity, Button, StyleSheet, Keyboard } from 'react-native';
 import Navigation from './Navigation';
 import { useState } from 'react';
 import Login from './Login';
@@ -37,7 +37,12 @@ export default function SignUp({ navigation }) {
     onChangeText={(text) => setPassword(text)}
     style={styles.input}
     />
-    <Button title="Sign up" onPress={handleSignUp} />
+    <TouchableOpacity
+        style= {{ padding:16, marginTop: 6, width:'20%', backgroundColor: '#3E92CC', borderRadius: 10}}
+        onPress={handleSignUp}
+      >
+        <Text style={{ fontSize:12}}>Sign up</Text>
+  </TouchableOpacity>
     </View>
     </View>
     </View>
@@ -50,6 +55,7 @@ export default function SignUp({ navigation }) {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: 'white',
     },
     topTextContainer: {
         flex: 1, // Take up some vertical space
@@ -73,6 +79,7 @@ export default function SignUp({ navigation }) {
     
     inputContainer: {
       width: '100%', // Adjust as needed
+      alignItems: 'center',
     },
     input: {
       //borderWidth: 1,
