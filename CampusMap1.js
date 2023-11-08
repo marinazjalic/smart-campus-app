@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image, Dimensions } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, Image, Dimensions } from "react-native";
+
+
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -8,11 +10,35 @@ const imageHeight = 0.7 * tabHeight;
 //onst [selectedBuilding, setSelectedBuilding] = useState({});
 
 // const imageSource = require("./assets/campus1.jpg"); // Replace with your image path
-const imageSource = require("./assets/test2.png"); // Replace with your image path
+//const imageSource = require("./assets/test2.png"); // Replace with your image path
+const imageSource = require("./assets/pic9.png");
 
 export default function CampusMap({ selectedBuilding, onBuildingPress }) {
+
+  const [isCEISelected, setIsCEISelected] = useState(false);
+  const [isOdetteSelected, setIsOdetteSelected] = useState(false);
+  const [isLawSelected, setIsLawSelected] = useState(false);
+  const [isLeddySelected, setIsLeddySelected] = useState(false);
+
   const handleBuildingPress = (buildingName) => {
     onBuildingPress(buildingName);
+    
+    /*
+    if(buildingName === "CEI"){
+      setIsCEISelected(!(isCEISelected))
+    }
+    else if(buildingName === "Law"){
+      setIsLawSelected(!(isLawSelected))
+    }
+    else if(buildingName === "Leddy"){
+      setIsLeddySelected(!(isLeddySelected))
+    }
+    else {
+      setIsOdetteSelected(!(isOdetteSelected))
+
+    }
+    */
+  
     console.log(
       "Selected Building:",
       selectedBuilding,
@@ -31,80 +57,238 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
       <Image source={imageSource} style={{ width: "100%", height: "90%" }} />
 
       <TouchableOpacity
-        style={{
-          width: "10.5%", // Example value, replace with calculated percentage for building "Law"
-          height: "15%", // Example value
-          top: "25%", // Example value
-          left: "9%", // Example value
-          position: "absolute",
-          borderColor: "transparent",
-          borderWidth: 1, // This is optional, just to see the borders of the touchable area
-        }}
+        style={[
+            styles.LawButton, 
+            isLawSelected && styles.LawButtonSelected
+          
+        ]}
         onPress={() => {
           handleBuildingPress("Law");
         }}
-      />
+      >
+        <Text style={{color:'white'}}>Law</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
+        style={[
+            styles.LeddyButton, 
+            isLeddySelected && styles.LeddyButtonSelected
+          
+        ]}
+        onPress={() => {
+          handleBuildingPress("Leddy");
+        }}
+      >
+        <Text style={{color:'white'}}>Leddy</Text>
+        </TouchableOpacity>
+      
+
+      <TouchableOpacity
+        style={[
+          styles.OdetteButton, 
+          isOdetteSelected && styles.OdetteButtonSelected
+        ]}
+        onPress={() => {
+          handleBuildingPress("Odette");
+        }}
+      >
+        <Text style={{color: 'white' }}>Odette</Text>
+        </TouchableOpacity>
+
+      <TouchableOpacity
+        
+        style={[
+          styles.CEIButton,
+          isCEISelected && styles.CEIButtonSelect
+        ]}
+        onPress={() => {
+          handleBuildingPress("CEI");
+        }}
+      >
+        <Text style= {{ color: 'white' }}>CEI</Text>
+        </TouchableOpacity>
+
+<TouchableOpacity
         style={{
-          width: "11%", // Example value, replace with calculated percentage for building "Leddy"
+          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+          height: "46%", // Example value
+          top: "21%", // Example value
+          left: "40%", // Example value
+          position: "absolute",
+          borderRadius:10,
+          backgroundColor: '#D5D5D5',
+          borderColor: "transparent",
+          borderWidth: 1,
+        }}
+        
+      />
+      <TouchableOpacity
+        style={{
+          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+          height: "21%", // Example value
+          top: "21%", // Example value
+          left: "8%", // Example value
+          position: "absolute",
+          borderRadius:10,
+          backgroundColor: '#D5D5D5',
+          borderColor: "transparent",
+          borderWidth: 1,
+        }}
+        
+      />
+
+<TouchableOpacity
+        style={{
+          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+          height: "21%", // Example value
+          top: "45%", // Example value
+          left: "8%", // Example value
+          position: "absolute",
+          borderRadius:10,
+          backgroundColor: '#D5D5D5',
+          borderColor: "transparent",
+          borderWidth: 1,
+        }}
+        
+      />
+      <TouchableOpacity
+        style={{
+          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
           height: "14%", // Example value
-          top: "28%", // Example value
-          left: "23%", // Example value
+          top: "27%", // Example value
+          left: "77%", // Example value
           position: "absolute",
+          borderRadius:10,
+          backgroundColor: '#D5D5D5',
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        onPress={() => {
-          handleBuildingPress("Leddy Main");
-        }}
+        
       />
       <TouchableOpacity
         style={{
-          width: "14.5%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "12%", // Example value
-          top: "43%", // Example value
-          left: "19.5%", // Example value
+          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+          height: "10%", // Example value
+          top: "16%", // Example value
+          left: "77%", // Example value
           position: "absolute",
+          borderRadius:10,
+          backgroundColor: '#D5D5D5', 
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        onPress={() => {
-          handleBuildingPress("Leddy West");
-        }}
-      />
-
-      <TouchableOpacity
-        style={{
-          width: "14%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "13.5%", // Example value
-          top: "8%", // Example value
-          left: "64.5%", // Example value
-          position: "absolute",
-          borderColor: "transparent",
-          borderWidth: 1,
-        }}
-        onPress={() => {
-          handleBuildingPress("Odette Building");
-        }}
-      />
-
-      <TouchableOpacity
-        style={{
-          width: "11%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "21.5%", // Example value
-          top: "4%", // Example value
-          left: "85%", // Example value
-          position: "absolute",
-          borderColor: "transparent",
-          borderWidth: 1,
-        }}
-        onPress={() => {
-          handleBuildingPress("Engineering");
-        }}
+        
       />
 
       {/* Repeat for other buildings or touchable areas */}
     </View>
   );
 }
+const styles = StyleSheet.create({
+  CEIButton: {
+    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "16%", // Example value
+    top: "68%", // Example value
+    left: "77%", // Example value
+    position: "absolute",
+    borderRadius:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#3E92CC',
+    borderColor: "transparent",
+    borderWidth: 1,
+  },
+  CEIButtonSelect: {
+    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "16%", // Example value
+    top: "68%", // Example value
+    left: "77%", // Example value
+    position: "absolute",
+    borderRadius:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#06BCF2',
+    borderColor: "transparent",
+    borderWidth: 1,
+  },
+  OdetteButton: {
+    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "20%", // Example value
+    top: "43%", // Example value
+    left: "77%", // Example value
+    position: "absolute",
+    borderRadius:10,
+    alignItems:'center',
+    justifyContent: 'center',
+    backgroundColor: '#3E92CC',
+    borderColor: "transparent",
+    borderWidth: 1,
+  },
+  OdetteButtonSelected: {
+    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "20%", // Example value
+    top: "43%", // Example value
+    left: "77%", // Example value
+    position: "absolute",
+    borderRadius:10,
+    alignItems:'center',
+    justifyContent: 'center',
+    backgroundColor: '#06BCF2',
+    borderColor: "transparent",
+    borderWidth: 1,
+  },
+  LeddyButton: {
+    width: "18%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "12%", // Example value
+    top: "3%", // Example value
+    left: "25%", // Example value
+    position: "absolute",
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius:10,
+    backgroundColor: '#3E92CC',
+  },
+  LeddyButtonSelected: {
+    width: "18%", // Example value, replace with calculated percentage for building "Leddy"
+    height: "12%", // Example value
+    top: "3%", // Example value
+    left: "25%", // Example value
+    position: "absolute",
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius:10,
+    backgroundColor: '#06BCF2',
+  },
+  LawButton: {
+    width: "30%", // Example value, replace with calculated percentage for building "Law"
+    height: "12%", // Example value
+    top: "3%", // Example value
+    left: "50%", // Example value
+    position: "absolute",
+    backgroundColor: '#3E92CC',
+    borderRadius:10,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderColor: "transparent",
+    borderWidth: 1,
+  },
+  LawButtonSelected: {
+    width: "30%", // Example value, replace with calculated percentage for building "Law"
+    height: "12%", // Example value
+    top: "3%", // Example value
+    left: "50%", // Example value
+    position: "absolute",
+    backgroundColor: '#06BCF2',
+    borderRadius:10,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderColor: "transparent",
+    borderWidth: 1,
+  }
+
+
+})

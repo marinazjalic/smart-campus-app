@@ -68,9 +68,18 @@ function Confirmation({ navigation }) {
       </View>
       {/* <View style={styles.container}>
             <View style={styles.card}>
-            <Text style={{fontSize: 24, marginTop:60}}>RESERVED</Text>
-          <Text> Room location</Text>
-          <Text style= {{ marginBottom: 30}}>Day and time</Text>
+            <Text style={{fontSize: 24, marginTop:60, marginBottom:5}}>RESERVED</Text>
+            <View style={{ flexDirection: 'row'}}>
+              <RoomFeatures isAccessibleSelected={isAccessibleSelected} isWhiteboardSelected={isWhiteboardSelected} />
+          <Text> Location: {selectedBuilding}</Text>
+
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+          <IconPerson />
+          <Text> {roomCapacity} </Text>
+          </View>
+          
+          <Text style= {{ marginBottom: 30}}>{selectedDate}</Text>
           <Button title='Go home' onPress={() => navigation.navigate('Home')} color="#0B7DF1" />
 
         </View>
