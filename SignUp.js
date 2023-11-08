@@ -90,7 +90,20 @@ export default function SignUp({ navigation }) {
               onChangeText={(text) => setPassword(text)}
               style={styles.input}
             />
-            <Button title="Sign up" onPress={handleSignUp} />
+
+              <TouchableOpacity
+              style={{
+              padding: 16,
+              marginTop: 10,
+              paddingHorizontal: 20,
+              backgroundColor: "#3E92CC",
+              borderRadius: 10,
+            }}
+            onPress={handleSignUp}
+          >
+            <Text style={{ fontSize: 12, color:'white'}}>Sign up</Text>
+            </TouchableOpacity>
+            
           </View>
         </View>
       </View>

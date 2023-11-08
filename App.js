@@ -107,7 +107,7 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Confirmation" component={Confirmation} />
+            <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }}/>
             <Stack.Screen name="SignUp" component={SignUp} />
             {/* Add other screens as needed */}
           </Stack.Navigator>

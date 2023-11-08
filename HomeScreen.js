@@ -85,6 +85,7 @@ const HomeScreen = ({ navigation, route }) => {
     setStartTime("");
     setEndTime("");
     setSelectedBuilding("");
+    setRoomCapacity("");
     setIsWhiteboardSelected(false);
     setIsAccessibleSelected(false);
   };
@@ -135,12 +136,14 @@ const HomeScreen = ({ navigation, route }) => {
     generateNext14Days(); // call the function to generate the next 14 days on component mount
   }, []);
 
+  /*
   const handleFindRoomPress = () => {
     resetSelections();
     navigation.navigate("Confirmation");
   };
+  */
 
-  /*
+  
   const handleInputChange = (value) => {
     setRoomCapacity(value);
 
@@ -152,12 +155,13 @@ const HomeScreen = ({ navigation, route }) => {
       setShowError(false);
     }
   };
-  */
+  /*
   const handleInputChange = (text) => {
     if (text >= 1 && text <= 8) {
       setRoomCapacity(text);
     }
   };
+  */
 
   const [routes] = useState([
     { key: "date", title: "Date" },
@@ -273,6 +277,10 @@ const HomeScreen = ({ navigation, route }) => {
               padding: 0,
             }}
           >
+            <CampusMap1
+            setSelectedBuilding={selectedBuilding}
+            onBuildingPress={setSelectedBuilding}
+            ></CampusMap1>
             {/**/}
           </View>
         );
@@ -331,6 +339,7 @@ const HomeScreen = ({ navigation, route }) => {
   }, [endTime]);
 
   const handleTimePicked = (time) => {
+    console.log(time);
     if (time instanceof Date) {
       // console.log("Start Time:", time);
       const timeString = time.toLocaleTimeString();
@@ -685,7 +694,7 @@ const HomeScreen = ({ navigation, route }) => {
                 style={{
                   justifyContent: "space-between",
                   backgroundColor: "white",
-                  marginBottom: 0,
+                  marginBottom: -20,
                   marginTop: -120,
                 }}
               >
@@ -697,7 +706,7 @@ const HomeScreen = ({ navigation, route }) => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-around",
-                      marginBottom: 70,
+                      marginBottom: -5,
                     }}
                   >
                     <TouchableOpacity
@@ -721,9 +730,11 @@ const HomeScreen = ({ navigation, route }) => {
                         setIsAccessibleSelected(!isAccessibleSelected)
                       }
                     >
+                      
                       <Text style={{ fontSize: 12 }}>Accessible</Text>
                     </TouchableOpacity>
-
+                    
+                      
                     <TextInput //this is for the capacity thing
                       ref={inputRef}
                       value={roomCapacity}
@@ -734,26 +745,33 @@ const HomeScreen = ({ navigation, route }) => {
                         borderWidth: 1,
                         textAlign: "center",
                         padding: 5,
+                        marginBottom:16,
                         borderColor: "transparent",
                         borderBottomColor: "#ccc",
                         width: "40%",
                       }}
                     />
+                    
+                    
                     {showError && (
-                      <Text style={{ color: "red", marginTop: 8 }}>
+                      
+                      <Text style={{ color: "red", marginTop: 8}}>
+                        
                         Enter a number between 1-8.
                       </Text>
                     )}
+                    
                   </View>
                 </View>
 
                 <View
                   style={{
-                    height: 90,
+                    height: 70,
                     flexDirection: "column",
                     position: "relative",
+                    marginLeft:10,
                     justifyContent: "space-between",
-                    alignItems: "center",
+                    //alignItems: "center",
                     backgroundColor: "white",
                   }}
                 >
@@ -761,17 +779,20 @@ const HomeScreen = ({ navigation, route }) => {
                     <>
                       <View
                         style={{
+                          
                           justifyContent: "center",
                           position: "absolute",
+                          flexDirection: 'row',
                           alignItems: "center",
-                          marginBottom: 4,
+                          marginBottom: 0,
+                          marginTop:0,
                         }}
                       >
                         <TouchableOpacity
                           style={{
-                            padding: 16,
-                            marginTop: -20,
-                            marginBottom: 4,
+                            padding: 15,
+                            marginTop: 0,
+                            //marginBottom: 4,
                             backgroundColor: "#3E92CC",
                             borderRadius: 10,
                           }}
@@ -795,6 +816,8 @@ const HomeScreen = ({ navigation, route }) => {
                               "Type:",
                               typeof selectedBuilding
                             );
+                            console.log("Accesible is:", {isAccessibleSelected});
+
                             console.log(
                               "Selected Date:",
                               selectedDate,
@@ -803,7 +826,16 @@ const HomeScreen = ({ navigation, route }) => {
                             );
 
                             {
-                              handleFindRoomPress;
+                              navigation.navigate('Confirmation', {
+                                startTime,
+                                endTime,
+                                selectedDate,
+                                isAccessibleSelected,
+                                isWhiteboardSelected,
+                                roomCapacity,
+                                selectedBuilding,
+                              })
+                              resetSelections();
                             }
                           }}
                         >
@@ -812,17 +844,19 @@ const HomeScreen = ({ navigation, route }) => {
                           </Text>
                         </TouchableOpacity>
 
+                          <View style={{ flexDirection: 'column', marginLeft:16 }}>
                         <Text style={{ marginRight: 16 }}>
-                          Start Time: {startTime}
+                          Start: {startTime}
                         </Text>
                         <Text style={{ marginRight: 16 }}>
-                          Start Time: {endTime}
+                          End: {endTime}
                         </Text>
                         <Text style={{ marginRight: 16 }}>
-                          Selected Building: {selectedBuilding}{" "}
+                          Building: {selectedBuilding}{" "}
                         </Text>
                       </View>
-                    </>
+                      </View>
+                    </> 
                   )}
                 </View>
               </View>
@@ -871,6 +905,7 @@ const styles = StyleSheet.create({
   filterButton: {
     padding: 10,
     borderWidth: 1,
+    marginBottom:15,
     borderRadius: 10,
     borderColor: "#ccc",
   },

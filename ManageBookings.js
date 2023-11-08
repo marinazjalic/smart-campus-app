@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   capacityText: {
     fontFamily: "Avenir",
     fontSize: 15,
-    marginLeft: 100,
+    marginLeft: 10,
     color: "#0099ff",
   },
   dateContainer: {
