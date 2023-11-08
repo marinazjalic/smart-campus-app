@@ -252,7 +252,7 @@ const HomeScreen = ({ navigation, route }) => {
                 style={{
                   height: screenHeight * 0.38,
                   borderTopWidth: 1,
-                  borderTopColor: "gray",
+                  borderTopColor: "white",
                   marginBottom: 30,
                 }}
                 onDayPress={(day) => handleDateSelection(day)}
@@ -284,13 +284,13 @@ const HomeScreen = ({ navigation, route }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: "#EF6461" }}
+      indicatorStyle={{ backgroundColor: "#3399ff" }}
       style={{
         backgroundColor: "white", //added more styling here
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       }}
-      activeColor={"#EF6461"} //COLOR FOR DATE/LOC TAB BAR
+      activeColor={"#3399ff"} //COLOR FOR DATE/LOC TAB BAR
       inactiveColor={"gray"}
     />
   );
@@ -568,269 +568,331 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#3A5683" }}>
-      {
-        //nothing goes here
-      }
-      <View style={{ flex: 3.5, backgroundColor: "#3A5683" }}>
+    <LinearGradient
+      colors={["#0059b3", "#99ccff", "#ffcc66"]}
+      style={{ flex: 1 }}
+    >
+      <View style={{ flex: 1 }}>
+        {/* <LinearGradient colors={["#4c669f", "#3b5998", "#192f6a"]}> */}
         {
-          //title for Upcoming Bookings
-          <UpcomingBookings></UpcomingBookings>
-          //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
-          //followed by panels for Upcoming bookings
+          //nothing goes here
         }
-      </View>
-      <View style={{ flex: 6.5 }}>
-        <TabView //this is the tab for 'Date' and 'Location'
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          renderTabBar={renderTabBar}
-          style={{ flex: 1 }} // Fixed height
-        />
+        {/* <LinearGradient colors={["#4c669f", "#3b5998", "#192f6a"]}> */}
+        <View style={{ flex: 3.5 }}>
+          {
+            //title for Upcoming Bookings
+            <UpcomingBookings></UpcomingBookings>
+            //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
+            //followed by panels for Upcoming bookings
+          }
+        </View>
+        {/* </LinearGradient> */}
+        <View style={{ flex: 6.5 }}>
+          <TabView //this is the tab for 'Date' and 'Location'
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            renderTabBar={renderTabBar}
+            style={{ flex: 1 }} // Fixed height
+          />
 
-        <View
-          style={{
-            backgroundColor: "white",
-            alignItems: "center",
-            height: "30%",
-            marginBottom: -33,
-          }}
-        >
-          {isDateTabActive && (
-            <View style={styles.card}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity
+          <View
+            style={{
+              backgroundColor: "white",
+              alignItems: "center",
+              height: "30%",
+              marginBottom: -33,
+            }}
+          >
+            {isDateTabActive && (
+              <View style={styles.card}>
+                <View
                   style={{
-                    padding: 16,
-                    marginTop: 6,
-                    marginRight: 2,
-                    marginBottom: 1,
-                    backgroundColor: "#3E92CC",
-                    borderRadius: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    // alignItems: "center",
                   }}
-                  onPress={setStartTimePickerVisible}
                 >
-                  <Text style={{ fontSize: 12, color: "white" }}>
-                    Start Time
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    padding: 16,
-                    marginTop: 6,
-                    marginLeft: 2,
-                    marginBottom: 1,
-                    backgroundColor: "#3E92CC",
-                    borderRadius: 10,
-                  }}
-                  onPress={setEndTimePickerVisible}
-                >
-                  <Text style={{ fontSize: 12, color: "white" }}>End Time</Text>
-                </TouchableOpacity>
-
-                {selectedDate &&
-                  startTime &&
-                  endTime && ( //if date and time are selected, show them both
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                        Start Time: {startTime}
-                      </Text>
-                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                        End Time: {endTime}
-                      </Text>
+                  <TouchableOpacity
+                    style={{
+                      // padding: 16,
+                      marginTop: 6,
+                      // marginRight: 2,
+                      // marginBottom: 1,
+                      // backgroundColor: "#3E92CC",
+                      borderRadius: 10,
+                      marginRight: 50,
+                      width: "40%",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 1,
+                        height: 2,
+                      },
+                      height: "80%",
+                      shadowOpacity: 0.23,
+                    }}
+                    onPress={setStartTimePickerVisible}
+                  >
+                    <LinearGradient
+                      colors={["#3399ff", "#80bfff"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.gradientButton}
+                      // #0059b3", "#99ccff"
+                    >
                       <Text
                         style={{
-                          marginRight: 16,
-                          marginLeft: 4,
-                          marginBottom: 0,
+                          color: "white",
+                          textAlign: "center",
+                          fontFamily: "Avenir",
+                          fontSize: 15,
+                          fontWeight: "bold",
                         }}
                       >
-                        Date: {selectedDate}{" "}
+                        Start Time
                       </Text>
-                    </View>
-                  )}
-              </View>
-            </View>
-          )}
-        </View>
-        <View></View>
+                    </LinearGradient>
+                  </TouchableOpacity>
 
-        <DateTimePickerModal
-          isVisible={isStartTimePickerVisible}
-          mode="time"
-          minuteInterval={30}
-          onConfirm={handleTimePicked}
-          onCancel={hideStartTimePicker} //will hide time picker if you press cancel
-        />
-        <DateTimePickerModal
-          isVisible={isEndTimePickerVisible}
-          mode="time"
-          minuteInterval={30}
-          onConfirm={handleEndTimePicked}
-          onCancel={hideEndTimePicker} //will hide time picker if you press cancel
-        />
-
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ backgroundColor: "#FF7F50" }}>
-            {isLocationTabActive && (
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  backgroundColor: "white",
-                  marginBottom: 0,
-                  marginTop: -120,
-                }}
-              >
-                <View
-                  style={{ paddingLeft: 10, marginTop: 0 }}
-                  onPress={() => inputRef.current.focus()}
-                >
-                  <View
+                  <TouchableOpacity
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      marginBottom: 70,
+                      // padding: 16,
+                      marginTop: 6,
+                      // marginLeft: 2,
+                      // marginBottom: 1,
+                      backgroundColor: "#3E92CC",
+                      borderRadius: 10,
+                      width: "40%",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 1,
+                        height: 2,
+                      },
+                      height: "80%",
+                      shadowOpacity: 0.23,
                     }}
+                    onPress={setEndTimePickerVisible}
                   >
-                    <TouchableOpacity
-                      style={[
-                        styles.filterButton,
-                        isWhiteboardSelected && styles.selectedButton,
-                      ]}
-                      onPress={() =>
-                        setIsWhiteboardSelected(!isWhiteboardSelected)
-                      }
+                    <LinearGradient
+                      colors={["#3399ff", "#80bfff"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.gradientButton}
                     >
-                      <Text style={{ fontSize: 12 }}>Whiteboard</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.filterButton,
-                        isAccessibleSelected && styles.selectedButton,
-                      ]}
-                      onPress={() =>
-                        setIsAccessibleSelected(!isAccessibleSelected)
-                      }
-                    >
-                      <Text style={{ fontSize: 12 }}>Accessible</Text>
-                    </TouchableOpacity>
-
-                    <TextInput //this is for the capacity thing
-                      ref={inputRef}
-                      value={roomCapacity}
-                      onChangeText={handleInputChange}
-                      keyboardType="numeric"
-                      placeholder="Capacity (1-8 ppl)"
-                      style={{
-                        borderWidth: 1,
-                        textAlign: "center",
-                        padding: 5,
-                        borderColor: "transparent",
-                        borderBottomColor: "#ccc",
-                        width: "40%",
-                      }}
-                    />
-                    {showError && (
-                      <Text style={{ color: "red", marginTop: 8 }}>
-                        Enter a number between 1-8.
-                      </Text>
-                    )}
-                  </View>
-                </View>
-
-                <View
-                  style={{
-                    height: 90,
-                    flexDirection: "column",
-                    position: "relative",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: "white",
-                  }}
-                >
-                  {startTime && selectedDate && endTime && (
-                    <>
-                      <View
+                      <Text
                         style={{
-                          justifyContent: "center",
-                          position: "absolute",
-                          alignItems: "center",
-                          marginBottom: 4,
+                          color: "white",
+                          textAlign: "center",
+                          fontFamily: "Avenir",
+                          fontSize: 15,
+                          fontWeight: "bold",
                         }}
                       >
-                        <TouchableOpacity
-                          style={{
-                            padding: 16,
-                            marginTop: -20,
-                            marginBottom: 4,
-                            backgroundColor: "#3E92CC",
-                            borderRadius: 10,
-                          }}
-                          onPress={() => {
-                            console.log("------------");
-                            console.log(
-                              "Selected start Time:",
-                              startTime,
-                              "Type:",
-                              typeof startTime
-                            );
-                            console.log(
-                              "Selected end Time:",
-                              endTime,
-                              "Type:",
-                              typeof endTime
-                            );
-                            console.log(
-                              "Selected Building:",
-                              selectedBuilding,
-                              "Type:",
-                              typeof selectedBuilding
-                            );
-                            console.log(
-                              "Selected Date:",
-                              selectedDate,
-                              "Type:",
-                              typeof selectedDate
-                            );
+                        End Time
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
 
-                            {
-                              handleFindRoomPress;
-                            }
-                          }}
-                        >
-                          <Text style={{ fontSize: 12, color: "white" }}>
-                            Find Room
-                          </Text>
-                        </TouchableOpacity>
-
-                        <Text style={{ marginRight: 16 }}>
+                  {selectedDate &&
+                    startTime &&
+                    endTime && ( //if date and time are selected, show them both
+                      <View style={{ alignItems: "center" }}>
+                        <Text style={{ marginRight: 16, marginLeft: 4 }}>
                           Start Time: {startTime}
                         </Text>
-                        <Text style={{ marginRight: 16 }}>
-                          Start Time: {endTime}
+                        <Text style={{ marginRight: 16, marginLeft: 4 }}>
+                          End Time: {endTime}
                         </Text>
-                        <Text style={{ marginRight: 16 }}>
-                          Selected Building: {selectedBuilding}{" "}
+                        <Text
+                          style={{
+                            marginRight: 16,
+                            marginLeft: 4,
+                            marginBottom: 0,
+                          }}
+                        >
+                          Date: {selectedDate}{" "}
                         </Text>
                       </View>
-                    </>
-                  )}
+                    )}
                 </View>
               </View>
             )}
           </View>
-        </TouchableWithoutFeedback>
+
+          <View></View>
+
+          <DateTimePickerModal
+            isVisible={isStartTimePickerVisible}
+            mode="time"
+            minuteInterval={30}
+            onConfirm={handleTimePicked}
+            onCancel={hideStartTimePicker} //will hide time picker if you press cancel
+          />
+          <DateTimePickerModal
+            isVisible={isEndTimePickerVisible}
+            mode="time"
+            minuteInterval={30}
+            onConfirm={handleEndTimePicked}
+            onCancel={hideEndTimePicker} //will hide time picker if you press cancel
+          />
+
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <View style={{ backgroundColor: "#FF7F50" }}>
+              {isLocationTabActive && (
+                <View
+                  style={{
+                    justifyContent: "space-between",
+                    backgroundColor: "white",
+                    marginBottom: 0,
+                    marginTop: -120,
+                  }}
+                >
+                  <View
+                    style={{ paddingLeft: 10, marginTop: 0 }}
+                    onPress={() => inputRef.current.focus()}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginBottom: 70,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={[
+                          styles.filterButton,
+                          isWhiteboardSelected && styles.selectedButton,
+                        ]}
+                        onPress={() =>
+                          setIsWhiteboardSelected(!isWhiteboardSelected)
+                        }
+                      >
+                        <Text style={{ fontSize: 12 }}>Whiteboard</Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[
+                          styles.filterButton,
+                          isAccessibleSelected && styles.selectedButton,
+                        ]}
+                        onPress={() =>
+                          setIsAccessibleSelected(!isAccessibleSelected)
+                        }
+                      >
+                        <Text style={{ fontSize: 12 }}>Accessible</Text>
+                      </TouchableOpacity>
+
+                      <TextInput //this is for the capacity thing
+                        ref={inputRef}
+                        value={roomCapacity}
+                        onChangeText={handleInputChange}
+                        keyboardType="numeric"
+                        placeholder="Capacity (1-8 ppl)"
+                        style={{
+                          borderWidth: 1,
+                          textAlign: "center",
+                          padding: 5,
+                          borderColor: "transparent",
+                          borderBottomColor: "#ccc",
+                          width: "40%",
+                        }}
+                      />
+                      {showError && (
+                        <Text style={{ color: "red", marginTop: 8 }}>
+                          Enter a number between 1-8.
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      height: 90,
+                      flexDirection: "column",
+                      position: "relative",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    {startTime && selectedDate && endTime && (
+                      <>
+                        <View
+                          style={{
+                            justifyContent: "center",
+                            position: "absolute",
+                            alignItems: "center",
+                            marginBottom: 4,
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={{
+                              padding: 16,
+                              marginTop: -20,
+                              marginBottom: 4,
+                              backgroundColor: "#3E92CC",
+                              borderRadius: 10,
+                            }}
+                            onPress={() => {
+                              console.log("------------");
+                              console.log(
+                                "Selected start Time:",
+                                startTime,
+                                "Type:",
+                                typeof startTime
+                              );
+                              console.log(
+                                "Selected end Time:",
+                                endTime,
+                                "Type:",
+                                typeof endTime
+                              );
+                              console.log(
+                                "Selected Building:",
+                                selectedBuilding,
+                                "Type:",
+                                typeof selectedBuilding
+                              );
+                              console.log(
+                                "Selected Date:",
+                                selectedDate,
+                                "Type:",
+                                typeof selectedDate
+                              );
+
+                              {
+                                handleFindRoomPress;
+                              }
+                            }}
+                          >
+                            <Text style={{ fontSize: 12, color: "white" }}>
+                              Find Room
+                            </Text>
+                          </TouchableOpacity>
+
+                          <Text style={{ marginRight: 16 }}>
+                            Start Time: {startTime}
+                          </Text>
+                          <Text style={{ marginRight: 16 }}>
+                            Start Time: {endTime}
+                          </Text>
+                          <Text style={{ marginRight: 16 }}>
+                            Selected Building: {selectedBuilding}{" "}
+                          </Text>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                </View>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -852,12 +914,13 @@ const styles = StyleSheet.create({
     borderRadius: 20, // Adjust for desired corner radius
     backgroundColor: "white",
     shadowColor: "#000",
+    height: "70%",
     shadowOffset: {
       width: 1,
       height: 2,
     },
     shadowOpacity: 0.23,
-    shadowRadius: 2.99,
+    // shadowRadius: 2.99,
     elevation: 10,
   },
   cardTitle: {
@@ -876,5 +939,10 @@ const styles = StyleSheet.create({
   },
   selectedButton: {
     backgroundColor: "#CE8D66",
+  },
+  gradientButton: {
+    padding: 10,
+    borderRadius: 10,
+    height: "100%",
   },
 });

@@ -18,6 +18,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignUp from "./SignUp";
 import { AppProvider } from "./AppContext";
 import { ContextProvider, MyContext } from "./MyContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { UserContext, UserProvider } from "./global/UserContext";
 
@@ -42,12 +43,10 @@ function TabNavigator() {
           } else if (route.name === "Logout") {
             iconName = focused ? "ios-person" : "ios-person-outline";
           }
-
-          // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "blue",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: "#0099ff",
+        tabBarInactiveTintColor: "#999999",
       })}
     >
       <Tab.Screen
@@ -61,16 +60,33 @@ function TabNavigator() {
         options={{
           headerShown: true,
           headerTintColor: "white",
-          // headerTitleStyle: { fontFamily: "Avenir" },
-          headerStyle: { backgroundColor: "#3A5683" },
+          headerTitleStyle: {
+            fontFamily: "Avenir",
+            fontSize: 18,
+            fontWeight: "bold",
+          },
+          headerBackground: () => (
+            <LinearGradient
+              colors={["#0059b3", "#3399ff", "#99ccff"]}
+              style={{ flex: 1 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            />
+          ),
+          // headerStyle: { backgroundColor: "#0066cc" },
         }}
       />
       <Tab.Screen name="Confirm" component={Confirmation} />
-      <Tab.Screen name="Login" component={Login} />
+      <Tab.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
 
       <Tab.Screen
         name="Logout"
         component={Logout}
+        options={{ headerShown: false }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
@@ -106,9 +122,17 @@ export default function App() {
               component={TabNavigator}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="Confirmation" component={Confirmation} />
-            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{ headerShown: false }}
+            />
             {/* Add other screens as needed */}
           </Stack.Navigator>
         </NavigationContainer>

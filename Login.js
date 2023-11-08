@@ -16,6 +16,7 @@ import axios from "axios";
 import { UserContext } from "./global/UserContext";
 import Strings from "./constants/Strings";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 //import Navigation from './Navigation';
 
 function Login({ navigation }) {
@@ -58,8 +59,8 @@ function Login({ navigation }) {
   const handleLogin = () => {
     validateCredentials();
     Keyboard.dismiss();
-    console.log("Navigating with username:", username);
-    navigation.navigate("Home", { username });
+    // console.log("Navigating with username:", username);
+    // navigation.navigate("Home", { username });
   };
 
   const validateCredentials = () => {
@@ -201,70 +202,67 @@ function Login({ navigation }) {
   };
 
   return (
-    // <ScrollView
-    //   contentContainerStyle={styles.container}
-    //   keyboardShouldPersistTaps="handled"
-    // >
-
-    <View style={styles.container}>
-      <View style={styles.centeredContent}>
-        <Text style={styles.topText}>Welcome to Smart Campus</Text>
-        <View style={styles.inputContainer}>
+    <View style={styles.backgroundContainer}>
+      <LinearGradient
+        colors={["#004d99", "#3399ff", "#99ccff"]}
+        style={{ height: "60%", width: "100%" }}
+      >
+        <View style={styles.topContainer}>
           <TextInput
             placeholder="Enter your email"
+            placeholderTextColor={"white"}
             value={username}
             onChangeText={(text) => setUsername(text)}
-            style={styles.input}
+            style={styles.emailInput}
           />
           <TextInput
             placeholder="Enter your password"
+            placeholderTextColor={"white"}
             secureTextEntry={true} // Mask the input for passwords
             value={password}
             onChangeText={(text) => setPassword(text)}
-            style={styles.input}
+            style={styles.pwInput}
           />
           <TouchableOpacity
-            style={{
-              padding: 16,
-              marginTop: 10,
-              paddingHorizontal: 20,
-              backgroundColor: "#3E92CC",
-              borderRadius: 10,
-            }}
-            onPress={handleLogin}
-          >
-            <Text style={{ fontSize: 12, color: "white" }}>Login</Text>
-          </TouchableOpacity>
-          <>{isLoading && <ActivityIndicator size="small" color="#0000ff" />}</>
-          <TouchableOpacity
-            style={{
-              padding: 16,
-              marginTop: 6,
-              backgroundColor: "#3E92CC",
-              borderRadius: 10,
-            }}
+            // style={styles.forgotButton}
             onPress={() => navigation.navigate("SignUp")}
           >
-            <Text style={{ fontSize: 12, color: "white" }}>Sign up</Text>
+            <Text style={styles.forgotText}>Forgot Password?</Text>
           </TouchableOpacity>
-          <Text style={{ marginBottom: 4, marginTop: 6 }}>
-            Don't have an account?
-          </Text>
         </View>
+      </LinearGradient>
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <LinearGradient
+            colors={["#3399ff", "#80bfff"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradientButton}
+            // #0059b3", "#99ccff"
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.signupContainer}>
+        <Text style={styles.signupText}>Dont have an account?</Text>
+        <TouchableOpacity
+          // style={styles.signupButton}
+          onPress={() => navigation.navigate("SignUp")}
+        >
+          <Text style={styles.signBtnText}>Sign up</Text>
+        </TouchableOpacity>
       </View>
     </View>
-    // </ScrollView>
   );
 }
-
-//STYLESHEET
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    // backgroundColor: "white",
   },
   topTextContainer: {
     flex: 1, // Take up some vertical space
@@ -273,6 +271,7 @@ const styles = StyleSheet.create({
   topText: {
     textAlign: "center",
     fontSize: 24,
+    color: "white",
     //paddingTop: 60,
     paddingBottom: 20,
   },
@@ -280,6 +279,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    // backgroundColor: "red",
   },
   verticalCenter: {
     flex: 1,
@@ -290,17 +290,145 @@ const styles = StyleSheet.create({
     width: "100%", // Adjust as needed
     alignItems: "center",
   },
-  input: {
+  emailInput: {
     //borderWidth: 1,
     height: 50,
     width: 270,
+    marginTop: 395,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomColor: "white",
+    // borderWidth: 1,
+    // borderRadius: 20,
+    marginLeft: 75,
+    // borderColor: "white",
     padding: 10,
     marginBottom: 10,
+    // backgroundColor: "white",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    fontFamily: "Avenir",
+    color: "white",
+    // opacity: 0.5,
+  },
+  pwInput: {
+    height: 50,
+    width: 270,
+    // marginTop: 345,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    // borderWidth: 1,
+    // borderRadius: 20,
+    marginLeft: 75,
+    // borderColor: "white",
+    padding: 10,
+    marginBottom: 10,
+    fontFamily: "Avenir",
+    // opacity: 0.7,
+    // backgroundColor: "white",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+
+    shadowOpacity: 0.23,
+    color: "white",
+    // opacity: 0.5,
   },
   lineInput: {
     borderWidth: 0,
+  },
+  loginButton: {
+    // padding: 16,
+    marginLeft: 75,
+    marginTop: 15,
+    // paddingHorizontal: 20,
+    backgroundColor: "#004d99",
+    borderRadius: 20,
+    width: 270,
+    height: 50,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+  },
+  buttonText: {
+    fontSize: 15,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "Avenir",
+    fontWeight: "bold",
+    paddingTop: 13,
+  },
+  signupText: {
+    // marginBottom: "auto",
+    // marginTop: 200,
+    // position: "relative",
+    // bottom: 0,
+    color: "#0099ff",
+    paddingLeft: 105,
+    paddingTop: 15,
+    fontFamily: "Avenir",
+    fontSize: 16,
+    // marginBottom: 20,
+  },
+  backgroundContainer: {
+    // backgroundColor: "#336699",
+    alignItems: "center",
+    flex: 1,
+  },
+  topContainer: {
+    // backgroundColor: "red",
+    height: "60%",
+    width: "100%",
+  },
+  bottomContainer: {
+    height: "33%",
+    width: "100%",
+    backgroundColor: "white",
+  },
+  gradientButton: {
+    height: "100%",
+    width: "100%",
+    borderRadius: 20,
+  },
+  signupContainer: {
+    backgroundColor: "white",
+    height: "12%",
+    width: "100%",
+    flexDirection: "row",
+  },
+  signupButton: {
+    // padding: 16,
+    // marginLeft: 75,
+    // marginTop: 15,
+    // paddingHorizontal: 20,
+    // backgroundColor: "#004d99",
+    borderRadius: 20,
+    width: 75,
+    height: 50,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+  },
+  signBtnText: {
+    fontSize: 15,
+    color: "#0099ff",
+    textAlign: "center",
+    fontFamily: "Avenir",
+    fontWeight: "bold",
+    paddingTop: 15,
+    paddingLeft: 5,
+  },
+  forgotText: {
+    color: "white",
+    marginLeft: 150,
+    marginTop: 5,
   },
 });
 
