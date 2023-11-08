@@ -1,26 +1,8 @@
 import React, { useContext } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 import { Card } from "react-native-elements";
 import axios from "axios";
 import { UserContext } from "./global/UserContext";
-
-// const bookings = [
-//   { id: "1", date: "2023-10-23", time: "2:00 PM", location: "Room 212 Odette" },
-//   {
-//     id: "2",
-//     date: "2023-10-24",
-//     time: "10:00 AM",
-//     location: "Room 200 Leddy Main",
-//   },
-//   { id: "3", date: "2023-10-24", time: "4:00 PM", location: "Room 100 Eng" },
-//   { id: "4", date: "2023-10-25", time: "7:00 PM", location: "Room 32 Law" },
-//   {
-//     id: "5",
-//     date: "2023-10-26",
-//     time: "5:00 PM",
-//     location: "Room B 312 Leddy West",
-//   },
-// ];
 
 const UpcomingBookings = () => {
   const { bookings, setBookings } = useContext(UserContext);
@@ -28,12 +10,14 @@ const UpcomingBookings = () => {
     <View style={{ height: "70%", marginTop: "16%" }}>
       <Text
         style={{
-          fontSize: 18,
+          fontSize: 20,
           color: "white",
           fontWeight: "700",
           height: "15%",
           paddingLeft: 20,
-          /*fontWeight: 'bold',*/ marginLeft: 10,
+          fontFamily: "Avenir",
+          fontWeight: "bold",
+          marginLeft: 10,
         }}
       >
         Upcoming Bookings
@@ -59,10 +43,14 @@ const UpcomingBookings = () => {
                 shadowRadius: 2.99,
               }}
             >
-              <Card.Title>{booking.dateText}</Card.Title>
+              <Card.Title style={styles.dateText}>
+                {booking.dateText}
+              </Card.Title>
               <Card.Divider />
-              <Text>Time: {booking.time}</Text>
-              <Text>Location: {booking.location}</Text>
+              <Text style={styles.detailsText}>Time: {booking.time}</Text>
+              <Text style={styles.detailsText}>
+                Location: {booking.location}
+              </Text>
             </Card>
           </View>
         ))}
@@ -72,3 +60,17 @@ const UpcomingBookings = () => {
 };
 
 export default UpcomingBookings;
+
+const styles = StyleSheet.create({
+  dateText: {
+    color: "#3399ff",
+    fontWeight: "bold",
+    fontFamily: "Avenir",
+    fontSize: 16,
+  },
+  detailsText: {
+    color: "#999999",
+    fontFamily: "Avenir",
+    fontWeight: "300",
+  },
+});
