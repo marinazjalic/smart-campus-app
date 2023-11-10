@@ -13,7 +13,7 @@ const imageHeight = 0.7 * tabHeight;
 //const imageSource = require("./assets/test2.png"); // Replace with your image path
 const imageSource = require("./assets/pic9.png");
 
-export default function CampusMap({ selectedBuilding, onBuildingPress }) {
+export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 
   const [isCEISelected, setIsCEISelected] = useState(false);
   const [isOdetteSelected, setIsOdetteSelected] = useState(false);
@@ -24,8 +24,9 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
   
   const handleBuildingPress = (buildingName) => {
     
-    selectedBuilding={buildingName};
-    //onBuildingPress(buildingName);
+    //selectedBuilding={buildingName};
+    onBuildingPress(buildingName);
+    
     /*
     if(buildingName === "CEI"){
       setIsCEISelected(!(isCEISelected))
@@ -51,7 +52,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
   
 
     // Do anything else you need with the selected building name.
-    // For example, send it to a backend or store it
+    // For example, send it to a backe`nd or store it
   };
 
   return (
@@ -84,7 +85,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
           
         ]}
         onPress={() => {
-          handleBuildingPress("Leddy");
+          handleBuildingPress('Leddy');
         }}
       >
         <Text style={{color:'white'}}>Leddy</Text>

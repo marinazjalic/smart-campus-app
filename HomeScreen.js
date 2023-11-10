@@ -56,14 +56,13 @@ const HomeScreen = ({ navigation, route }) => {
   const {
     selectedDate,
     setSelectedDate,
-    selectedBuilding,
-    setSelectedBuilding,
   } = useAppContext();
   const [index, setIndex] = useState(0);
   const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [startTime, setStartTime] = useState(null); // State to store the selected date
   const [endTime, setEndTime] = useState(null);
+  const [selectedBuilding, setSelectedBuilding] = useState('');
   const [selectedDates, setSelectedDates] = useState({});
   const [text, setText] = useState("");
   const [roomCapacity, setRoomCapacity] = useState("");
@@ -206,8 +205,9 @@ const HomeScreen = ({ navigation, route }) => {
     { key: "location", title: "Location" },
   ]);
 
-  const handleBuildingPress = (buildingName) => {
+  const handleBuildingPress1 = (buildingName) => {
     setSelectedBuilding(buildingName);
+    console.log("a: Selected building is ", buildingName);
   };
 
   function Filter() {
@@ -337,9 +337,12 @@ const HomeScreen = ({ navigation, route }) => {
           >
             <CampusMap1
               //onBuildingPress={setSelectedBuilding}
-              setSelectedBuilding={selectedBuilding}
-              onBuildingPress={setSelectedBuilding}
-            ></CampusMap1>
+              selectedBuilding={selectedBuilding}
+              //onBuildingPress={setSelectedBuilding}
+              onBuildingPress={handleBuildingPress1}
+            >
+
+            </CampusMap1>
             {/**/}
           </View>
         );
