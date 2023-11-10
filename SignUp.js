@@ -8,6 +8,7 @@ import {
   Button,
   StyleSheet,
   Keyboard,
+  Alert,
 } from "react-native";
 import Navigation from "./Navigation";
 import { useState } from "react";
@@ -19,6 +20,8 @@ import { LinearGradient } from "expo-linear-gradient";
 export default function SignUp({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
 
   const handleSignUp = () => {
     checkIfUserIsAvail();
@@ -26,8 +29,24 @@ export default function SignUp({ navigation }) {
     // navigation.popToTop();
   };
 
+  const resetSelections = () => {
+    setUsername("");
+    setPassword("")
+
+  }
   const handleReturnToLogin = () => {
+    if(password === confirmPassword){
     navigation.navigate("Login");
+    resetSelections();
+  } else {
+    Alert.alert("Passwords do not match.", [
+      {
+      text: 'OK',
+      style: 'cancel',
+      }
+    ]);
+
+  }
   };
 
   /* checks if username is available during sign up and creates a new user if available.
@@ -100,8 +119,8 @@ export default function SignUp({ navigation }) {
             placeholder="Confirm password"
             placeholderTextColor={"white"}
             secureTextEntry={true} // Mask the input for passwords
-            value={password}
-            onChangeText={(text) => setPassword(text)}
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
             style={styles.pwInput}
           />
         </View>

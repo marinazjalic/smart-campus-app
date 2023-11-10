@@ -56,11 +56,17 @@ function Login({ navigation }) {
   const bookings_arr = [];
   let booking_id = 0;
 
+  const resetSelections = () => {
+    setUsername("");
+    setPassword("");
+  }
+
   const handleLogin = () => {
     validateCredentials();
     Keyboard.dismiss();
     // console.log("Navigating with username:", username);
     // navigation.navigate("Home", { username });
+    // resetSelections();  //this is to make the username/psswd blank after u login
   };
 
   const validateCredentials = () => {

@@ -13,14 +13,18 @@ const imageHeight = 0.7 * tabHeight;
 //const imageSource = require("./assets/test2.png"); // Replace with your image path
 const imageSource = require("./assets/pic9.png");
 
-export default function CampusMap({ selectedBuilding, onBuildingPress }) {
+export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 
   const [isCEISelected, setIsCEISelected] = useState(false);
   const [isOdetteSelected, setIsOdetteSelected] = useState(false);
   const [isLawSelected, setIsLawSelected] = useState(false);
   const [isLeddySelected, setIsLeddySelected] = useState(false);
 
+
+  
   const handleBuildingPress = (buildingName) => {
+    
+    //selectedBuilding={buildingName};
     onBuildingPress(buildingName);
     
     /*
@@ -45,9 +49,10 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
       "Type:",
       typeof selectedBuilding
     );
+  
 
     // Do anything else you need with the selected building name.
-    // For example, send it to a backend or store it
+    // For example, send it to a backe`nd or store it
   };
 
   return (
@@ -55,6 +60,10 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
       style={{ width: screenWidth, height: imageHeight, position: "relative" }}
     >
       <Image source={imageSource} style={{ width: "100%", height: "90%" }} />
+      <View style={ styles.textContainer}>
+        <Text style= {{bottom: "20%", left: "10%", color: 'grey', fontSize:12, position: 'absolute' }}>Building: {selectedBuilding}</Text>
+
+      </View>
 
       <TouchableOpacity
         style={[
@@ -76,7 +85,7 @@ export default function CampusMap({ selectedBuilding, onBuildingPress }) {
           
         ]}
         onPress={() => {
-          handleBuildingPress("Leddy");
+          handleBuildingPress('Leddy');
         }}
       >
         <Text style={{color:'white'}}>Leddy</Text>
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
   CEIButton: {
     width: "15%", // Example value, replace with calculated percentage for building "Leddy"
     height: "16%", // Example value
-    top: "68%", // Example value
+    top: "67.5%", // Example value
     left: "77%", // Example value
     position: "absolute",
     borderRadius:10,
@@ -201,7 +210,7 @@ const styles = StyleSheet.create({
   CEIButtonSelect: {
     width: "15%", // Example value, replace with calculated percentage for building "Leddy"
     height: "16%", // Example value
-    top: "68%", // Example value
+    top: "67.5%", // Example value
     left: "77%", // Example value
     position: "absolute",
     borderRadius:10,
@@ -288,7 +297,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: "transparent",
     borderWidth: 1,
-  }
+  },
+  textContainer: {
+    position: 'absolute', // Position the text container absolutely
+    top: 0, // Align to the top of the container
+    left: 0, // Align to the left of the container
+    right: 0, // Align to the right of the container
+    bottom: 0, // Align to the bottom of the container
+    justifyContent: 'center', // Center the text vertically
+    alignItems: 'center', // Center the text horizontally
+  },
 
 
 })
