@@ -20,6 +20,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import 
 import CampusMap1 from "./CampusMap1";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
+import Svg, { Path } from 'react-native-svg';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogoutScreen from "./Logout";
@@ -27,6 +28,7 @@ import UpcomingBookings from "./UpcomingBookings";
 import AIRooomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
 import Login from "./Login";
+import Dialog from 'react-native-dialog';
 import { useAppContext } from "./AppContext";
 import { UserContext } from "./global/UserContext";
 // import LinearGradient from "react-native-linear-gradient";
@@ -66,6 +68,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
   const [roomCapacity, setRoomCapacity] = useState("");
   const inputRef = useRef(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [markedDates, setMarkedDates] = useState({});
 
@@ -90,6 +93,42 @@ const HomeScreen = ({ navigation, route }) => {
     setIsAccessibleSelected(false);
   };
 
+  const handleCancel = () => {
+    setDialogVisible(false);
+  };
+
+  const getInitialTime = () => {
+    const now = new Date();
+    now.setHours(12, 30); // Set to 4:30 AM
+    return now;
+  };
+
+
+  const handleOk = () => {
+    // Ensure the input is treated as a number
+    const numCapacity = parseInt(roomCapacity, 10);
+  
+    // Log the input for debugging purposes
+    console.log('Input capacity:', roomCapacity);
+    console.log('Parsed capacity:', numCapacity);
+  
+    // Validate the number after parsing
+    if (numCapacity >= 1 && numCapacity <= 8) {
+      // The capacity is valid
+      console.log('Selected capacity:', numCapacity);
+      // Close the dialog
+      setDialogVisible(false);
+    } else {
+      // If the input is invalid, log and inform the user
+      console.warn('Invalid capacity value:', numCapacity);
+      // You may want to set an error message in the state and display it to the user
+    }
+  
+    // Reset the capacity after closing the dialog
+    setRoomCapacity('');
+    console.log('Input capacity: ', roomCapacity);
+    console.log('Parsed capacity: ', numCapacity);
+  };
   // const handleRefresh = () => {
   //   HomeScreen.forceUpdate();
   // };
@@ -167,9 +206,29 @@ const HomeScreen = ({ navigation, route }) => {
     { key: "location", title: "Location" },
   ]);
 
-  const handleBuildingPress = () => {
-    alert(`Selected: ${buildingName}`);
+  const handleBuildingPress = (buildingName) => {
+    setSelectedBuilding(buildingName);
   };
+
+  function Filter() {
+    return (
+      <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="35"
+      height="50"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <Path
+        fill="silver"
+        fillRule="evenodd"
+        d="M9.907 4a48.047 48.047 0 00.186 0c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V7h8a1 1 0 110 2h-8v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C7 9.824 7 9.462 7 9.093V9H5a1 1 0 010-2h2v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768C9.176 4 9.538 4 9.907 4zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354.834.834 0 00-.012.128C9 6.61 9 6.759 9 7v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.02.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C11 9.39 11 9.241 11 9V7c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128m-1.484-.366C9.61 6 9.759 6 10 6l-.501.005zM10 6c.242 0 .39 0 .501.005L10 6zm.501.005c.094.005.125.011.128.012l-.128-.012zm.129.012zM15.907 12h.186c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V15h2a1 1 0 110 2h-2v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C13 17.824 13 17.462 13 17.093V17H5a1 1 0 110-2h8v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768c.323-.086.685-.086 1.054-.085zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354c.001-.004-.007.021-.012.128C15 14.61 15 14.759 15 15v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.021.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C17 17.39 17 17.241 17 17v-2c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128a.5.5 0 00-.354-.354c.004.001-.021-.007-.128-.012C16.39 14 16.241 14 16 14c-.242 0-.39 0-.501.005z"
+        clipRule="evenodd"
+      ></Path>
+      
+    </Svg>
+    );
+  }
 
   const today = new Date();
   const maxDate = new Date();
@@ -272,11 +331,12 @@ const HomeScreen = ({ navigation, route }) => {
               height: "80%",
               flex: 1,
               margin: 0,
-              backgroundColor: "red",
+              backgroundColor: "white",
               padding: 0,
             }}
           >
             <CampusMap1
+              //onBuildingPress={setSelectedBuilding}
               setSelectedBuilding={selectedBuilding}
               onBuildingPress={setSelectedBuilding}
             ></CampusMap1>
@@ -380,12 +440,16 @@ const HomeScreen = ({ navigation, route }) => {
     // console.log("Selected Day:", day); // Log the entire day object
     if (day && day.dateString) {
       //console.log("Selected Date String:", day.dateString);  // Log the dateString
-      setSelectedDate(day.dateString); // This should be a string
+      const newStyle = { selected: true, selectedColor: '#0059b3' };
+      setSelectedDate(day.dateString);
+      setSelectedDates({ [day.dateString]: newStyle });
+      //setSelectedDate(day.dateString); // This should be a string
       setSelectedBuilding(" ");
+      
     } else {
       console.error("Invalid day object received:", day);
     }
-    // ... rest of your code
+    
   };
 
   /* return array of room objects that match the criteria provided */
@@ -595,7 +659,7 @@ const HomeScreen = ({ navigation, route }) => {
           }
         </View>
         {/* </LinearGradient> */}
-        <View style={{ flex: 6.5 }}>
+        <View style={{ flex: 6.5, backgroundColor: 'white' }}>
           <TabView //this is the tab for 'Date' and 'Location'
             navigationState={{ index, routes }}
             renderScene={renderScene}
@@ -604,21 +668,14 @@ const HomeScreen = ({ navigation, route }) => {
             style={{ flex: 1 }} // Fixed height
           />
 
-          <View
-            style={{
-              backgroundColor: "white",
-              alignItems: "center",
-              height: "30%",
-              marginBottom: -33,
-            }}
-          >
+          
             {isDateTabActive && (
               <View style={styles.card}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    // alignItems: "center",
+                    alignItems: "center",
                   }}
                 >
                   <TouchableOpacity
@@ -725,9 +782,9 @@ const HomeScreen = ({ navigation, route }) => {
                 </View>
               </View>
             )}
-          </View>
+          
 
-          <View></View>
+          
 
           <DateTimePickerModal
             isVisible={isStartTimePickerVisible}
@@ -735,6 +792,7 @@ const HomeScreen = ({ navigation, route }) => {
             minuteInterval={30}
             onConfirm={handleTimePicked}
             onCancel={hideStartTimePicker} //will hide time picker if you press cancel
+            date={getInitialTime()}
           />
           <DateTimePickerModal
             isVisible={isEndTimePickerVisible}
@@ -742,33 +800,38 @@ const HomeScreen = ({ navigation, route }) => {
             minuteInterval={30}
             onConfirm={handleEndTimePicked}
             onCancel={hideEndTimePicker} //will hide time picker if you press cancel
+            date={getInitialTime()}
           />
 
+          
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
           >
-            <View style={{ backgroundColor: "#FF7F50" }}>
+           <View>
               {isLocationTabActive && (
                 <View
                   style={{
                     justifyContent: "space-between",
                     backgroundColor: "white",
-                    marginBottom: -20,
-                    marginTop: -120,
+                    //flex:0.227,
+                    marginBottom: '-111%',
+                    //marginTop: "1%",
                   }}
                 >
                   <View
-                    style={{ paddingLeft: 10, marginTop: 0 }}
+                    style={{ paddingLeft: 0, marginTop: 0, alignItems:'center'}}
                     onPress={() => inputRef.current.focus()}
                   >
                     <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginBottom: -5,
-                      }}
+                      style={styles.card2}
                     >
+                      <View style={{flexDirection:'column'}}>
+                      
+                        <View style={{flexDirection:'row', justifyContent:'space-around'}}>
+                          
+                          <Filter style={{marginTop:30}} 
+                            />
                       <TouchableOpacity
                         style={[
                           styles.filterButton,
@@ -792,32 +855,31 @@ const HomeScreen = ({ navigation, route }) => {
                       >
                         <Text style={{ fontSize: 12 }}>Accessible</Text>
                       </TouchableOpacity>
+                      
+                      <TouchableOpacity 
+                      style={styles.filterButton} 
+                        onPress={() => setDialogVisible(true)}>
+                        <Text style={{ fontSize:12, justifyContent:'center' }}>Capacity</Text>
+                      </TouchableOpacity>
 
-                      <TextInput //this is for the capacity thing
-                        ref={inputRef}
-                        value={roomCapacity}
-                        onChangeText={handleInputChange}
-                        keyboardType="numeric"
-                        placeholder="Capacity (1-8 ppl)"
-                        style={{
-                          borderWidth: 1,
-                          textAlign: "center",
-                          padding: 5,
-                          marginBottom: 16,
-                          borderColor: "transparent",
-                          borderBottomColor: "#ccc",
-                          width: "40%",
-                        }}
-                      />
-
-                      {showError && (
-                        <Text style={{ color: "red", marginTop: 8 }}>
-                          Enter a number between 1-8.
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
+                      <Dialog.Container visible={dialogVisible}>
+                        <Dialog.Title>Room Capacity</Dialog.Title>
+                        <Dialog.Description>
+                         Enter the room capacity (1-8).
+                        </Dialog.Description>
+                        <Dialog.Input
+                          keyboardType="numeric"
+                          onChangeText={(text) => setRoomCapacity(text)}
+                          value={roomCapacity}
+                        />
+                        <Dialog.Button label="Cancel" onPress={handleCancel} />
+                        <Dialog.Button label="OK" onPress={handleOk} />
+                      </Dialog.Container>
+                      </View>
+                      
+                    
+                  
+                  
                   <View
                     style={{
                       height: 70,
@@ -825,27 +887,19 @@ const HomeScreen = ({ navigation, route }) => {
                       position: "relative",
                       marginLeft: 10,
                       justifyContent: "space-between",
-                      //alignItems: "center",
+                      alignItems: "center",
                       backgroundColor: "white",
                     }}
                   >
                     {startTime && selectedDate && endTime && (
+                      
                       <>
-                        <View
-                          style={{
-                            justifyContent: "center",
-                            position: "absolute",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            marginBottom: 0,
-                            marginTop: 0,
-                          }}
-                        >
+                        
                           <TouchableOpacity
                             style={{
                               padding: 15,
                               marginTop: 0,
-                              //marginBottom: 4,
+                              marginBottom: 0,
                               backgroundColor: "#3E92CC",
                               borderRadius: 10,
                             }}
@@ -889,23 +943,18 @@ const HomeScreen = ({ navigation, route }) => {
                               Find Room
                             </Text>
                           </TouchableOpacity>
-
-                          <Text style={{ marginRight: 16 }}>
-                            Start Time: {startTime}
-                          </Text>
-                          <Text style={{ marginRight: 16 }}>
-                            Start Time: {endTime}
-                          </Text>
-                          <Text style={{ marginRight: 16 }}>
-                            Selected Building: {selectedBuilding}{" "}
-                          </Text>
-                        </View>
+                        
                       </>
+                      
                     )}
+                    </View>
+                    </View>
+                    </View>
                   </View>
                 </View>
               )}
-            </View>
+              </View>
+            
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -926,12 +975,13 @@ const styles = StyleSheet.create({
     width: "95%",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft:'3%',
     padding: 30,
-    marginBottom: 10,
+    //marginBottom: 10,
     borderRadius: 20, // Adjust for desired corner radius
     backgroundColor: "white",
     shadowColor: "#000",
-    height: "70%",
+    height: "25%",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -950,17 +1000,44 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     padding: 10,
+    justifyContent:'center',
+    //width:'27%',
+    marginLeft:20,
+    justifyContent:"space-around",
     borderWidth: 1,
-    marginBottom: 15,
+    marginTop:5,
+    marginBottom: 10,
     borderRadius: 10,
     borderColor: "#ccc",
   },
   selectedButton: {
-    backgroundColor: "#CE8D66",
+    backgroundColor: "#99ccff",
+    borderColor:'transparent',
   },
   gradientButton: {
     padding: 10,
     borderRadius: 10,
     height: "100%",
+  },
+  card2: {
+    width: "95%",
+    //justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    //padding: 2,
+    marginBottom: 0,
+    borderRadius: 20, // Adjust for desired corner radius
+    backgroundColor: "white",
+    shadowColor: "#000",
+    height: "60%",
+    
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    // shadowRadius: 2.99,
+    elevation: 1,
   },
 });
