@@ -97,8 +97,10 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   const getInitialTime = () => {
+    if(startTime ===null){}
     const now = new Date();
     now.setHours(12, 30); // Set to 4:30 AM
+
     return now;
   };
 
@@ -401,29 +403,36 @@ const HomeScreen = ({ navigation, route }) => {
   }, [endTime]);
 
   const handleTimePicked = (time) => {
-    console.log(time);
+    //console.log(time);
+    //console.log("Start time selected: ", startTime);
     if (time instanceof Date) {
       // console.log("Start Time:", time);
       const timeString = time.toLocaleTimeString();
 
       setStartTime(timeString);
+      hideStartTimePicker();
+      console.log("Start time selected: ", timeString);
+
     } else {
       console.error("Invalid time received:", time);
     }
-    hideStartTimePicker();
+    //hideStartTimePicker();
+    //console.log("Start time selected: ", timeString);
+
   };
 
   const handleEndTimePicked = (time) => {
-    // console.log("End Time:", time); // Log the entire time object
+    //console.log("End Time:", endTime); // Log the entire time object
     if (time instanceof Date) {
-      const timeString = time.toLocaleTimeString();
+      const timeEndString = time.toLocaleTimeString();
       // console.log("Selected end Time String:", timeString); // Log the time string
-      setEndTime(timeString); // This should be a string
-      //console.log('Selected Time:', selectedTime, 'Type:', typeof selectedTime);
+      setEndTime(timeEndString); // This should be a string
+      hideEndTimePicker();
+      console.log("End time picked: ", timeEndString);
     } else {
       console.error("Invalid time received:", time);
     }
-    hideEndTimePicker();
+    
   };
 
   useEffect(() => {
@@ -447,7 +456,7 @@ const HomeScreen = ({ navigation, route }) => {
       setSelectedDate(day.dateString);
       setSelectedDates({ [day.dateString]: newStyle });
       //setSelectedDate(day.dateString); // This should be a string
-      setSelectedBuilding(" ");
+      //setSelectedBuilding(" ");
       
     } else {
       console.error("Invalid day object received:", day);
@@ -894,7 +903,7 @@ const HomeScreen = ({ navigation, route }) => {
                       backgroundColor: "white",
                     }}
                   >
-                    {startTime && selectedDate && endTime && (
+                    {startTime && selectedDate && endTime && selectedBuilding && (
                       
                       <>
                         
