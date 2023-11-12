@@ -9,7 +9,7 @@ import AIRooomFinder from "./AIRoomFinder";
 import HomeScreen from "./HomeScreen";
 import App from "./App";
 import { LinearGradient } from "expo-linear-gradient";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from "react-native-svg";
 
 //const Stack1 = createStackNavigator();
 
@@ -29,15 +29,17 @@ function Confirmation({ navigation }) {
 
   function Success() {
     return (
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="70"
-        height="70"
-        viewBox="0 0 32 32"
-        fill='#0073e6'
-      >
-        <Path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm7.258 9.307l-9.486 9.485a.61.61 0 01-.861 0l-.191-.191-.001.001L7.5 16.346a.61.61 0 010-.862l1.294-1.293a.61.61 0 01.862 0l3.689 3.716 7.756-7.756a.61.61 0 01.862 0l1.294 1.294a.609.609 0 01.001.862z"></Path>
-      </Svg>
+      <View style={{ backgroundColor: "" }}>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100"
+          height="100"
+          viewBox="0 0 32 32"
+          fill="#0099ff"
+        >
+          <Path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm7.258 9.307l-9.486 9.485a.61.61 0 01-.861 0l-.191-.191-.001.001L7.5 16.346a.61.61 0 010-.862l1.294-1.293a.61.61 0 01.862 0l3.689 3.716 7.756-7.756a.61.61 0 01.862 0l1.294 1.294a.609.609 0 01.001.862z"></Path>
+        </Svg>
+      </View>
     );
   }
 
@@ -52,10 +54,16 @@ function Confirmation({ navigation }) {
       }}
     >
       <View style={styles.topContainer}>
-        <View style={{ justifyContent:'center', alignItems:'center', marginTop:'20%'}}>
-        <Success />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10%",
+          }}
+        >
+          <Success />
         </View>
-      
+
         <Text style={styles.confirmedText}>Booking Confirmed</Text>
       </View>
       <View style={styles.divider}></View>

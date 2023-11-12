@@ -20,7 +20,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import 
 import CampusMap1 from "./CampusMap1";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from "react-native-svg";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogoutScreen from "./Logout";
@@ -28,7 +28,7 @@ import UpcomingBookings from "./UpcomingBookings";
 import AIRooomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
 import Login from "./Login";
-import Dialog from 'react-native-dialog';
+import Dialog from "react-native-dialog";
 import { useAppContext } from "./AppContext";
 import { UserContext } from "./global/UserContext";
 // import LinearGradient from "react-native-linear-gradient";
@@ -53,16 +53,13 @@ const HomeScreen = ({ navigation, route }) => {
   const username = route.params?.username;
 
   //startTime = selectedTime
-  const {
-    selectedDate,
-    setSelectedDate,
-  } = useAppContext();
+  const { selectedDate, setSelectedDate } = useAppContext();
   const [index, setIndex] = useState(0);
   const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
   const [startTime, setStartTime] = useState(null); // State to store the selected date
   const [endTime, setEndTime] = useState(null);
-  const [selectedBuilding, setSelectedBuilding] = useState('');
+  const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedDates, setSelectedDates] = useState({});
   const [text, setText] = useState("");
   const [roomCapacity, setRoomCapacity] = useState("");
@@ -102,31 +99,30 @@ const HomeScreen = ({ navigation, route }) => {
     return now;
   };
 
-
   const handleOk = () => {
     // Ensure the input is treated as a number
     const numCapacity = parseInt(roomCapacity, 10);
-  
+
     // Log the input for debugging purposes
-    console.log('Input capacity:', roomCapacity);
-    console.log('Parsed capacity:', numCapacity);
-  
+    console.log("Input capacity:", roomCapacity);
+    console.log("Parsed capacity:", numCapacity);
+
     // Validate the number after parsing
     if (numCapacity >= 1 && numCapacity <= 8) {
       // The capacity is valid
-      console.log('Selected capacity:', numCapacity);
+      console.log("Selected capacity:", numCapacity);
       // Close the dialog
       setDialogVisible(false);
     } else {
       // If the input is invalid, log and inform the user
-      console.warn('Invalid capacity value:', numCapacity);
+      console.warn("Invalid capacity value:", numCapacity);
       // You may want to set an error message in the state and display it to the user
     }
-  
+
     // Reset the capacity after closing the dialog
-    setRoomCapacity('');
-    console.log('Input capacity: ', roomCapacity);
-    console.log('Parsed capacity: ', numCapacity);
+    setRoomCapacity("");
+    console.log("Input capacity: ", roomCapacity);
+    console.log("Parsed capacity: ", numCapacity);
   };
   // const handleRefresh = () => {
   //   HomeScreen.forceUpdate();
@@ -212,21 +208,22 @@ const HomeScreen = ({ navigation, route }) => {
 
   function Filter() {
     return (
-      <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="35"
-      height="50"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <Path
-        fill="silver"
-        fillRule="evenodd"
-        d="M9.907 4a48.047 48.047 0 00.186 0c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V7h8a1 1 0 110 2h-8v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C7 9.824 7 9.462 7 9.093V9H5a1 1 0 010-2h2v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768C9.176 4 9.538 4 9.907 4zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354.834.834 0 00-.012.128C9 6.61 9 6.759 9 7v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.02.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C11 9.39 11 9.241 11 9V7c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128m-1.484-.366C9.61 6 9.759 6 10 6l-.501.005zM10 6c.242 0 .39 0 .501.005L10 6zm.501.005c.094.005.125.011.128.012l-.128-.012zm.129.012zM15.907 12h.186c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V15h2a1 1 0 110 2h-2v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C13 17.824 13 17.462 13 17.093V17H5a1 1 0 110-2h8v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768c.323-.086.685-.086 1.054-.085zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354c.001-.004-.007.021-.012.128C15 14.61 15 14.759 15 15v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.021.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C17 17.39 17 17.241 17 17v-2c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128a.5.5 0 00-.354-.354c.004.001-.021-.007-.128-.012C16.39 14 16.241 14 16 14c-.242 0-.39 0-.501.005z"
-        clipRule="evenodd"
-      ></Path>
-      
-    </Svg>
+      <View style={{ marginTop: 18 }}>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="40"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <Path
+            fill="silver"
+            fillRule="evenodd"
+            d="M9.907 4a48.047 48.047 0 00.186 0c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V7h8a1 1 0 110 2h-8v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C7 9.824 7 9.462 7 9.093V9H5a1 1 0 010-2h2v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768C9.176 4 9.538 4 9.907 4zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354.834.834 0 00-.012.128C9 6.61 9 6.759 9 7v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.02.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C11 9.39 11 9.241 11 9V7c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128m-1.484-.366C9.61 6 9.759 6 10 6l-.501.005zM10 6c.242 0 .39 0 .501.005L10 6zm.501.005c.094.005.125.011.128.012l-.128-.012zm.129.012zM15.907 12h.186c.369 0 .731-.001 1.054.085a2.5 2.5 0 011.768 1.768c.086.323.086.685.085 1.054V15h2a1 1 0 110 2h-2v.093c0 .369.001.731-.085 1.054a2.5 2.5 0 01-1.768 1.768c-.323.086-.685.086-1.054.085h-.186c-.369 0-.731.001-1.054-.085a2.5 2.5 0 01-1.768-1.768C13 17.824 13 17.462 13 17.093V17H5a1 1 0 110-2h8v-.093c0-.369-.001-.731.085-1.054a2.5 2.5 0 011.768-1.768c.323-.086.685-.086 1.054-.085zm-.408 2.005c-.107.005-.132.013-.128.012a.5.5 0 00-.354.354c.001-.004-.007.021-.012.128C15 14.61 15 14.759 15 15v2c0 .242 0 .39.005.501.005.107.013.132.012.128a.5.5 0 00.354.354c-.004-.001.021.007.128.012.112.005.26.005.501.005.242 0 .39 0 .501-.005.107-.005.132-.013.128-.012a.5.5 0 00.354-.354c-.001.004.007-.02.012-.128C17 17.39 17 17.241 17 17v-2c0-.242 0-.39-.005-.501-.005-.107-.013-.132-.012-.128a.5.5 0 00-.354-.354c.004.001-.021-.007-.128-.012C16.39 14 16.241 14 16 14c-.242 0-.39 0-.501.005z"
+            clipRule="evenodd"
+          ></Path>
+        </Svg>
+      </View>
     );
   }
 
@@ -340,9 +337,7 @@ const HomeScreen = ({ navigation, route }) => {
               selectedBuilding={selectedBuilding}
               //onBuildingPress={setSelectedBuilding}
               onBuildingPress={handleBuildingPress1}
-            >
-
-            </CampusMap1>
+            ></CampusMap1>
             {/**/}
           </View>
         );
@@ -407,6 +402,8 @@ const HomeScreen = ({ navigation, route }) => {
       const timeString = time.toLocaleTimeString();
 
       setStartTime(timeString);
+      console.log("start time");
+      console.log(startTime);
     } else {
       console.error("Invalid time received:", time);
     }
@@ -417,9 +414,10 @@ const HomeScreen = ({ navigation, route }) => {
     // console.log("End Time:", time); // Log the entire time object
     if (time instanceof Date) {
       const timeString = time.toLocaleTimeString();
-      // console.log("Selected end Time String:", timeString); // Log the time string
       setEndTime(timeString); // This should be a string
-      //console.log('Selected Time:', selectedTime, 'Type:', typeof selectedTime);
+
+      console.log("EMD time");
+      console.log(endTime);
     } else {
       console.error("Invalid time received:", time);
     }
@@ -443,16 +441,14 @@ const HomeScreen = ({ navigation, route }) => {
     // console.log("Selected Day:", day); // Log the entire day object
     if (day && day.dateString) {
       //console.log("Selected Date String:", day.dateString);  // Log the dateString
-      const newStyle = { selected: true, selectedColor: '#0059b3' };
+      const newStyle = { selected: true, selectedColor: "#0099ff" };
       setSelectedDate(day.dateString);
       setSelectedDates({ [day.dateString]: newStyle });
       //setSelectedDate(day.dateString); // This should be a string
       setSelectedBuilding(" ");
-      
     } else {
       console.error("Invalid day object received:", day);
     }
-    
   };
 
   /* return array of room objects that match the criteria provided */
@@ -662,7 +658,14 @@ const HomeScreen = ({ navigation, route }) => {
           }
         </View>
         {/* </LinearGradient> */}
-        <View style={{ flex: 6.5, backgroundColor: 'white' }}>
+        <View
+          style={{
+            flex: 6.5,
+            backgroundColor: "white",
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
+          }}
+        >
           <TabView //this is the tab for 'Date' and 'Location'
             navigationState={{ index, routes }}
             renderScene={renderScene}
@@ -671,123 +674,119 @@ const HomeScreen = ({ navigation, route }) => {
             style={{ flex: 1 }} // Fixed height
           />
 
-          
-            {isDateTabActive && (
-              <View style={styles.card}>
-                <View
+          {isDateTabActive && (
+            <View style={styles.card}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    // padding: 16,
+                    marginTop: 6,
+                    // marginRight: 2,
+                    // marginBottom: 1,
+                    // backgroundColor: "#3E92CC",
+                    borderRadius: 10,
+                    marginRight: 50,
+                    width: "40%",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 1,
+                      height: 2,
+                    },
+                    height: "80%",
+                    shadowOpacity: 0.23,
                   }}
+                  onPress={setStartTimePickerVisible}
                 >
-                  <TouchableOpacity
-                    style={{
-                      // padding: 16,
-                      marginTop: 6,
-                      // marginRight: 2,
-                      // marginBottom: 1,
-                      // backgroundColor: "#3E92CC",
-                      borderRadius: 10,
-                      marginRight: 50,
-                      width: "40%",
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 1,
-                        height: 2,
-                      },
-                      height: "80%",
-                      shadowOpacity: 0.23,
-                    }}
-                    onPress={setStartTimePickerVisible}
+                  <LinearGradient
+                    colors={["#3399ff", "#80bfff"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientButton}
+                    // #0059b3", "#99ccff"
                   >
-                    <LinearGradient
-                      colors={["#3399ff", "#80bfff"]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      style={styles.gradientButton}
-                      // #0059b3", "#99ccff"
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontFamily: "Avenir",
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
                     >
+                      Start Time
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    // padding: 16,
+                    marginTop: 6,
+                    // marginLeft: 2,
+                    // marginBottom: 1,
+                    backgroundColor: "#3E92CC",
+                    borderRadius: 10,
+                    width: "40%",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 1,
+                      height: 2,
+                    },
+                    height: "80%",
+                    shadowOpacity: 0.23,
+                  }}
+                  onPress={setEndTimePickerVisible}
+                >
+                  <LinearGradient
+                    colors={["#3399ff", "#80bfff"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientButton}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontFamily: "Avenir",
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      End Time
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/* {selectedDate &&
+                  startTime &&
+                  endTime && ( //if date and time are selected, show them both
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
+                        Start Time: {startTime}
+                      </Text>
+                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
+                        End Time: {endTime}
+                      </Text>
                       <Text
                         style={{
-                          color: "white",
-                          textAlign: "center",
-                          fontFamily: "Avenir",
-                          fontSize: 15,
-                          fontWeight: "bold",
+                          marginRight: 16,
+                          marginLeft: 4,
+                          marginBottom: 0,
                         }}
                       >
-                        Start Time
+                        Date: {selectedDate}{" "}
                       </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={{
-                      // padding: 16,
-                      marginTop: 6,
-                      // marginLeft: 2,
-                      // marginBottom: 1,
-                      backgroundColor: "#3E92CC",
-                      borderRadius: 10,
-                      width: "40%",
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 1,
-                        height: 2,
-                      },
-                      height: "80%",
-                      shadowOpacity: 0.23,
-                    }}
-                    onPress={setEndTimePickerVisible}
-                  >
-                    <LinearGradient
-                      colors={["#3399ff", "#80bfff"]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      style={styles.gradientButton}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          textAlign: "center",
-                          fontFamily: "Avenir",
-                          fontSize: 15,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        End Time
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-
-                  {selectedDate &&
-                    startTime &&
-                    endTime && ( //if date and time are selected, show them both
-                      <View style={{ alignItems: "center" }}>
-                        <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                          Start Time: {startTime}
-                        </Text>
-                        <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                          End Time: {endTime}
-                        </Text>
-                        <Text
-                          style={{
-                            marginRight: 16,
-                            marginLeft: 4,
-                            marginBottom: 0,
-                          }}
-                        >
-                          Date: {selectedDate}{" "}
-                        </Text>
-                      </View>
-                    )}
-                </View>
+                    </View>
+                  )} */}
               </View>
-            )}
-          
-
-          
+            </View>
+          )}
 
           <DateTimePickerModal
             isVisible={isStartTimePickerVisible}
@@ -806,158 +805,201 @@ const HomeScreen = ({ navigation, route }) => {
             date={getInitialTime()}
           />
 
-          
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
           >
-           <View>
+            <View>
               {isLocationTabActive && (
                 <View
                   style={{
                     justifyContent: "space-between",
                     backgroundColor: "white",
                     //flex:0.227,
-                    marginBottom: '-111%',
+                    marginBottom: "-111%",
                     //marginTop: "1%",
                   }}
                 >
                   <View
-                    style={{ paddingLeft: 0, marginTop: 0, alignItems:'center'}}
+                    style={{
+                      paddingLeft: 0,
+                      marginTop: 0,
+                      alignItems: "center",
+                    }}
                     onPress={() => inputRef.current.focus()}
                   >
-                    <View
-                      style={styles.card2}
-                    >
-                      <View style={{flexDirection:'column'}}>
-                      
-                        <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-                          
-                          <Filter style={{marginTop:30}} 
-                            />
-                      <TouchableOpacity
-                        style={[
-                          styles.filterButton,
-                          isWhiteboardSelected && styles.selectedButton,
-                        ]}
-                        onPress={() =>
-                          setIsWhiteboardSelected(!isWhiteboardSelected)
+                    <View style={styles.card2}>
+                      <View
+                        style={
+                          {
+                            // flexDirection: "column",
+                            // backgroundColor: "blue",
+                          }
                         }
                       >
-                        <Text style={{ fontSize: 12 }}>Whiteboard</Text>
-                      </TouchableOpacity>
-
-                      <TouchableOpacity
-                        style={[
-                          styles.filterButton,
-                          isAccessibleSelected && styles.selectedButton,
-                        ]}
-                        onPress={() =>
-                          setIsAccessibleSelected(!isAccessibleSelected)
-                        }
-                      >
-                        <Text style={{ fontSize: 12 }}>Accessible</Text>
-                      </TouchableOpacity>
-                      
-                      <TouchableOpacity 
-                      style={styles.filterButton} 
-                        onPress={() => setDialogVisible(true)}>
-                        <Text style={{ fontSize:12, justifyContent:'center' }}>Capacity</Text>
-                      </TouchableOpacity>
-
-                      <Dialog.Container visible={dialogVisible}>
-                        <Dialog.Title>Room Capacity</Dialog.Title>
-                        <Dialog.Description>
-                         Enter the room capacity (1-8).
-                        </Dialog.Description>
-                        <Dialog.Input
-                          keyboardType="numeric"
-                          onChangeText={(text) => setRoomCapacity(text)}
-                          value={roomCapacity}
-                        />
-                        <Dialog.Button label="Cancel" onPress={handleCancel} />
-                        <Dialog.Button label="OK" onPress={handleOk} />
-                      </Dialog.Container>
-                      </View>
-                      
-                    
-                  
-                  
-                  <View
-                    style={{
-                      height: 70,
-                      flexDirection: "column",
-                      position: "relative",
-                      marginLeft: 10,
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    {startTime && selectedDate && endTime && (
-                      
-                      <>
-                        
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            // backgroundColor: "red",
+                            marginTop: 20,
+                          }}
+                        >
+                          <Filter style={{ marginTop: 0 }} />
                           <TouchableOpacity
-                            style={{
-                              padding: 15,
-                              marginTop: 0,
-                              marginBottom: 0,
-                              backgroundColor: "#3E92CC",
-                              borderRadius: 10,
-                            }}
-                            onPress={() => {
-                              console.log("------------");
-                              console.log(
-                                "Selected start Time:",
-                                startTime,
-                                "Type:",
-                                typeof startTime
-                              );
-                              console.log(
-                                "Selected end Time:",
-                                endTime,
-                                "Type:",
-                                typeof endTime
-                              );
-                              console.log(
-                                "Selected Building:",
-                                selectedBuilding,
-                                "Type:",
-                                typeof selectedBuilding
-                              );
-                              console.log("Accesible is:", {
-                                isAccessibleSelected,
-                              });
-
-                              console.log(
-                                "Selected Date:",
-                                selectedDate,
-                                "Type:",
-                                typeof selectedDate
-                              );
-
-                              {
-                                handleFindRoomPress;
-                              }
-                            }}
+                            style={[
+                              styles.filterButton,
+                              isWhiteboardSelected && styles.selectedButton,
+                            ]}
+                            onPress={() =>
+                              setIsWhiteboardSelected(!isWhiteboardSelected)
+                            }
                           >
-                            <Text style={{ fontSize: 12, color: "white" }}>
-                              Find Room
+                            <Text style={{ fontSize: 12, color: "#999999" }}>
+                              Whiteboard
                             </Text>
                           </TouchableOpacity>
-                        
-                      </>
-                      
-                    )}
-                    </View>
-                    </View>
+
+                          <TouchableOpacity
+                            style={[
+                              styles.filterButton,
+                              isAccessibleSelected && styles.selectedButton,
+                            ]}
+                            onPress={() =>
+                              setIsAccessibleSelected(!isAccessibleSelected)
+                            }
+                          >
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                color: "#999999",
+                              }}
+                            >
+                              Accessible
+                            </Text>
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            style={styles.filterButton}
+                            onPress={() => setDialogVisible(true)}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                justifyContent: "center",
+                                color: "#999999",
+                              }}
+                            >
+                              Capacity
+                            </Text>
+                          </TouchableOpacity>
+
+                          <Dialog.Container visible={dialogVisible}>
+                            <Dialog.Title>Room Capacity</Dialog.Title>
+                            <Dialog.Description>
+                              Enter the room capacity (1-8).
+                            </Dialog.Description>
+                            <Dialog.Input
+                              keyboardType="numeric"
+                              onChangeText={(text) => setRoomCapacity(text)}
+                              value={roomCapacity}
+                            />
+                            <Dialog.Button
+                              label="Cancel"
+                              onPress={handleCancel}
+                            />
+                            <Dialog.Button label="OK" onPress={handleOk} />
+                          </Dialog.Container>
+                        </View>
+
+                        <View
+                          style={{
+                            height: 70,
+                            flexDirection: "column",
+                            position: "relative",
+                            marginLeft: 10,
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            // backgroundColor: "red",
+                          }}
+                        >
+                          {startTime && selectedDate && endTime && (
+                            <>
+                              <TouchableOpacity
+                                style={{
+                                  // padding: 15,
+                                  // marginTop: 0,
+                                  // marginBottom: 0,
+                                  backgroundColor: "#3E92CC",
+                                  borderRadius: 10,
+                                  height: "55%",
+                                  width: "50%",
+                                }}
+                                onPress={() => {
+                                  console.log("------------");
+                                  console.log(
+                                    "Selected start Time:",
+                                    startTime,
+                                    "Type:",
+                                    typeof startTime
+                                  );
+                                  console.log(
+                                    "Selected end Time:",
+                                    endTime,
+                                    "Type:",
+                                    typeof endTime
+                                  );
+                                  console.log(
+                                    "Selected Building:",
+                                    selectedBuilding,
+                                    "Type:",
+                                    typeof selectedBuilding
+                                  );
+                                  console.log("Accesible is:", {
+                                    isAccessibleSelected,
+                                  });
+
+                                  console.log(
+                                    "Selected Date:",
+                                    selectedDate,
+                                    "Type:",
+                                    typeof selectedDate
+                                  );
+
+                                  {
+                                    handleFindRoomPress;
+                                  }
+                                }}
+                              >
+                                <LinearGradient
+                                  colors={["#3399ff", "#80bfff"]}
+                                  start={{ x: 0, y: 0 }}
+                                  end={{ x: 1, y: 0 }}
+                                  style={styles.findRoomGradient}
+                                  // #0059b3", "#99ccff"
+                                >
+                                  <Text
+                                    style={{
+                                      fontSize: 15,
+                                      color: "white",
+                                      fontFamily: "Avenir",
+                                      textAlign: "center",
+                                      marginTop: "5%",
+                                    }}
+                                  >
+                                    Find Room
+                                  </Text>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            </>
+                          )}
+                        </View>
+                      </View>
                     </View>
                   </View>
                 </View>
               )}
-              </View>
-            
+            </View>
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -978,13 +1020,13 @@ const styles = StyleSheet.create({
     width: "95%",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft:'3%',
+    marginLeft: "3%",
     padding: 30,
-    //marginBottom: 10,
+    marginBottom: 10,
     borderRadius: 20, // Adjust for desired corner radius
     backgroundColor: "white",
     shadowColor: "#000",
-    height: "25%",
+    height: "22%",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -1003,19 +1045,20 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     padding: 10,
-    justifyContent:'center',
+    justifyContent: "center",
     //width:'27%',
-    marginLeft:20,
-    justifyContent:"space-around",
+    marginLeft: 20,
+    justifyContent: "space-around",
     borderWidth: 1,
-    marginTop:5,
+    marginTop: 20,
     marginBottom: 10,
     borderRadius: 10,
     borderColor: "#ccc",
+    // backgroundColor: "red",
   },
   selectedButton: {
     backgroundColor: "#99ccff",
-    borderColor:'transparent',
+    borderColor: "transparent",
   },
   gradientButton: {
     padding: 10,
@@ -1033,8 +1076,8 @@ const styles = StyleSheet.create({
     borderRadius: 20, // Adjust for desired corner radius
     backgroundColor: "white",
     shadowColor: "#000",
-    height: "60%",
-    
+    height: "59%",
+
     shadowOffset: {
       width: 1,
       height: 2,
@@ -1042,5 +1085,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     // shadowRadius: 2.99,
     elevation: 1,
+  },
+  findRoomGradient: {
+    // padding: 15,
+    // marginTop: 0,
+    // marginBottom: 0,
+    backgroundColor: "#3E92CC",
+    borderRadius: 10,
+    height: "100%",
+    width: "100%",
   },
 });

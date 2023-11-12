@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, Image, Dimensions } from "react-native";
-
-
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Image,
+  Dimensions,
+} from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -14,19 +19,15 @@ const imageHeight = 0.7 * tabHeight;
 const imageSource = require("./assets/pic9.png");
 
 export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
-
   const [isCEISelected, setIsCEISelected] = useState(false);
   const [isOdetteSelected, setIsOdetteSelected] = useState(false);
   const [isLawSelected, setIsLawSelected] = useState(false);
   const [isLeddySelected, setIsLeddySelected] = useState(false);
 
-
-  
   const handleBuildingPress = (buildingName) => {
-    
     //selectedBuilding={buildingName};
     onBuildingPress(buildingName);
-    
+
     /*
     if(buildingName === "CEI"){
       setIsCEISelected(!(isCEISelected))
@@ -42,14 +43,13 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 
     }
     */
-  
+
     console.log(
       "Selected Building:",
       selectedBuilding,
       "Type:",
       typeof selectedBuilding
     );
-  
 
     // Do anything else you need with the selected building name.
     // For example, send it to a backe`nd or store it
@@ -60,76 +60,74 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
       style={{ width: screenWidth, height: imageHeight, position: "relative" }}
     >
       <Image source={imageSource} style={{ width: "100%", height: "90%" }} />
-      <View style={ styles.textContainer}>
-        <Text style= {{bottom: "20%", left: "10%", color: 'grey', fontSize:12, position: 'absolute' }}>Building: {selectedBuilding}</Text>
-
+      <View style={styles.textContainer}>
+        <Text
+          style={{
+            bottom: "20%",
+            left: "10%",
+            color: "grey",
+            fontSize: 12,
+            position: "absolute",
+          }}
+        >
+          Building: {selectedBuilding}
+        </Text>
       </View>
 
       <TouchableOpacity
-        style={[
-            styles.LawButton, 
-            isLawSelected && styles.LawButtonSelected
-          
-        ]}
+        style={[styles.LawButton, isLawSelected && styles.LawButtonSelected]}
         onPress={() => {
           handleBuildingPress("Law");
         }}
       >
-        <Text style={{color:'white'}}>Law</Text>
+        <Text style={{ color: "white" }}>Law</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[
-            styles.LeddyButton, 
-            isLeddySelected && styles.LeddyButtonSelected
-          
+          styles.LeddyButton,
+          isLeddySelected && styles.LeddyButtonSelected,
         ]}
         onPress={() => {
-          handleBuildingPress('Leddy');
+          handleBuildingPress("Leddy");
         }}
       >
-        <Text style={{color:'white'}}>Leddy</Text>
-        </TouchableOpacity>
-      
+        <Text style={{ color: "white" }}>Leddy</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={[
-          styles.OdetteButton, 
-          isOdetteSelected && styles.OdetteButtonSelected
+          styles.OdetteButton,
+          isOdetteSelected && styles.OdetteButtonSelected,
         ]}
         onPress={() => {
           handleBuildingPress("Odette");
         }}
       >
-        <Text style={{color: 'white' }}>Odette</Text>
-        </TouchableOpacity>
+        <Text style={{ color: "white" }}>Odette</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
-        
-        style={[
-          styles.CEIButton,
-          isCEISelected && styles.CEIButtonSelect
-        ]}
+        style={[styles.CEIButton, isCEISelected && styles.CEIButtonSelect]}
         onPress={() => {
           handleBuildingPress("CEI");
         }}
       >
-        <Text style= {{ color: 'white' }}>CEI</Text>
-        </TouchableOpacity>
+        <Text style={{ color: "white" }}>CEI</Text>
+      </TouchableOpacity>
 
-<TouchableOpacity
+      <TouchableOpacity
         style={{
           width: "15%", // Example value, replace with calculated percentage for building "Leddy"
           height: "46%", // Example value
           top: "21%", // Example value
           left: "40%", // Example value
           position: "absolute",
-          borderRadius:10,
-          backgroundColor: '#D5D5D5',
+          borderRadius: 10,
+          backgroundColor: "#D5D5D5",
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        
       />
       <TouchableOpacity
         style={{
@@ -138,27 +136,25 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
           top: "21%", // Example value
           left: "8%", // Example value
           position: "absolute",
-          borderRadius:10,
-          backgroundColor: '#D5D5D5',
+          borderRadius: 10,
+          backgroundColor: "#D5D5D5",
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        
       />
 
-<TouchableOpacity
+      <TouchableOpacity
         style={{
           width: "15%", // Example value, replace with calculated percentage for building "Leddy"
           height: "21%", // Example value
           top: "45%", // Example value
           left: "8%", // Example value
           position: "absolute",
-          borderRadius:10,
-          backgroundColor: '#D5D5D5',
+          borderRadius: 10,
+          backgroundColor: "#D5D5D5",
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        
       />
       <TouchableOpacity
         style={{
@@ -167,12 +163,11 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
           top: "27%", // Example value
           left: "77%", // Example value
           position: "absolute",
-          borderRadius:10,
-          backgroundColor: '#D5D5D5',
+          borderRadius: 10,
+          backgroundColor: "#D5D5D5",
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        
       />
       <TouchableOpacity
         style={{
@@ -181,12 +176,11 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
           top: "16%", // Example value
           left: "77%", // Example value
           position: "absolute",
-          borderRadius:10,
-          backgroundColor: '#D5D5D5', 
+          borderRadius: 10,
+          backgroundColor: "#D5D5D5",
           borderColor: "transparent",
           borderWidth: 1,
         }}
-        
       />
 
       {/* Repeat for other buildings or touchable areas */}
@@ -200,10 +194,10 @@ const styles = StyleSheet.create({
     top: "67.5%", // Example value
     left: "77%", // Example value
     position: "absolute",
-    borderRadius:10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#3E92CC',
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0099ff",
     borderColor: "transparent",
     borderWidth: 1,
   },
@@ -213,10 +207,10 @@ const styles = StyleSheet.create({
     top: "67.5%", // Example value
     left: "77%", // Example value
     position: "absolute",
-    borderRadius:10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#06BCF2',
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#06BCF2",
     borderColor: "transparent",
     borderWidth: 1,
   },
@@ -226,10 +220,10 @@ const styles = StyleSheet.create({
     top: "43%", // Example value
     left: "77%", // Example value
     position: "absolute",
-    borderRadius:10,
-    alignItems:'center',
-    justifyContent: 'center',
-    backgroundColor: '#3E92CC',
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0099ff",
     borderColor: "transparent",
     borderWidth: 1,
   },
@@ -239,10 +233,10 @@ const styles = StyleSheet.create({
     top: "43%", // Example value
     left: "77%", // Example value
     position: "absolute",
-    borderRadius:10,
-    alignItems:'center',
-    justifyContent: 'center',
-    backgroundColor: '#06BCF2',
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#06BCF2",
     borderColor: "transparent",
     borderWidth: 1,
   },
@@ -254,10 +248,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderColor: "transparent",
     borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:10,
-    backgroundColor: '#3E92CC',
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#0099ff",
   },
   LeddyButtonSelected: {
     width: "18%", // Example value, replace with calculated percentage for building "Leddy"
@@ -267,10 +261,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderColor: "transparent",
     borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:10,
-    backgroundColor: '#06BCF2',
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "red",
   },
   LawButton: {
     width: "30%", // Example value, replace with calculated percentage for building "Law"
@@ -278,10 +272,10 @@ const styles = StyleSheet.create({
     top: "3%", // Example value
     left: "50%", // Example value
     position: "absolute",
-    backgroundColor: '#3E92CC',
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems: 'center',
+    backgroundColor: "#0099ff",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
     borderColor: "transparent",
     borderWidth: 1,
   },
@@ -291,22 +285,20 @@ const styles = StyleSheet.create({
     top: "3%", // Example value
     left: "50%", // Example value
     position: "absolute",
-    backgroundColor: '#06BCF2',
-    borderRadius:10,
-    justifyContent:'center',
-    alignItems: 'center',
+    backgroundColor: "#06BCF2",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
     borderColor: "transparent",
     borderWidth: 1,
   },
   textContainer: {
-    position: 'absolute', // Position the text container absolutely
+    position: "absolute", // Position the text container absolutely
     top: 0, // Align to the top of the container
     left: 0, // Align to the left of the container
     right: 0, // Align to the right of the container
     bottom: 0, // Align to the bottom of the container
-    justifyContent: 'center', // Center the text vertically
-    alignItems: 'center', // Center the text horizontally
+    justifyContent: "center", // Center the text vertically
+    alignItems: "center", // Center the text horizontally
   },
-
-
-})
+});
