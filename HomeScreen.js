@@ -20,7 +20,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import 
 import CampusMap1 from "./CampusMap1";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, parse } from "react-native-svg";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogoutScreen from "./Logout";
@@ -404,10 +404,12 @@ const HomeScreen = ({ navigation, route }) => {
     if (time instanceof Date) {
       // console.log("Start Time:", time);
       const timeString = time.toLocaleTimeString();
-
+      const parsedTime = parseTimeString(timeString);
+      console.log(parsedTime);
       setStartTime(timeString);
+      // parseTimeString(timeString);
       hideStartTimePicker();
-      console.log("Start time selected: ", timeString);
+      console.log("Start time selected: ", startTime);
     } else {
       console.error("Invalid time received:", time);
     }
@@ -419,13 +421,22 @@ const HomeScreen = ({ navigation, route }) => {
     //console.log("End Time:", endTime); // Log the entire time object
     if (time instanceof Date) {
       const timeEndString = time.toLocaleTimeString();
+      const parsedTime = parseTimeString(timeEndString);
       // console.log("Selected end Time String:", timeString); // Log the time string
       setEndTime(timeEndString); // This should be a string
       hideEndTimePicker();
-      console.log("End time picked: ", timeEndString);
+      console.log("End time picked: ", endTime);
     } else {
       console.error("Invalid time received:", time);
     }
+  };
+
+  const parseTimeString = (timeString) => {
+    var timeArr = timeString.split(":");
+    var suffix = timeArr[2].split(" ")[1];
+    suffix = suffix == "PM" ? "pm" : "am";
+    const newTime = timeArr[0] + ":" + timeArr[1] + suffix;
+    return newTime;
   };
 
   useEffect(() => {
