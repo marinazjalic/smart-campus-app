@@ -22,31 +22,28 @@ export default function SignUp({ navigation }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-
   const handleSignUp = () => {
-    checkIfUserIsAvail();
+    if (password == confirmPassword) {
+      checkIfUserIsAvail();
+    } else {
+      Alert.alert("Passwords do not match.", [
+        {
+          text: "OK",
+          style: "cancel",
+        },
+      ]);
+    }
     Keyboard.dismiss();
-    // navigation.popToTop();
+  };
+
+  const handleReturnToLogin = () => {
+    navigation.navigate("Login");
   };
 
   const resetSelections = () => {
     setUsername("");
-    setPassword("")
-
-  }
-  const handleReturnToLogin = () => {
-    if(password === confirmPassword){
-    navigation.navigate("Login");
-    resetSelections();
-  } else {
-    Alert.alert("Passwords do not match.", [
-      {
-      text: 'OK',
-      style: 'cancel',
-      }
-    ]);
-
-  }
+    setPassword("");
+    setConfirmPassword("");
   };
 
   /* checks if username is available during sign up and creates a new user if available.
@@ -85,8 +82,8 @@ export default function SignUp({ navigation }) {
         },
       })
       .then((response) => {
-        console.log("DONE");
-        console.log(response.data);
+        resetSelections();
+        navigation.navigate("Login");
       })
       .catch((error) => {
         console.log(error);
@@ -110,7 +107,7 @@ export default function SignUp({ navigation }) {
           <TextInput
             placeholder="Enter your password"
             placeholderTextColor={"white"}
-            secureTextEntry={true} // Mask the input for passwords
+            secureTextEntry={true}
             value={password}
             onChangeText={(text) => setPassword(text)}
             style={styles.pwInput}
@@ -118,7 +115,7 @@ export default function SignUp({ navigation }) {
           <TextInput
             placeholder="Confirm password"
             placeholderTextColor={"white"}
-            secureTextEntry={true} // Mask the input for passwords
+            secureTextEntry={true}
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
             style={styles.pwInput}
@@ -132,7 +129,6 @@ export default function SignUp({ navigation }) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradientButton}
-            // #0059b3", "#99ccff"
           >
             <Text style={styles.buttonText}>Sign Up</Text>
           </LinearGradient>
@@ -151,89 +147,17 @@ export default function SignUp({ navigation }) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradientButton}
-            // #0059b3", "#99ccff"
           >
             <Text style={styles.buttonText}>Login</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
-    // <ScrollView
-    //   contentContainerStyle={styles.container}
-    //   keyboardShouldPersistTaps="handled"
-    // >
-    //   <View style={styles.container}>
-    //     <View style={styles.centeredContent}>
-    //       <Text style={styles.topText}>Welcome to Smart Campus</Text>
-    //       <View style={styles.inputContainer}>
-    //         <TextInput
-    //           placeholder="Enter your email"
-    //           value={username}
-    //           onChangeText={(text) => setUsername(text)}
-    //           style={styles.input}
-    //         />
-    //         <TextInput
-    //           placeholder="Enter your password"
-    //           secureTextEntry={true} // Mask the input for passwords
-    //           value={password}
-    //           onChangeText={(text) => setPassword(text)}
-    //           style={styles.input}
-    //         />
-    //         <Button title="Sign up" onPress={handleSignUp} />
-    //       </View>
-    //     </View>
-    //   </View>
-    // </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  topTextContainer: {
-    flex: 1, // Take up some vertical space
-    justifyContent: "center", // Center vertically
-  },
-  topText: {
-    textAlign: "center",
-    fontSize: 24,
-    //paddingTop: 60,
-    paddingBottom: 20,
-  },
-  centeredContent: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  verticalCenter: {
-    flex: 1,
-    justifyContent: "center",
-  },
-
-  inputContainer: {
-    width: "100%", // Adjust as needed
-    alignItems: "center",
-  },
-  input: {
-    //borderWidth: 1,
-    height: 50,
-    width: 270,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
-  },
-  lineInput: {
-    borderWidth: 0,
-  },
-
-  //additional styling here
   backgroundContainer: {
-    // backgroundColor: "#336699",
     alignItems: "center",
     flex: 1,
   },
@@ -244,25 +168,19 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     topContainer: {
-      // backgroundColor: "red",
       height: "60%",
       width: "100%",
     },
   },
   emailInput: {
-    //borderWidth: 1,
-    height: 50,
-    width: 270,
-    marginTop: 345,
+    height: "10%",
+    width: "63%",
+    marginTop: "84%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
-    // borderWidth: 1,
-    // borderRadius: 20,
-    marginLeft: 75,
-    // borderColor: "white",
+    marginLeft: "18%",
     padding: 10,
     marginBottom: 10,
-    // backgroundColor: "white",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -270,41 +188,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     fontFamily: "Avenir",
     color: "white",
-    // opacity: 0.5,
   },
   pwInput: {
-    height: 50,
-    width: 270,
-    // marginTop: 345,
+    height: "8%",
+    width: "63%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
-    // borderWidth: 1,
-    // borderRadius: 20,
-    marginLeft: 75,
-    // borderColor: "white",
+    marginLeft: "18%",
     padding: 10,
     marginBottom: 10,
     fontFamily: "Avenir",
-    // opacity: 0.7,
-    // backgroundColor: "white",
     shadowOffset: {
       width: 1,
       height: 2,
     },
-
     shadowOpacity: 0.23,
     color: "white",
-    // opacity: 0.5,
   },
   signupButton: {
-    // padding: 16,
-    marginLeft: 75,
-    marginTop: 15,
-    // paddingHorizontal: 20,
+    marginLeft: "18%",
+    marginTop: "4%",
     backgroundColor: "#004d99",
     borderRadius: 20,
-    width: 270,
-    height: 50,
+    width: "63%",
+    height: "12%",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -344,7 +251,6 @@ const styles = StyleSheet.create({
     width: "42%",
     backgroundColor: "#cccccc",
     marginTop: 10,
-    // marginLeft: 10,
     marginRight: 20,
   },
 

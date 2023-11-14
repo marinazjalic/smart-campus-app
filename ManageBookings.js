@@ -12,8 +12,7 @@ import { UserContext } from "./global/UserContext";
 import axios from "axios";
 import { Card } from "react-native-elements";
 import Strings from "./constants/Strings";
-import Svg, { Path } from 'react-native-svg';
-
+import Svg, { Path } from "react-native-svg";
 
 const ManageBookings = () => {
   const { bookings, setBookings } = useContext(UserContext);
@@ -37,10 +36,11 @@ const ManageBookings = () => {
             var bookingObj = bookings.filter((obj) => {
               return obj.bookingId == bookingId;
             });
+
             cancelUserBooking(
               bookingId,
               bookingObj[0].room_id,
-              bookingObj[0].date.toString(), //i think this needs to be changed to dateObj ???
+              bookingObj[0].dateObj,
               bookingObj[0].time
             );
           },
@@ -71,6 +71,8 @@ const ManageBookings = () => {
   //function to delete the selected booking from DB
   const cancelUserBooking = async (bookingId, room_id, date, time) => {
     var newTime = time.split(" - ");
+    console.log("dae");
+    console.log(date);
     const isDeleted = await deleteBooking(bookingId);
     if (isDeleted) {
       const availObj = await getAvailabilityID(room_id, date, time);
@@ -87,12 +89,17 @@ const ManageBookings = () => {
   };
 
   const getAvailabilityID = async (room_id, date) => {
-    console.log("room_num" + room_id);
-    console.log("Date" + date);
-    var date = date.split("-");
+    var offset = date.getMonth() + 1 == 11 && date.getDate() > 5 ? 5 : 4;
 
-    var offset = (date[0] == "11" && date[1]) > "05" ? 5 : 4;
-    var newDate = new Date(date[2], date[0] - 1, date[1], 0 - offset, 0, 0, 0);
+    var newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      0 - offset,
+      0,
+      0,
+      0
+    );
 
     const response = await axios.get(
       `http://${Strings.ip_address}:3000/availability/get-by-room`,
@@ -131,32 +138,30 @@ const ManageBookings = () => {
   };
 
   const IconPerson = () => {
-    
     return (
       <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 32 32"
-      fill='#ababab'
-    >
-      <Path d="M16 15.503A5.041 5.041 0 1016 5.42a5.041 5.041 0 000 10.083zm0 2.215c-6.703 0-11 3.699-11 5.5v3.363h22v-3.363c0-2.178-4.068-5.5-11-5.5z"></Path>
-    </Svg>
+        xmlns="http://www.w3.org/2000/svg"
+        width="19"
+        height="19"
+        viewBox="0 0 32 32"
+        fill="#ababab"
+      >
+        <Path d="M16 15.503A5.041 5.041 0 1016 5.42a5.041 5.041 0 000 10.083zm0 2.215c-6.703 0-11 3.699-11 5.5v3.363h22v-3.363c0-2.178-4.068-5.5-11-5.5z"></Path>
+      </Svg>
     );
   };
 
   function Wheelchair() {
     return (
-          <Svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 32 32"
-            fill='#ababab'
-          >
-            <Path d="M22.621 23.668a1.245 1.245 0 00-1.69.496l-.003.006c-1.512 2.749-4.389 4.581-7.694 4.581a8.751 8.751 0 01-5.272-15.736l.022-.016a1.25 1.25 0 10-1.505-1.996l.003-.002c-2.744 2.074-4.499 5.332-4.499 9 0 6.213 5.037 11.25 11.25 11.25 4.248 0 7.947-2.355 9.861-5.831l.029-.058a1.25 1.25 0 00-.495-1.69l-.006-.003zm8.592 1.029a1.25 1.25 0 00-1.524-.908l.009-.002-2.885.721-2.701-7.912a1.255 1.255 0 00-1.184-.846h-8.855l-.385-2.5H18a1.25 1.25 0 000-2.5h-4.697L12.7 6.83a3.311 3.311 0 10-2.493.38l.023.005 1.534 9.975c.095.604.612 1.06 1.235 1.06h9.033l2.783 8.154a1.255 1.255 0 001.495.807l-.009.002 4-1a1.252 1.252 0 00.908-1.525l.002.009z"></Path>
-          </Svg>
-        
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="19"
+        height="19"
+        viewBox="0 0 32 32"
+        fill="#ababab"
+      >
+        <Path d="M22.621 23.668a1.245 1.245 0 00-1.69.496l-.003.006c-1.512 2.749-4.389 4.581-7.694 4.581a8.751 8.751 0 01-5.272-15.736l.022-.016a1.25 1.25 0 10-1.505-1.996l.003-.002c-2.744 2.074-4.499 5.332-4.499 9 0 6.213 5.037 11.25 11.25 11.25 4.248 0 7.947-2.355 9.861-5.831l.029-.058a1.25 1.25 0 00-.495-1.69l-.006-.003zm8.592 1.029a1.25 1.25 0 00-1.524-.908l.009-.002-2.885.721-2.701-7.912a1.255 1.255 0 00-1.184-.846h-8.855l-.385-2.5H18a1.25 1.25 0 000-2.5h-4.697L12.7 6.83a3.311 3.311 0 10-2.493.38l.023.005 1.534 9.975c.095.604.612 1.06 1.235 1.06h9.033l2.783 8.154a1.255 1.255 0 001.495.807l-.009.002 4-1a1.252 1.252 0 00.908-1.525l.002.009z"></Path>
+      </Svg>
     );
   }
 
@@ -164,17 +169,16 @@ const ManageBookings = () => {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         className="bi bi-easel"
         viewBox="0 0 16 16"
-        fill='#ababab'
+        fill="#ababab"
       >
         <Path d="M8 0a.5.5 0 01.473.337L9.046 2H14a1 1 0 011 1v7a1 1 0 01-1 1h-1.85l1.323 3.837a.5.5 0 11-.946.326L11.092 11H8.5v3a.5.5 0 01-1 0v-3H4.908l-1.435 4.163a.5.5 0 11-.946-.326L3.85 11H2a1 1 0 01-1-1V3a1 1 0 011-1h4.954L7.527.337A.5.5 0 018 0zM2 3v7h12V3H2z"></Path>
       </Svg>
     );
   }
-
 
   const renderItem = ({ item }) => (
     <View style={styles.bookingCard}>
@@ -191,20 +195,19 @@ const ManageBookings = () => {
           <View style={styles.splitLeft}>
             <Text style={styles.timeText}>{item.time}</Text>
             <Text style={styles.buildingText}>{item.location}</Text>
-            <View style={{flexDirection:'row'}}>
-            <Text style={styles.roomNumText}>Room {item.room_num}  </Text>
-            {item.accessibility && <Wheelchair />}
-            {item.utilities && <Whiteboard />} 
-            
-            
-            
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.roomNumText}>Room {item.room_num} </Text>
+              <View style={styles.iconContainer}>
+                {item.accessibility && <Wheelchair />}
+                {item.utilities && <Whiteboard />}
+              </View>
             </View>
           </View>
           <View style={styles.splitRight}>
             <View style={styles.capacityContainer}>
-              <View style={{flexDirection:'row'}}>
-              <Text style={styles.capacityText}>{item.capacity}</Text>
-              <IconPerson />
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.capacityText}>{item.capacity}</Text>
+                <IconPerson />
               </View>
             </View>
             {item.canceled ? (
@@ -320,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 19,
     paddingRight: 105,
     paddingTop: 5,
     color: "#0099ff",
@@ -345,13 +348,13 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   capacityContainer: {
-    //backgroundColor: "grey",
+    // backgroundColor: "grey",
   },
   capacityText: {
     fontFamily: "Avenir",
     fontSize: 15,
-    marginLeft: 10,
-    color: "#0099ff",
+    marginLeft: "80%",
+    color: "#999999",
   },
   dateContainer: {
     backgroundColor: "white",
@@ -370,6 +373,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999999",
     // fontWeight: "bold",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    // backgroundColor: "red",
+    paddingTop: 4,
   },
 });
 

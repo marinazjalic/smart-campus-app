@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,11 +9,14 @@ import AIRooomFinder from "./AIRoomFinder";
 import HomeScreen from "./HomeScreen";
 import App from "./App";
 import { LinearGradient } from "expo-linear-gradient";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from "react-native-svg";
+import { UserContext } from "./global/UserContext";
 
 //const Stack1 = createStackNavigator();
 
 function Confirmation({ navigation }) {
+  // const { latestBookingID, set}
+  const { latestBookingObj, setLatestBookingObj } = useContext(UserContext);
   /*
   <NavigationContainer>
       <Stack1.Navigator initialRouteName="Home">
@@ -25,19 +28,23 @@ function Confirmation({ navigation }) {
       </Stack1.Navigator>
     </NavigationContainer>
   */
-  function handleGoBackHome() {}
+  function handleHomeButtonPress() {
+    navigation.navigate("Home");
+  }
 
   function Success() {
     return (
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="70"
-        height="70"
-        viewBox="0 0 32 32"
-        fill='#0073e6'
-      >
-        <Path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm7.258 9.307l-9.486 9.485a.61.61 0 01-.861 0l-.191-.191-.001.001L7.5 16.346a.61.61 0 010-.862l1.294-1.293a.61.61 0 01.862 0l3.689 3.716 7.756-7.756a.61.61 0 01.862 0l1.294 1.294a.609.609 0 01.001.862z"></Path>
-      </Svg>
+      <View style={{ backgroundColor: "" }}>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100"
+          height="100"
+          viewBox="0 0 32 32"
+          fill="#0099ff"
+        >
+          <Path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm7.258 9.307l-9.486 9.485a.61.61 0 01-.861 0l-.191-.191-.001.001L7.5 16.346a.61.61 0 010-.862l1.294-1.293a.61.61 0 01.862 0l3.689 3.716 7.756-7.756a.61.61 0 01.862 0l1.294 1.294a.609.609 0 01.001.862z"></Path>
+        </Svg>
+      </View>
     );
   }
 
@@ -52,35 +59,49 @@ function Confirmation({ navigation }) {
       }}
     >
       <View style={styles.topContainer}>
-        <View style={{ justifyContent:'center', alignItems:'center', marginTop:'20%'}}>
-        <Success />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10%",
+          }}
+        >
+          <Success />
         </View>
-      
+
         <Text style={styles.confirmedText}>Booking Confirmed</Text>
       </View>
       <View style={styles.divider}></View>
       <View style={styles.bottomContainer}>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsTitle}>DETAILS</Text>
-          <Text style={styles.detailsText}>Date: Monday, November 14th</Text>
-          <Text style={styles.detailsText}>Time: 4:00pm - 6:00pm</Text>
           <Text style={styles.detailsText}>
-            Location: Leddy Library Main Floor
+            Date: {latestBookingObj.dateText}
           </Text>
-          <Text style={styles.detailsText}>Room: 301</Text>
-          <Text style={styles.detailsText}>Capacity: 4 people max</Text>
+          <Text style={styles.detailsText}>Time: {latestBookingObj.time}</Text>
+          <Text style={styles.detailsText}>
+            Location: {latestBookingObj.location}
+          </Text>
+          <Text style={styles.detailsText}>
+            Room: {latestBookingObj.room_num}
+          </Text>
+          <Text style={styles.detailsText}>
+            Capacity: {latestBookingObj.capacity}
+          </Text>
           <Text style={styles.detailsText}>
             This room is equipped with a whiteboard, power outlet and is
             accessible.
           </Text>
         </View>
-        <TouchableOpacity style={styles.homeButton}>
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={handleHomeButtonPress}
+        >
           <LinearGradient
             colors={["#0073e6", "#3399ff", "#80bfff"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradientButton}
-            // #0059b3", "#99ccff"
           >
             <Text style={styles.buttonText}>Return Home</Text>
           </LinearGradient>
