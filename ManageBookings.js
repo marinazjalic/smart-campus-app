@@ -141,8 +141,8 @@ const ManageBookings = () => {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="19"
+        height="19"
         viewBox="0 0 32 32"
         fill="#ababab"
       >
@@ -155,8 +155,8 @@ const ManageBookings = () => {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="19"
+        height="19"
         viewBox="0 0 32 32"
         fill="#ababab"
       >
@@ -169,8 +169,8 @@ const ManageBookings = () => {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         className="bi bi-easel"
         viewBox="0 0 16 16"
         fill="#ababab"
@@ -197,8 +197,10 @@ const ManageBookings = () => {
             <Text style={styles.buildingText}>{item.location}</Text>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.roomNumText}>Room {item.room_num} </Text>
-              {item.accessibility && <Wheelchair />}
-              {item.utilities && <Whiteboard />}
+              <View style={styles.iconContainer}>
+                {item.accessibility && <Wheelchair />}
+                {item.utilities && <Whiteboard />}
+              </View>
             </View>
           </View>
           <View style={styles.splitRight}>
@@ -321,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 19,
     paddingRight: 105,
     paddingTop: 5,
     color: "#0099ff",
@@ -346,13 +348,13 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   capacityContainer: {
-    //backgroundColor: "grey",
+    // backgroundColor: "grey",
   },
   capacityText: {
     fontFamily: "Avenir",
     fontSize: 15,
-    marginLeft: 10,
-    color: "#0099ff",
+    marginLeft: "80%",
+    color: "#999999",
   },
   dateContainer: {
     backgroundColor: "white",
@@ -371,6 +373,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999999",
     // fontWeight: "bold",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    // backgroundColor: "red",
+    paddingTop: 4,
   },
 });
 

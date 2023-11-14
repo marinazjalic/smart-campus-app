@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { NavigationContainer } from "@react-navigation/native";
@@ -10,10 +10,13 @@ import HomeScreen from "./HomeScreen";
 import App from "./App";
 import { LinearGradient } from "expo-linear-gradient";
 import Svg, { Path } from "react-native-svg";
+import { UserContext } from "./global/UserContext";
 
 //const Stack1 = createStackNavigator();
 
 function Confirmation({ navigation }) {
+  // const { latestBookingID, set}
+  const { latestBookingObj, setLatestBookingObj } = useContext(UserContext);
   /*
   <NavigationContainer>
       <Stack1.Navigator initialRouteName="Home">
@@ -25,7 +28,9 @@ function Confirmation({ navigation }) {
       </Stack1.Navigator>
     </NavigationContainer>
   */
-  function handleGoBackHome() {}
+  function handleHomeButtonPress() {
+    navigation.navigate("Home");
+  }
 
   function Success() {
     return (
@@ -70,25 +75,33 @@ function Confirmation({ navigation }) {
       <View style={styles.bottomContainer}>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsTitle}>DETAILS</Text>
-          <Text style={styles.detailsText}>Date: Monday, November 14th</Text>
-          <Text style={styles.detailsText}>Time: 4:00pm - 6:00pm</Text>
           <Text style={styles.detailsText}>
-            Location: Leddy Library Main Floor
+            Date: {latestBookingObj.dateText}
           </Text>
-          <Text style={styles.detailsText}>Room: 301</Text>
-          <Text style={styles.detailsText}>Capacity: 4 people max</Text>
+          <Text style={styles.detailsText}>Time: {latestBookingObj.time}</Text>
+          <Text style={styles.detailsText}>
+            Location: {latestBookingObj.location}
+          </Text>
+          <Text style={styles.detailsText}>
+            Room: {latestBookingObj.room_num}
+          </Text>
+          <Text style={styles.detailsText}>
+            Capacity: {latestBookingObj.capacity}
+          </Text>
           <Text style={styles.detailsText}>
             This room is equipped with a whiteboard, power outlet and is
             accessible.
           </Text>
         </View>
-        <TouchableOpacity style={styles.homeButton}>
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={handleHomeButtonPress}
+        >
           <LinearGradient
             colors={["#0073e6", "#3399ff", "#80bfff"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradientButton}
-            // #0059b3", "#99ccff"
           >
             <Text style={styles.buttonText}>Return Home</Text>
           </LinearGradient>

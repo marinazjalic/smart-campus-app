@@ -34,8 +34,9 @@ import { UserContext } from "./global/UserContext";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import Strings from "./constants/Strings";
-import axios from "axios";
 import Arrays from "./constants/Arrays";
+import axios from "axios";
+// import Arrays from "./constants/Arrays";
 // import {getUserBookings} from ./
 import { Picker } from "@react-native-picker/picker";
 
@@ -75,6 +76,7 @@ const HomeScreen = ({ navigation, route }) => {
   const { bookings, setBookings } = useContext(UserContext);
   const { userId, setUserId } = useContext(UserContext);
   const { forceUpdate, setForceUpdate } = useContext(UserContext);
+  const { latestBookingObj, setLatestBookingObj } = useContext(UserContext);
   const [showError, setShowError] = useState(false);
   const [isWhiteboardSelected, setIsWhiteboardSelected] = useState(false);
   const [isAccessibleSelected, setIsAccessibleSelected] = useState(false);
@@ -103,33 +105,18 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   const handleOk = () => {
-    // Ensure the input is treated as a number
     const numCapacity = parseInt(roomCapacity, 10);
 
-    // Log the input for debugging purposes
-    console.log("Input capacity:", roomCapacity);
-    console.log("Parsed capacity:", numCapacity);
-
-    // Validate the number after parsing
     if (numCapacity >= 1 && numCapacity <= 8) {
-      // The capacity is valid
-      console.log("Selected capacity:", numCapacity);
-      // Close the dialog
+      setRoomCapacity(numCapacity);
       setDialogVisible(false);
     } else {
-      // If the input is invalid, log and inform the user
       console.warn("Invalid capacity value:", numCapacity);
-      // You may want to set an error message in the state and display it to the user
     }
 
     // Reset the capacity after closing the dialog
-    setRoomCapacity("");
-    console.log("Input capacity: ", roomCapacity);
-    console.log("Parsed capacity: ", numCapacity);
+    // setRoomCapacity("");
   };
-  // const handleRefresh = () => {
-  //   HomeScreen.forceUpdate();
-  // };
 
   /*
 //i couldnt get stack container for the longest time but i tried it here and it works?
@@ -173,12 +160,19 @@ const HomeScreen = ({ navigation, route }) => {
     generateNext14Days(); // call the function to generate the next 14 days on component mount
   }, []);
 
-  /*
   const handleFindRoomPress = () => {
-    resetSelections();
-    navigation.navigate("Confirmation");
+    handleRoomReservations(
+      selectedBuilding,
+      roomCapacity,
+      isAccessibleSelected,
+      isWhiteboardSelected,
+      startTime,
+      endTime
+    );
+
+    // resetSelections();
+    // navigation.navigate("Confirmation");
   };
-  */
 
   const handleInputChange = (value) => {
     setRoomCapacity(value);
@@ -206,7 +200,6 @@ const HomeScreen = ({ navigation, route }) => {
 
   const handleBuildingPress1 = (buildingName) => {
     setSelectedBuilding(buildingName);
-    console.log("a: Selected building is ", buildingName);
   };
 
   function Filter() {
@@ -386,46 +379,31 @@ const HomeScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     if (startTime !== null) {
-      // console.log("Selected start Time has been updated:", startTime);
-      // console.log("Selected start Time:", startTime, "Type:", typeof startTime);
     }
   }, [startTime]);
 
   useEffect(() => {
     if (endTime !== null) {
-      // console.log("Selected end Time has been updated:", endTime);
-      // console.log("Selected end Time:", endTime, "Type:", typeof endTime);
     }
   }, [endTime]);
 
   const handleTimePicked = (time) => {
-    //console.log(time);
-    //console.log("Start time selected: ", startTime);
     if (time instanceof Date) {
-      // console.log("Start Time:", time);
       const timeString = time.toLocaleTimeString();
       const parsedTime = parseTimeString(timeString);
-      console.log(parsedTime);
-      setStartTime(timeString);
-      // parseTimeString(timeString);
+      setStartTime(parsedTime);
       hideStartTimePicker();
-      console.log("Start time selected: ", startTime);
     } else {
       console.error("Invalid time received:", time);
     }
-    //hideStartTimePicker();
-    //console.log("Start time selected: ", timeString);
   };
 
   const handleEndTimePicked = (time) => {
-    //console.log("End Time:", endTime); // Log the entire time object
     if (time instanceof Date) {
       const timeEndString = time.toLocaleTimeString();
       const parsedTime = parseTimeString(timeEndString);
-      // console.log("Selected end Time String:", timeString); // Log the time string
-      setEndTime(timeEndString); // This should be a string
+      setEndTime(parsedTime);
       hideEndTimePicker();
-      console.log("End time picked: ", endTime);
     } else {
       console.error("Invalid time received:", time);
     }
@@ -441,9 +419,6 @@ const HomeScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     if (selectedBuilding !== null) {
-      // console.log("Selected Building has been updated:", selectedBuilding);
-      // console.log("Selected Building String:", selectedBuilding); // Log the dateString
-      // ... any other code you want to run when selectedDate changes
     }
   }, [selectedBuilding]);
 
@@ -453,14 +428,10 @@ const HomeScreen = ({ navigation, route }) => {
   }, [selectedDate]);
 
   const handleDateSelection = (day) => {
-    // console.log("Selected Day:", day); // Log the entire day object
     if (day && day.dateString) {
-      //console.log("Selected Date String:", day.dateString);  // Log the dateString
       const newStyle = { selected: true, selectedColor: "#0099ff" };
       setSelectedDate(day.dateString);
       setSelectedDates({ [day.dateString]: newStyle });
-      //setSelectedDate(day.dateString); // This should be a string
-      //setSelectedBuilding(" ");
     } else {
       console.error("Invalid day object received:", day);
     }
@@ -477,12 +448,10 @@ const HomeScreen = ({ navigation, route }) => {
       location: location,
       capacity: capacity,
     };
-    var isAccessible = (accessibility = true
-      ? (params.accessibility = true)
-      : undefined);
-    var hasUtilities = (utilities = true
-      ? (params.utilities = true)
-      : undefined);
+    var isAccessible =
+      accessibility == true ? (params.accessibility = true) : undefined;
+    var hasUtilities =
+      utilities == true ? (params.utilities = true) : undefined;
 
     const response = await axios.get(
       `http://${Strings.ip_address}:3000/rooms/filter-rooms`,
@@ -510,7 +479,6 @@ const HomeScreen = ({ navigation, route }) => {
     return roomIds;
   };
 
-  //FIX DATE OBJECT
   const createNewBooking = async (room_id, start_time, end_time, date) => {
     const params = JSON.stringify({
       user_id: userId,
@@ -542,7 +510,6 @@ const HomeScreen = ({ navigation, route }) => {
       start_time: start_time,
       end_time: end_time,
     });
-    console.log(params);
 
     const response = await axios.post(
       `http://${Strings.ip_address}:3000/availability/get-by-id`,
@@ -574,14 +541,12 @@ const HomeScreen = ({ navigation, route }) => {
       accessibility,
       utilities
     );
-
     /*if there's a room that matches criteria, check if there's availability for the time range */
     if (filteredRooms.length >= 1) {
-      //NEED TO REPLACE THESE WITH THE ACTUAL VALUES
       const allAvailRooms = await getAvailableRoomsForDateTime(
-        "2023-11-06",
-        "5:00pm",
-        "6:00pm"
+        selectedDate,
+        startTime,
+        endTime
       );
       const allAvailRoomIds = allAvailRooms.map((obj) => {
         return obj.room_id;
@@ -597,15 +562,24 @@ const HomeScreen = ({ navigation, route }) => {
         (room) => room.room_id == selectedRoom._id
       );
 
+      console.log("SELECTED ROOM");
+      console.log(selectedRoom);
+      console.log(availabilityId);
+      const newDate = new Date(selectedDate);
+      const formattedDate =
+        Arrays.weekdays[newDate.getDay() + 1] +
+        ", " +
+        Arrays.months[newDate.getMonth()] +
+        " " +
+        Number(newDate.getDate() + 1).toString();
+
       const newBooking = await createNewBooking(
         selectedRoom._id,
-        "5:00pm",
-        "6:00pm",
-        "2023-11-06"
+        startTime,
+        endTime,
+        selectedDate
       );
-
-      await modifyAvailability(availabilityId[0].id, "5:00pm", "6:00pm");
-
+      await modifyAvailability(availabilityId[0].id, startTime, endTime);
       reloadBookingData(
         new Date(newBooking.date),
         selectedRoom.room_num,
@@ -614,7 +588,8 @@ const HomeScreen = ({ navigation, route }) => {
         selectedRoom.utilities,
         selectedRoom.capacity,
         newBooking._id,
-        selectedRoom._id
+        selectedRoom._id,
+        formattedDate
       );
     }
   };
@@ -627,13 +602,14 @@ const HomeScreen = ({ navigation, route }) => {
     utilities,
     capacity,
     bookingId,
-    room_id
+    room_id,
+    dateText
   ) => {
     let bookingObj = {
       id: bookings[bookings.length - 1].id++,
-      dateText: "Sunday, November 6",
+      dateText: dateText,
       dateObj: dateObj,
-      time: "5:00pm" + " - " + "6:00pm",
+      time: startTime + " - " + endTime,
       room_num: room_num,
       location: location,
       accessibility: accessibility,
@@ -642,6 +618,7 @@ const HomeScreen = ({ navigation, route }) => {
       bookingId: bookingId,
       room_id: room_id,
     };
+    setLatestBookingObj(bookingObj);
     var bookings_arr = bookings;
     bookings_arr.push(bookingObj);
     const sortBookings = bookings_arr.sort((a, b) => a.dateObj - b.dateObj);
@@ -951,38 +928,8 @@ const HomeScreen = ({ navigation, route }) => {
                                   width: "50%",
                                 }}
                                 onPress={() => {
-                                  console.log("------------");
-                                  console.log(
-                                    "Selected start Time:",
-                                    startTime,
-                                    "Type:",
-                                    typeof startTime
-                                  );
-                                  console.log(
-                                    "Selected end Time:",
-                                    endTime,
-                                    "Type:",
-                                    typeof endTime
-                                  );
-                                  console.log(
-                                    "Selected Building:",
-                                    selectedBuilding,
-                                    "Type:",
-                                    typeof selectedBuilding
-                                  );
-                                  console.log("Accesible is:", {
-                                    isAccessibleSelected,
-                                  });
-
-                                  console.log(
-                                    "Selected Date:",
-                                    selectedDate,
-                                    "Type:",
-                                    typeof selectedDate
-                                  );
-
                                   {
-                                    handleFindRoomPress;
+                                    handleFindRoomPress();
                                   }
                                 }}
                               >

@@ -82,7 +82,7 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
           isLeddySelected && styles.LeddyButtonSelected,
         ]}
         onPress={() => {
-          handleBuildingPress("Leddy");
+          handleBuildingPress("Leddy Library");
         }}
       >
         <Text style={{ color: "white" }}>Leddy</Text>

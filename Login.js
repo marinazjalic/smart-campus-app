@@ -59,7 +59,7 @@ function Login({ navigation }) {
   const resetSelections = () => {
     setUsername("");
     setPassword("");
-  }
+  };
 
   const handleLogin = () => {
     validateCredentials();
@@ -109,8 +109,6 @@ function Login({ navigation }) {
         },
       })
       .then((response) => {
-        // console.log("user id");
-        // console.log(response.data);
         setUserId(response.data);
         getUserBookings(response.data);
         navigation.navigate("Home", {
@@ -135,7 +133,7 @@ function Login({ navigation }) {
       let newDate = new Date(upcomingBookings[i].date.split("T")[0]);
 
       let formattedDate =
-        weekdays[newDate.getDay()] +
+        weekdays[newDate.getDay() + 1] +
         ", " +
         months[parsedDate[1] - 1] +
         " " +
@@ -146,12 +144,6 @@ function Login({ navigation }) {
         id: booking_id.toString(),
         dateText: formattedDate,
         dateObj: new Date(upcomingBookings[i].date),
-        // date:
-        //   parsedDate[1] +
-        //   "-" +
-        //   parsedDate[2].split("T")[0] +
-        //   "-" +
-        //   parsedDate[0],
         time: time_slot,
         room_num: room_details.room_num,
         location: room_details.location,
@@ -165,10 +157,6 @@ function Login({ navigation }) {
     }
     setBookings(bookings_arr);
     setData(bookings_arr);
-    // navigation.navigate("Home", {
-    //   screen: "Home",
-    //   params: { userBookings: bookings_arr },
-    // });
   };
 
   //function to get all bookings associated to user
@@ -186,7 +174,6 @@ function Login({ navigation }) {
   };
 
   const handleSignUp = () => {
-    //navigation.navigate('SignUp'); //navigate to sign up page
     console.log("Email:", username);
     console.log("Password:", password);
 
@@ -224,15 +211,12 @@ function Login({ navigation }) {
           <TextInput
             placeholder="Enter your password"
             placeholderTextColor={"white"}
-            secureTextEntry={true} // Mask the input for passwords
+            secureTextEntry={true}
             value={password}
             onChangeText={(text) => setPassword(text)}
             style={styles.pwInput}
           />
-          <TouchableOpacity
-            // style={styles.forgotButton}
-            onPress={() => navigation.navigate("SignUp")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
             <Text style={styles.forgotText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -278,14 +262,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     color: "white",
-    //paddingTop: 60,
     paddingBottom: 20,
   },
   centeredContent: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "red",
   },
   verticalCenter: {
     flex: 1,
@@ -293,23 +275,18 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    width: "100%", // Adjust as needed
+    width: "100%",
     alignItems: "center",
   },
   emailInput: {
-    //borderWidth: 1,
-    height: 50,
-    width: 270,
-    marginTop: 395,
+    height: "15%",
+    width: "63%",
+    marginTop: "93%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
-    // borderWidth: 1,
-    // borderRadius: 20,
-    marginLeft: 75,
-    // borderColor: "white",
+    marginLeft: "18%",
     padding: 10,
     marginBottom: 10,
-    // backgroundColor: "white",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -317,44 +294,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     fontFamily: "Avenir",
     color: "white",
-    // opacity: 0.5,
   },
   pwInput: {
-    height: 50,
-    width: 270,
-    // marginTop: 345,
+    height: "15%",
+    width: "63%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
-    // borderWidth: 1,
-    // borderRadius: 20,
-    marginLeft: 75,
-    // borderColor: "white",
+    marginLeft: "18%",
     padding: 10,
     marginBottom: 10,
     fontFamily: "Avenir",
-    // opacity: 0.7,
-    // backgroundColor: "white",
     shadowOffset: {
       width: 1,
       height: 2,
     },
-
     shadowOpacity: 0.23,
     color: "white",
-    // opacity: 0.5,
   },
   lineInput: {
     borderWidth: 0,
   },
   loginButton: {
-    // padding: 16,
-    marginLeft: 75,
-    marginTop: 15,
-    // paddingHorizontal: 20,
+    marginLeft: "18%",
+    marginTop: "4%",
     backgroundColor: "#004d99",
     borderRadius: 20,
-    width: 270,
-    height: 50,
+    width: "63%",
+    height: "36%",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -370,16 +336,11 @@ const styles = StyleSheet.create({
     paddingTop: 13,
   },
   signupText: {
-    // marginBottom: "auto",
-    // marginTop: 200,
-    // position: "relative",
-    // bottom: 0,
     color: "#0099ff",
-    paddingLeft: 105,
+    paddingLeft: "25%",
     paddingTop: 15,
     fontFamily: "Avenir",
     fontSize: 16,
-    // marginBottom: 20,
   },
   backgroundContainer: {
     // backgroundColor: "#336699",
