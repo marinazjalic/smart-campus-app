@@ -23,15 +23,18 @@ export default function SignUp({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSignUp = () => {
+    console.log("Password:", password, "Confirm Password:", confirmPassword);
     if (password == confirmPassword) {
       checkIfUserIsAvail();
     } else {
-      Alert.alert("Passwords do not match.", [
-        {
-          text: "OK",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert(
+        "Error", // Title of the alert
+        "Passwords do not match.", // Message
+        [
+          { text: "OK", style: "cancel" }
+        ],
+        { cancelable: true } // Make the alert cancelable
+      );
     }
     Keyboard.dismiss();
   };

@@ -76,13 +76,7 @@ function TabNavigator() {
           // headerStyle: { backgroundColor: "#0066cc" },
         }}
       />
-      <Tab.Screen name="Confirm" component={Confirmation} />
-      <Tab.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-
+  
       <Tab.Screen
         name="Logout"
         component={Logout}
