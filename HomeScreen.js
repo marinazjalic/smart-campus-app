@@ -52,6 +52,8 @@ const HomeScreen = ({ navigation, route }) => {
   //this is how you get username from the Login page, after you use navigation.navigate('Home', {username} over there)
   //for example you can print the username somewhere on HomeScreen
   const username = route.params?.username;
+  const BASE_URL = 'http://Aleksandar.pythonanywhere.com'; // Replace with your PythonAnywhere URL
+
 
   //startTime = selectedTime
   const { selectedDate, setSelectedDate } = useAppContext();
@@ -161,6 +163,7 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   const handleFindRoomPress = () => {
+    /*
     handleRoomReservations(
       selectedBuilding,
       roomCapacity,
@@ -169,10 +172,35 @@ const HomeScreen = ({ navigation, route }) => {
       startTime,
       endTime
     );
+*/
+getPrediction('Leddy', 10, 0)
+.then(prediction => {
+  console.log('Received prediction:', prediction);
+  // Handle the prediction result here
+})
+.catch(error => {
+  console.error('Prediction error:', error);
+});
 
     // resetSelections();
     // navigation.navigate("Confirmation");
   };
+
+  const getPrediction = async (building, capacity, utilities) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/predict`, {
+        building,
+        capacity,
+        utilities
+      });
+      console.log('Prediction:', response.data.prediction);
+      return response.data.prediction;
+    } catch (error) {
+      console.error('Error while fetching prediction:', error);
+    }
+  };
+
+
 
   const handleInputChange = (value) => {
     setRoomCapacity(value);

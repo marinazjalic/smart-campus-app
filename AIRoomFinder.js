@@ -5,12 +5,42 @@ import Confirmation from './Confirmation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from "expo-linear-gradient";
 import { UserContext } from "./global/UserContext";
+import axios from 'axios';
+
+
 
 
 function AIRoomFinder({ navigation }) {
 
+  const BASE_URL = 'http://Aleksandar.pythonanywhere.com'; // Replace with your PythonAnywhere URL
+
+const getPrediction = async (building, capacity, utilities) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/predict`, {
+      building,
+      capacity,
+      utilities
+    });
+    console.log('Prediction:', response.data.prediction);
+    return response.data.prediction;
+  } catch (error) {
+    console.error('Error while fetching prediction:', error);
+  }
+};
+
     function handleConfirm() {
             //bring you to confirmation page here
+            // Example of calling the getPrediction function
+getPrediction('Leddy', 10, 0)
+.then(prediction => {
+  console.log('Received prediction:', prediction);
+  // Handle the prediction result here
+})
+.catch(error => {
+  console.error('Prediction error:', error);
+});
+
+/*
       Alert.alert(
         "Booking Confirmed!",
         "You have successfully booked this room",
@@ -19,6 +49,7 @@ function AIRoomFinder({ navigation }) {
         ],
         { cancelable: false }
     );
+    */
     }
 
     function handleGoBack() {
