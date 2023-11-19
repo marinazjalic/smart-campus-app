@@ -76,6 +76,13 @@ function TabNavigator() {
           // headerStyle: { backgroundColor: "#0066cc" },
         }}
       />
+
+      <Tab.Screen
+        name="AI Room"
+        component={AIRoomFinder}
+        options={{ headerShown: false }}
+      />
+      
   
       <Tab.Screen
         name="Logout"
