@@ -15,6 +15,7 @@ import { useState } from "react";
 import Login from "./Login";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import Strings from "./constants/Strings";
 // import { handle } from "express/lib/application";
 
 export default function SignUp({ navigation }) {
@@ -28,12 +29,10 @@ export default function SignUp({ navigation }) {
       checkIfUserIsAvail();
     } else {
       Alert.alert(
-        "Error", // Title of the alert
-        "Passwords do not match.", // Message
-        [
-          { text: "OK", style: "cancel" }
-        ],
-        { cancelable: true } // Make the alert cancelable
+        "Error",
+        "Passwords do not match.",
+        [{ text: "OK", style: "cancel" }],
+        { cancelable: true }
       );
     }
     Keyboard.dismiss();
@@ -53,7 +52,7 @@ export default function SignUp({ navigation }) {
   if not, display message indicating username is not available */
   const checkIfUserIsAvail = () => {
     axios
-      .get("http://192.168.50.163:3000/users/is-existing", {
+      .get(`http://${Strings.ip_address}:3000/users/is-existing`, {
         params: {
           user: username,
         },
@@ -79,7 +78,7 @@ export default function SignUp({ navigation }) {
     });
 
     axios
-      .post("http://192.168.50.163:3000/users/add-user", params, {
+      .post(`http://${Strings.ip_address}:3000/users/add-user`, params, {
         headers: {
           "content-type": "application/json",
         },

@@ -7,6 +7,8 @@ const UserProvider = ({ children }) => {
   const [userId, setUserId] = React.useState("");
   const [forceUpdate, setForceUpdate] = React.useState(false);
   const [latestBookingObj, setLatestBookingObj] = React.useState([]);
+  const [predictionObj, setPredictionObj] = React.useState({});
+  const [isPredictionMade, setIsPredictionMade] = React.useState(false);
 
   return (
     <UserContext.Provider
@@ -19,6 +21,10 @@ const UserProvider = ({ children }) => {
         setForceUpdate,
         latestBookingObj,
         setLatestBookingObj,
+        predictionObj,
+        setPredictionObj,
+        isPredictionMade,
+        setIsPredictionMade,
       }}
     >
       {children}

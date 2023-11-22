@@ -103,7 +103,7 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
       <TouchableOpacity
         style={[styles.CEIButton, isCEISelected && styles.CEIButtonSelect]}
         onPress={() => {
-          handleBuildingPress("CEI");
+          handleBuildingPress("Engineering Building");
         }}
       >
         <Text style={{ color: "white" }}>CEI</Text>
@@ -111,10 +111,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 
       <TouchableOpacity
         style={{
-          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "46%", // Example value
-          top: "21%", // Example value
-          left: "40%", // Example value
+          width: "15%",
+          height: "46%",
+          top: "21%",
+          left: "40%",
           position: "absolute",
           borderRadius: 10,
           backgroundColor: "#D5D5D5",
@@ -124,10 +124,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
       />
       <TouchableOpacity
         style={{
-          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "21%", // Example value
-          top: "21%", // Example value
-          left: "8%", // Example value
+          width: "15%",
+          height: "21%",
+          top: "21%",
+          left: "8%",
           position: "absolute",
           borderRadius: 10,
           backgroundColor: "#D5D5D5",
@@ -138,10 +138,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 
       <TouchableOpacity
         style={{
-          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "21%", // Example value
-          top: "45%", // Example value
-          left: "8%", // Example value
+          width: "15%",
+          height: "21%",
+          top: "45%",
+          left: "8%",
           position: "absolute",
           borderRadius: 10,
           backgroundColor: "#D5D5D5",
@@ -151,10 +151,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
       />
       <TouchableOpacity
         style={{
-          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "14%", // Example value
-          top: "27%", // Example value
-          left: "77%", // Example value
+          width: "15%",
+          height: "14%",
+          top: "27%",
+          left: "77%",
           position: "absolute",
           borderRadius: 10,
           backgroundColor: "#D5D5D5",
@@ -164,10 +164,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
       />
       <TouchableOpacity
         style={{
-          width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-          height: "10%", // Example value
-          top: "16%", // Example value
-          left: "77%", // Example value
+          width: "15%",
+          height: "10%",
+          top: "16%",
+          left: "77%",
           position: "absolute",
           borderRadius: 10,
           backgroundColor: "#D5D5D5",
@@ -182,10 +182,10 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
 }
 const styles = StyleSheet.create({
   CEIButton: {
-    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "16%", // Example value
-    top: "67.5%", // Example value
-    left: "77%", // Example value
+    width: "15%",
+    height: "16%",
+    top: "67.5%",
+    left: "77%",
     position: "absolute",
     borderRadius: 10,
     alignItems: "center",
@@ -195,10 +195,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   CEIButtonSelect: {
-    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "16%", // Example value
-    top: "67.5%", // Example value
-    left: "77%", // Example value
+    width: "15%",
+    height: "16%",
+    top: "67.5%",
+    left: "77%",
     position: "absolute",
     borderRadius: 10,
     alignItems: "center",
@@ -208,10 +208,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   OdetteButton: {
-    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "20%", // Example value
-    top: "43%", // Example value
-    left: "77%", // Example value
+    width: "15%",
+    height: "20%",
+    top: "43%",
+    left: "77%",
     position: "absolute",
     borderRadius: 10,
     alignItems: "center",
@@ -221,10 +221,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   OdetteButtonSelected: {
-    width: "15%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "20%", // Example value
-    top: "43%", // Example value
-    left: "77%", // Example value
+    width: "15%",
+    height: "20%",
+    top: "43%",
+    left: "77%",
     position: "absolute",
     borderRadius: 10,
     alignItems: "center",
@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   LeddyButton: {
-    width: "18%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "12%", // Example value
-    top: "3%", // Example value
-    left: "25%", // Example value
+    width: "18%",
+    height: "12%",
+    top: "3%",
+    left: "25%",
     position: "absolute",
     borderColor: "transparent",
     borderWidth: 1,
@@ -247,10 +247,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#0099ff",
   },
   LeddyButtonSelected: {
-    width: "18%", // Example value, replace with calculated percentage for building "Leddy"
-    height: "12%", // Example value
-    top: "3%", // Example value
-    left: "25%", // Example value
+    width: "18%",
+    height: "12%",
+    top: "3%",
+    left: "25%",
     position: "absolute",
     borderColor: "transparent",
     borderWidth: 1,
@@ -260,10 +260,10 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   LawButton: {
-    width: "30%", // Example value, replace with calculated percentage for building "Law"
-    height: "12%", // Example value
-    top: "3%", // Example value
-    left: "50%", // Example value
+    width: "30%",
+    height: "12%",
+    top: "3%",
+    left: "50%",
     position: "absolute",
     backgroundColor: "#0099ff",
     borderRadius: 10,
@@ -273,10 +273,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   LawButtonSelected: {
-    width: "30%", // Example value, replace with calculated percentage for building "Law"
-    height: "12%", // Example value
-    top: "3%", // Example value
-    left: "50%", // Example value
+    width: "30%",
+    height: "12%",
+    top: "3%",
+    left: "50%",
     position: "absolute",
     backgroundColor: "#06BCF2",
     borderRadius: 10,
@@ -286,12 +286,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   textContainer: {
-    position: "absolute", // Position the text container absolutely
-    top: 0, // Align to the top of the container
-    left: 0, // Align to the left of the container
-    right: 0, // Align to the right of the container
-    bottom: 0, // Align to the bottom of the container
-    justifyContent: "center", // Center the text vertically
-    alignItems: "center", // Center the text horizontally
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
