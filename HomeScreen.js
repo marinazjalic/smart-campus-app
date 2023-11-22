@@ -31,31 +31,19 @@ import Login from "./Login";
 import Dialog from "react-native-dialog";
 import { useAppContext } from "./AppContext";
 import { UserContext } from "./global/UserContext";
-// import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import Strings from "./constants/Strings";
 import Arrays from "./constants/Arrays";
 import axios from "axios";
-// import Arrays from "./constants/Arrays";
-// import {getUserBookings} from ./
 import { Picker } from "@react-native-picker/picker";
+import { LogBox } from "react-native";
 
 const Stack = createStackNavigator();
-// var networkInfo = require("react-native-network-info");
-// import {NetworkIn }
-import { NetworkInfo } from "react-native-network-info";
 
 const HomeScreen = ({ navigation, route }) => {
-  //const navigation = useNavigation();
-  // console.log("HomeScreen route params:", route.params);
-
-  //this is how you get username from the Login page, after you use navigation.navigate('Home', {username} over there)
-  //for example you can print the username somewhere on HomeScreen
   const username = route.params?.username;
-  const BASE_URL = 'http://Aleksandar.pythonanywhere.com'; // Replace with your PythonAnywhere URL
+  const BASE_URL = "http://Aleksandar.pythonanywhere.com"; // Replace with your PythonAnywhere URL
 
-
-  //startTime = selectedTime
   const { selectedDate, setSelectedDate } = useAppContext();
   const [index, setIndex] = useState(0);
   const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
@@ -70,8 +58,8 @@ const HomeScreen = ({ navigation, route }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [markedDates, setMarkedDates] = useState({});
-
-  // const { val, setVal } = useContext(MyContext);
+  let predictionFlag = false;
+  let predictionCount = 0;
 
   const [reloadFlag, setReloadFlag] = useState(false);
 
@@ -79,6 +67,9 @@ const HomeScreen = ({ navigation, route }) => {
   const { userId, setUserId } = useContext(UserContext);
   const { forceUpdate, setForceUpdate } = useContext(UserContext);
   const { latestBookingObj, setLatestBookingObj } = useContext(UserContext);
+  const { isPredictionMade, setIsPredictionMade } = useContext(UserContext);
+  const { predictionObj, setPredictionObj } = useContext(UserContext);
+
   const [showError, setShowError] = useState(false);
   const [isWhiteboardSelected, setIsWhiteboardSelected] = useState(false);
   const [isAccessibleSelected, setIsAccessibleSelected] = useState(false);
@@ -101,7 +92,7 @@ const HomeScreen = ({ navigation, route }) => {
     if (startTime === null) {
     }
     const now = new Date();
-    now.setHours(12, 30); // Set to 4:30 AM
+    now.setHours(12, 30);
 
     return now;
   };
@@ -120,31 +111,17 @@ const HomeScreen = ({ navigation, route }) => {
     // setRoomCapacity("");
   };
 
-  /*
-//i couldnt get stack container for the longest time but i tried it here and it works?
-<NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Room" component={AIRooomFinder} />
-        <Stack.Screen name="Confirmation" component={Confirmation} /> 
-        <Stack.Screen name="Logout" component={LogoutScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    */
-
   const renderBookingPanel = (booking) => {
     return (
       <View key={booking.id} style={styles.bookingPanel}>
         <Text>Date: {booking.date}</Text>
         <Text>Building: {booking.building}</Text>
-
-        {/* Add more booking details as needed */}
       </View>
     );
   };
 
   useEffect(() => {
-    // Function to generate the next 14 days
+    // Function to generate the next 14 days - changed to 30
     const generateNext14Days = () => {
       const today = new Date();
       const next14Days = {};
@@ -162,8 +139,7 @@ const HomeScreen = ({ navigation, route }) => {
     generateNext14Days(); // call the function to generate the next 14 days on component mount
   }, []);
 
-  const handleFindRoomPress = () => {
-    /*
+  const handleFindRoomPress = async () => {
     handleRoomReservations(
       selectedBuilding,
       roomCapacity,
@@ -172,35 +148,8 @@ const HomeScreen = ({ navigation, route }) => {
       startTime,
       endTime
     );
-*/
-getPrediction('Leddy', 10, 0)
-.then(prediction => {
-  console.log('Received prediction:', prediction);
-  // Handle the prediction result here
-})
-.catch(error => {
-  console.error('Prediction error:', error);
-});
-
-    // resetSelections();
-    // navigation.navigate("Confirmation");
+    resetSelections();
   };
-
-  const getPrediction = async (building, capacity, utilities) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/predict`, {
-        building,
-        capacity,
-        utilities
-      });
-      console.log('Prediction:', response.data.prediction);
-      return response.data.prediction;
-    } catch (error) {
-      console.error('Error while fetching prediction:', error);
-    }
-  };
-
-
 
   const handleInputChange = (value) => {
     setRoomCapacity(value);
@@ -213,13 +162,6 @@ getPrediction('Leddy', 10, 0)
       setShowError(false);
     }
   };
-  /*
-  const handleInputChange = (text) => {
-    if (text >= 1 && text <= 8) {
-      setRoomCapacity(text);
-    }
-  };
-  */
 
   const [routes] = useState([
     { key: "date", title: "Date" },
@@ -258,26 +200,12 @@ getPrediction('Leddy', 10, 0)
 
   const formatDate = (date) => {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1; // months are zero-indexed
+    const month = date.getMonth() + 1;
     const day = date.getDate();
     return `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
   };
-  /*
-  const handleDateSelection = (day) => {
-    const selectedDay = new Date(day.dateString);
-    selectedDay.setHours(0, 0, 0, 0);
-    const todayMidnight = new Date(today);
-    todayMidnight.setHours(0, 0, 0, 0);
-
-    if (selectedDay >= todayMidnight && selectedDay <= maxDate) {
-      const newStyle = { selected: true, selectedColor: 'blue' };
-      setSelectedDate(day.dateString);
-      setSelectedDates({ [day.dateString]: newStyle });
-    }
-  };
-  */
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -289,7 +217,6 @@ getPrediction('Leddy', 10, 0)
               margin: 0,
               padding: 0,
               backgroundColor: "white",
-              // borderRadius: 10,
               overflow: "hidden",
             }}
           >
@@ -297,41 +224,6 @@ getPrediction('Leddy', 10, 0)
               <Calendar
                 minDate={formatDate(today)}
                 maxDate={formatDate(maxDate)}
-                //markingType={'custom'}
-                //markedDates1 = {disabledDates}
-                /*markedDates={{
-                [selectedDate]: {selected: true, selectedColor: 'blue'}
-              }}
-              
-              markedDates={{
-                ...selectedDates,
-                ...Array.from({ length: 15 }, (_, i) => new Date(new Date().setDate(today.getDate() + i)))
-                  .reduce((acc, date) => {
-                    const formattedDate = formatDate(date);
-                    if (!selectedDates[formattedDate]) {
-                      acc[formattedDate] = { customStyles: { container: { backgroundColor: 'white' }, text: { color: 'black' } } };
-                    }
-                    return acc;
-                  }, {}),
-              }}
-              
-              dayComponent={({date, state }) => {
-                const dayToCheck = new Date(date.year, date.month -1, date.day);
-                isSelected = formatDate(dayToCheck) === selectedDate;
-                const isDisabled = dayToCheck < today || dayToCheck > maxDate;
-                
-                return (
-                  <View>
-                    <Text style={{ color: isDisabled ? 'darkgrey' : 'black'}}>
-                      {date.day}
-                    </Text>
-                    </View>
-                    
-                  
-                );
-                
-              }*/
-                // clendar props and customization options here
                 style={{
                   height: screenHeight * 0.38,
                   borderTopWidth: 1,
@@ -357,9 +249,7 @@ getPrediction('Leddy', 10, 0)
             }}
           >
             <CampusMap1
-              //onBuildingPress={setSelectedBuilding}
               selectedBuilding={selectedBuilding}
-              //onBuildingPress={setSelectedBuilding}
               onBuildingPress={handleBuildingPress1}
             ></CampusMap1>
             {/**/}
@@ -375,17 +265,17 @@ getPrediction('Leddy', 10, 0)
       {...props}
       indicatorStyle={{ backgroundColor: "#3399ff" }}
       style={{
-        backgroundColor: "white", //added more styling here
+        backgroundColor: "white",
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       }}
-      activeColor={"#3399ff"} //COLOR FOR DATE/LOC TAB BAR
+      activeColor={"#3399ff"}
       inactiveColor={"gray"}
     />
   );
 
   const screenHeight = Dimensions.get("window").height;
-  const isDateTabActive = index === 0; // Check if the 'Date' tab is active
+  const isDateTabActive = index === 0;
   const isTimeTabActive = index === 0;
   const isLocationTabActive = index == 1;
 
@@ -414,6 +304,8 @@ getPrediction('Leddy', 10, 0)
     if (endTime !== null) {
     }
   }, [endTime]);
+
+  useEffect(() => {}, [isPredictionMade]);
 
   const handleTimePicked = (time) => {
     if (time instanceof Date) {
@@ -582,43 +474,81 @@ getPrediction('Leddy', 10, 0)
       const potentialRooms = filteredRooms.filter((room) =>
         allAvailRoomIds.includes(room._id)
       );
-      const sortByCapacity = potentialRooms.sort(
-        (a, b) => a.capacity - b.capacity
-      );
-      const selectedRoom = sortByCapacity[0];
-      const availabilityId = allAvailRooms.filter(
-        (room) => room.room_id == selectedRoom._id
-      );
 
-      console.log("SELECTED ROOM");
-      console.log(selectedRoom);
-      console.log(availabilityId);
-      const newDate = new Date(selectedDate);
-      const formattedDate =
-        Arrays.weekdays[newDate.getDay() + 1] +
-        ", " +
-        Arrays.months[newDate.getMonth()] +
-        " " +
-        Number(newDate.getDate() + 1).toString();
+      /* if there is a room but no availability for those date/times, make a prediction */
+      if (potentialRooms.length == 0) {
+        predictionCount++;
+        if (predictionCount <= 3) {
+          await handlePredictionData(location, capacity, utilities);
+        } else {
+          //trigger the alert here
+          console.log("ALERT");
+        }
+      } else {
+        const sortByCapacity = potentialRooms.sort(
+          (a, b) => a.capacity - b.capacity
+        );
+        const selectedRoom = sortByCapacity[0];
+        const availabilityId = allAvailRooms.filter(
+          (room) => room.room_id == selectedRoom._id
+        );
+        const newDate = new Date(selectedDate);
+        const formattedDate =
+          Arrays.weekdays[newDate.getDay() + 1] +
+          ", " +
+          Arrays.months[newDate.getMonth()] +
+          " " +
+          Number(newDate.getDate() + 1).toString();
 
-      const newBooking = await createNewBooking(
-        selectedRoom._id,
-        startTime,
-        endTime,
-        selectedDate
-      );
-      await modifyAvailability(availabilityId[0].id, startTime, endTime);
-      reloadBookingData(
-        new Date(newBooking.date),
-        selectedRoom.room_num,
-        selectedRoom.location,
-        selectedRoom.accessibility,
-        selectedRoom.utilities,
-        selectedRoom.capacity,
-        newBooking._id,
-        selectedRoom._id,
-        formattedDate
-      );
+        /* we can only reserve the room automatically if it meets all user requirements */
+        if (!predictionFlag) {
+          const newBooking = await createNewBooking(
+            selectedRoom._id,
+            startTime,
+            endTime,
+            selectedDate
+          );
+          await modifyAvailability(availabilityId[0].id, startTime, endTime);
+          reloadBookingData(
+            new Date(newBooking.date),
+            selectedRoom.room_num,
+            selectedRoom.location,
+            selectedRoom.accessibility,
+            selectedRoom.utilities,
+            selectedRoom.capacity,
+            newBooking._id,
+            selectedRoom._id,
+            formattedDate
+          );
+        } else if (predictionFlag) {
+          // prediction made, and room was found
+          let predictedRoom = {
+            roomId: selectedRoom._id,
+            dateText: formattedDate,
+            time: startTime + " - " + endTime,
+            room_num: selectedRoom.room_num,
+            location: selectedRoom.location,
+            accessibility: selectedRoom.accessibility,
+            utilities: selectedRoom.utilities,
+            capacity: selectedRoom.capacity,
+            selectedDate: selectedDate,
+            startTime: startTime,
+            endTime: endTime,
+            availabilityId: availabilityId[0].id,
+          };
+          setPredictionObj(predictedRoom);
+          predictionFlag = false;
+          predictionCount = 0;
+          navigation.navigate("Suggestions");
+        }
+      }
+    } else {
+      predictionCount++;
+      if (predictionCount <= 3) {
+        await handlePredictionData(location, capacity, utilities);
+      } else {
+        //call an alert here for further error handling
+      }
     }
   };
 
@@ -658,26 +588,65 @@ getPrediction('Leddy', 10, 0)
     navigation.navigate("Confirmation");
   };
 
+  const getPrediction = async (building, capacity, utilities) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/predict`, {
+        building,
+        capacity,
+        utilities,
+      });
+      console.log("Prediction:", response.data.prediction);
+      return response.data.prediction;
+    } catch (error) {
+      console.error("Error while fetching prediction:", error);
+    }
+  };
+
+  const handlePredictionData = async (
+    location,
+    capacity,
+    utilities,
+    accessibility,
+    start_time,
+    end_time
+  ) => {
+    const utilitiesEncoded = utilities == true ? 1 : 0;
+    predictionFlag = true;
+    if (location.includes("Leddy")) {
+      location = "Leddy";
+    }
+    const prediction = await getPrediction(location, capacity, utilities);
+
+    if (prediction != utilities) {
+      if (prediction == "Leddy") {
+        location = "Leddy Library";
+      } else {
+        location = prediction;
+      }
+    }
+    if (prediction == utilities) {
+      utilities = !utilities;
+    }
+
+    handleRoomReservations(
+      location,
+      capacity,
+      accessibility,
+      utilities,
+      start_time,
+      end_time
+    );
+  };
+
   return (
     <LinearGradient
       colors={["#0059b3", "#99ccff", "#ffcc66"]}
       style={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
-        {/* <LinearGradient colors={["#4c669f", "#3b5998", "#192f6a"]}> */}
-        {
-          //nothing goes here
-        }
-        {/* <LinearGradient colors={["#4c669f", "#3b5998", "#192f6a"]}> */}
         <View style={{ flex: 3.5 }}>
-          {
-            //title for Upcoming Bookings
-            <UpcomingBookings></UpcomingBookings>
-            //<Text style={{fontSize: 20, marginTop: '20%', marginLeft: '3%'}}>Upcoming Bookings</Text>
-            //followed by panels for Upcoming bookings
-          }
+          {<UpcomingBookings></UpcomingBookings>}
         </View>
-        {/* </LinearGradient> */}
         <View
           style={{
             flex: 6.5,
@@ -691,7 +660,7 @@ getPrediction('Leddy', 10, 0)
             renderScene={renderScene}
             onIndexChange={setIndex}
             renderTabBar={renderTabBar}
-            style={{ flex: 1 }} // Fixed height
+            style={{ flex: 1 }}
           />
 
           {isDateTabActive && (
@@ -705,11 +674,7 @@ getPrediction('Leddy', 10, 0)
               >
                 <TouchableOpacity
                   style={{
-                    // padding: 16,
                     marginTop: 6,
-                    // marginRight: 2,
-                    // marginBottom: 1,
-                    // backgroundColor: "#3E92CC",
                     borderRadius: 10,
                     marginRight: 50,
                     width: "40%",
@@ -728,7 +693,6 @@ getPrediction('Leddy', 10, 0)
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.gradientButton}
-                    // #0059b3", "#99ccff"
                   >
                     <Text
                       style={{
@@ -746,10 +710,7 @@ getPrediction('Leddy', 10, 0)
 
                 <TouchableOpacity
                   style={{
-                    // padding: 16,
                     marginTop: 6,
-                    // marginLeft: 2,
-                    // marginBottom: 1,
                     backgroundColor: "#3E92CC",
                     borderRadius: 10,
                     width: "40%",
@@ -782,28 +743,6 @@ getPrediction('Leddy', 10, 0)
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
-
-                {/* {selectedDate &&
-                  startTime &&
-                  endTime && ( //if date and time are selected, show them both
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                        Start Time: {startTime}
-                      </Text>
-                      <Text style={{ marginRight: 16, marginLeft: 4 }}>
-                        End Time: {endTime}
-                      </Text>
-                      <Text
-                        style={{
-                          marginRight: 16,
-                          marginLeft: 4,
-                          marginBottom: 0,
-                        }}
-                      >
-                        Date: {selectedDate}{" "}
-                      </Text>
-                    </View>
-                  )} */}
               </View>
             </View>
           )}
@@ -813,7 +752,7 @@ getPrediction('Leddy', 10, 0)
             mode="time"
             minuteInterval={30}
             onConfirm={handleTimePicked}
-            onCancel={hideStartTimePicker} //will hide time picker if you press cancel
+            onCancel={hideStartTimePicker}
             date={getInitialTime()}
           />
           <DateTimePickerModal
@@ -821,7 +760,7 @@ getPrediction('Leddy', 10, 0)
             mode="time"
             minuteInterval={30}
             onConfirm={handleEndTimePicked}
-            onCancel={hideEndTimePicker} //will hide time picker if you press cancel
+            onCancel={hideEndTimePicker}
             date={getInitialTime()}
           />
 
@@ -835,9 +774,7 @@ getPrediction('Leddy', 10, 0)
                   style={{
                     justifyContent: "space-between",
                     backgroundColor: "white",
-                    //flex:0.227,
                     marginBottom: "-111%",
-                    //marginTop: "1%",
                   }}
                 >
                   <View
@@ -861,7 +798,6 @@ getPrediction('Leddy', 10, 0)
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-around",
-                            // backgroundColor: "red",
                             marginTop: 20,
                           }}
                         >
@@ -940,16 +876,12 @@ getPrediction('Leddy', 10, 0)
                             marginLeft: 10,
                             justifyContent: "space-between",
                             alignItems: "center",
-                            // backgroundColor: "red",
                           }}
                         >
                           {startTime && selectedDate && endTime && (
                             <>
                               <TouchableOpacity
                                 style={{
-                                  // padding: 15,
-                                  // marginTop: 0,
-                                  // marginBottom: 0,
                                   backgroundColor: "#3E92CC",
                                   borderRadius: 10,
                                   height: "55%",
@@ -966,7 +898,6 @@ getPrediction('Leddy', 10, 0)
                                   start={{ x: 0, y: 0 }}
                                   end={{ x: 1, y: 0 }}
                                   style={styles.findRoomGradient}
-                                  // #0059b3", "#99ccff"
                                 >
                                   <Text
                                     style={{
@@ -1013,7 +944,7 @@ const styles = StyleSheet.create({
     marginLeft: "3%",
     padding: 30,
     marginBottom: 10,
-    borderRadius: 20, // Adjust for desired corner radius
+    borderRadius: 20,
     backgroundColor: "white",
     shadowColor: "#000",
     height: "22%",
@@ -1022,7 +953,6 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.23,
-    // shadowRadius: 2.99,
     elevation: 10,
   },
   cardTitle: {
@@ -1036,7 +966,6 @@ const styles = StyleSheet.create({
   filterButton: {
     padding: 10,
     justifyContent: "center",
-    //width:'27%',
     marginLeft: 20,
     justifyContent: "space-around",
     borderWidth: 1,
@@ -1044,7 +973,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     borderColor: "#ccc",
-    // backgroundColor: "red",
   },
   selectedButton: {
     backgroundColor: "#99ccff",
@@ -1057,13 +985,11 @@ const styles = StyleSheet.create({
   },
   card2: {
     width: "95%",
-    //justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-    //padding: 2,
     marginBottom: 0,
-    borderRadius: 20, // Adjust for desired corner radius
+    borderRadius: 20,
     backgroundColor: "white",
     shadowColor: "#000",
     height: "59%",
@@ -1073,13 +999,9 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.23,
-    // shadowRadius: 2.99,
     elevation: 1,
   },
   findRoomGradient: {
-    // padding: 15,
-    // marginTop: 0,
-    // marginBottom: 0,
     backgroundColor: "#3E92CC",
     borderRadius: 10,
     height: "100%",

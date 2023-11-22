@@ -14,16 +14,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AIRoomFinder from "./AIRoomFinder";
 import Confirmation from "./Confirmation";
+import SuggestionScreen from "./SuggestionScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignUp from "./SignUp";
 import { AppProvider } from "./AppContext";
 import { ContextProvider, MyContext } from "./MyContext";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { LogBox } from "react-native";
 import { UserContext, UserProvider } from "./global/UserContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+LogBox.ignoreLogs(["Warning: ..."]);
+
+LogBox.ignoreAllLogs();
+console.disableYellowBox = true;
 
 function TabNavigator() {
   return (
@@ -77,13 +82,12 @@ function TabNavigator() {
         }}
       />
 
-      <Tab.Screen
-        name="AI Room"
-        component={AIRoomFinder}
+      {/* <Tab.Screen
+        name="Suggestion Screen"
+        component={SuggestionScreen}
         options={{ headerShown: false }}
-      />
-      
-  
+      /> */}
+
       <Tab.Screen
         name="Logout"
         component={Logout}
@@ -111,6 +115,7 @@ function TabNavigator() {
 }
 
 export default function App() {
+  // console.disableYellowBox = true;
   return (
     //initialRouteName was "Home"
     //Stack.Screen 1st was "Home" component={HomeScreen}
@@ -132,6 +137,11 @@ export default function App() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Suggestions"
+              component={SuggestionScreen}
               options={{ headerShown: false }}
             />
             {/* Add other screens as needed */}

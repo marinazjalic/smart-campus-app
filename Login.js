@@ -17,9 +17,11 @@ import { UserContext } from "./global/UserContext";
 import Strings from "./constants/Strings";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
+import { LogBox } from "react-native";
 //import Navigation from './Navigation';
 
 function Login({ navigation }) {
+  LogBox.ignoreLogs(["Warning: ..."]);
   const weekdays = [
     "Sunday",
     "Monday",
@@ -64,9 +66,6 @@ function Login({ navigation }) {
   const handleLogin = () => {
     validateCredentials();
     Keyboard.dismiss();
-    // console.log("Navigating with username:", username);
-    // navigation.navigate("Home", { username });
-    // resetSelections();  //this is to make the username/psswd blank after u login
   };
 
   const validateCredentials = () => {
@@ -115,6 +114,7 @@ function Login({ navigation }) {
           screen: "Home",
           params: { userBookings: bookings_arr },
         });
+        resetSelections();
       })
       .catch((error) => {
         console.log(error);
