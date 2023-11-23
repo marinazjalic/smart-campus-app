@@ -479,11 +479,23 @@ const HomeScreen = ({ navigation, route }) => {
       if (potentialRooms.length == 0) {
         predictionCount++;
         if (predictionCount <= 3) {
+          console.log("Prediction 1");
           await handlePredictionData(location, capacity, utilities);
         } else {
           //trigger the alert here
+          
+          Alert.alert(
+            "Room Unavailable",
+            "Sorry, all rooms are booked.",
+            [
+              { text: "OK", onPress: () => resetSelections() }
+            ]
+          );
+          
           console.log("ALERT");
+          
         }
+        
       } else {
         const sortByCapacity = potentialRooms.sort(
           (a, b) => a.capacity - b.capacity
@@ -545,9 +557,17 @@ const HomeScreen = ({ navigation, route }) => {
     } else {
       predictionCount++;
       if (predictionCount <= 3) {
+        console.log("Prediction 2");
         await handlePredictionData(location, capacity, utilities);
       } else {
         //call an alert here for further error handling
+        Alert.alert(
+          "Room Unavailable",
+          "Sorry, all rooms are booked.",
+          [
+            { text: "OK", onPress: () => resetSelections() }
+          ]
+        );
       }
     }
   };
