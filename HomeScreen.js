@@ -82,6 +82,7 @@ const HomeScreen = ({ navigation, route }) => {
     setRoomCapacity("");
     setIsWhiteboardSelected(false);
     setIsAccessibleSelected(false);
+    setSelectedDates({});
   };
 
   const handleCancel = () => {
@@ -572,6 +573,7 @@ const HomeScreen = ({ navigation, route }) => {
     }
   };
 
+  
   const reloadBookingData = (
     dateObj,
     room_num,
