@@ -5,6 +5,7 @@ import {
   TextInput,
   Button,
   StyleSheet,
+  Image,
   ScrollView,
   Keyboard,
   ImageBackground,
@@ -57,6 +58,7 @@ function Login({ navigation }) {
 
   const bookings_arr = [];
   let booking_id = 0;
+
 
   const resetSelections = () => {
     setUsername("");
@@ -200,7 +202,11 @@ function Login({ navigation }) {
         colors={["#004d99", "#3399ff", "#99ccff"]}
         style={{ height: "60%", width: "100%" }}
       >
+
         <View style={styles.topContainer}>
+        
+        <Image source={require('./assets/logo.png')} style={{ width: "99%", height: "20%", marginTop: "50%"}} />
+
           <TextInput
             placeholder="Enter your email"
             placeholderTextColor={"white"}
@@ -244,6 +250,7 @@ function Login({ navigation }) {
         </TouchableOpacity>
       </View>
     </View>
+    
   );
 }
 
@@ -281,7 +288,7 @@ const styles = StyleSheet.create({
   emailInput: {
     height: "15%",
     width: "63%",
-    marginTop: "93%",
+    marginTop: "27%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
     marginLeft: "18%",
@@ -351,6 +358,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
     height: "60%",
     width: "100%",
+    //alignItems: 'center',
+    //justifyContent: 'flex-start',
   },
   bottomContainer: {
     height: "33%",

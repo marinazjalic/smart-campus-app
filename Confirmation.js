@@ -88,10 +88,13 @@ function Confirmation({ navigation }) {
           <Text style={styles.detailsText}>
             Capacity: {latestBookingObj.capacity}
           </Text>
-          <Text style={styles.detailsText}>
-            This room is equipped with a whiteboard, power outlet and is
-            accessible.
-          </Text>
+          {latestBookingObj.utilities && (
+        <Text style={styles.detailsText}>This room is equipped with a whiteboard and power outlet</Text>
+      )}
+      {latestBookingObj.accessibility && (
+        <Text style={styles.detailsText}>This room is wheelchair accessible.</Text>
+      )}
+      
         </View>
         <TouchableOpacity
           style={styles.homeButton}
