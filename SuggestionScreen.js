@@ -30,16 +30,22 @@ function Suggestions({ navigation }) {
   }
 
   //needs to be replaced with a  different svg
-  function Success() {
+  function Icon() {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
         width="100"
         height="100"
-        viewBox="0 0 32 32"
-        fill="#0099ff"
+        viewBox="0 0 16 16"
       >
-        <Path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm7.258 9.307l-9.486 9.485a.61.61 0 01-.861 0l-.191-.191-.001.001L7.5 16.346a.61.61 0 010-.862l1.294-1.293a.61.61 0 01.862 0l3.689 3.716 7.756-7.756a.61.61 0 01.862 0l1.294 1.294a.609.609 0 01.001.862z"></Path>
+        <Path
+          fill="#0099ff"
+          d="M8 1c3.9 0 7 3.1 7 7s-3.1 7-7 7-7-3.1-7-7 3.1-7 7-7zm0-1C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z"
+        ></Path>
+        <Path
+          fill="#0099ff"
+          d="M7 6a1 1 0 11-2 0 1 1 0 012 0zM11 6a1 1 0 11-2 0 1 1 0 012 0zM11.3 12.3c-.7-1.1-2-1.8-3.3-1.8s-2.6.7-3.3 1.8l-.8-.6c.9-1.4 2.4-2.2 4.1-2.2s3.2.8 4.1 2.2l-.8.6z"
+        ></Path>
       </Svg>
     );
   }
@@ -171,7 +177,7 @@ function Suggestions({ navigation }) {
             marginTop: "34%",
           }}
         >
-          <Success />
+          <Icon />
         </View>
 
         <Text style={styles.titleText}>Sorry...</Text>
@@ -278,8 +284,9 @@ const styles = StyleSheet.create({
     fontFamily: "Avenir",
     fontSize: 30,
     marginTop: "4.5%",
+    marginLeft: "41%",
 
-    textAlign: "center",
+    // textAlign: "center",
   },
   subtitleText: {
     color: "#0099ff",
