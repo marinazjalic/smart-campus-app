@@ -89,12 +89,15 @@ function Confirmation({ navigation }) {
             Capacity: {latestBookingObj.capacity}
           </Text>
           {latestBookingObj.utilities && (
-        <Text style={styles.detailsText}>This room is equipped with a whiteboard and power outlet</Text>
-      )}
-      {latestBookingObj.accessibility && (
-        <Text style={styles.detailsText}>This room is wheelchair accessible.</Text>
-      )}
-      
+            <Text style={styles.detailsText}>
+              This room is equipped with a whiteboard and power outlet.
+            </Text>
+          )}
+          {latestBookingObj.accessibility && (
+            <Text style={styles.detailsText}>
+              This room is wheelchair accessible.
+            </Text>
+          )}
         </View>
         <TouchableOpacity
           style={styles.homeButton}
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     backgroundColor: "white",
-    height: 310,
+    height: 318,
     width: "93%",
     marginLeft: 15,
     shadowColor: "#000",

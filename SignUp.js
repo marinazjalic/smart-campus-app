@@ -100,7 +100,16 @@ export default function SignUp({ navigation }) {
         style={{ height: "60%", width: "100%" }}
       >
         <View style={styles.topContainer}>
-        <Image source={require('./assets/logo.png')} style={{ width: "99%", height: "10%", marginTop: "50%"}} />
+          <Image
+            source={require("./assets/logo.png")}
+            style={{
+              width: "69%",
+              height: "20%",
+              marginTop: "60%",
+              marginLeft: "15%",
+              resizeMode: "contain",
+            }}
+          />
           <TextInput
             placeholder="Enter your email"
             placeholderTextColor={"white"}
@@ -179,7 +188,7 @@ const styles = StyleSheet.create({
   emailInput: {
     height: "10%",
     width: "63%",
-    marginTop: "25%",
+    // marginTop: "25%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
     marginLeft: "18%",

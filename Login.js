@@ -59,7 +59,6 @@ function Login({ navigation }) {
   const bookings_arr = [];
   let booking_id = 0;
 
-
   const resetSelections = () => {
     setUsername("");
     setPassword("");
@@ -132,14 +131,18 @@ function Login({ navigation }) {
       let time_slot =
         upcomingBookings[i].start_time + " - " + upcomingBookings[i].end_time;
       let parsedDate = upcomingBookings[i].date.toString().split("-");
-      let newDate = new Date(upcomingBookings[i].date.split("T")[0]);
+      let dateString =
+        parsedDate[1] + "-" + parsedDate[2].split("T")[0] + "-" + parsedDate[0];
 
+      //update this to fix the date obj
+      let newDate = new Date(upcomingBookings[i].date);
+      newDate.setHours(0);
       let formattedDate =
-        weekdays[newDate.getDay() + 1] +
+        weekdays[newDate.getDay()] +
         ", " +
         months[parsedDate[1] - 1] +
         " " +
-        (Number(newDate.getDate()) + 1).toString();
+        newDate.getDate();
       const room_details = await getRoomDetails(upcomingBookings[i].room_id);
 
       let booking_obj = {
@@ -156,6 +159,7 @@ function Login({ navigation }) {
         room_id: upcomingBookings[i].room_id,
       };
       bookings_arr.push(booking_obj);
+      console.log(booking_obj);
     }
     setBookings(bookings_arr);
     setData(bookings_arr);
@@ -202,10 +206,19 @@ function Login({ navigation }) {
         colors={["#004d99", "#3399ff", "#99ccff"]}
         style={{ height: "60%", width: "100%" }}
       >
-
         <View style={styles.topContainer}>
-        
-        <Image source={require('./assets/logo.png')} style={{ width: "99%", height: "20%", marginTop: "50%"}} />
+          {/* <View style={styles.imageContainer}> */}
+          <Image
+            source={require("./assets/logo.png")}
+            style={{
+              width: "69%",
+              height: "20%",
+              marginTop: "70%",
+              marginLeft: "16%",
+              resizeMode: "contain",
+            }}
+          />
+          {/* </View> */}
 
           <TextInput
             placeholder="Enter your email"
@@ -222,9 +235,9 @@ function Login({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             style={styles.pwInput}
           />
-          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
             <Text style={styles.forgotText}>Forgot Password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </LinearGradient>
       <View style={styles.bottomContainer}>
@@ -250,7 +263,6 @@ function Login({ navigation }) {
         </TouchableOpacity>
       </View>
     </View>
-    
   );
 }
 
@@ -286,14 +298,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emailInput: {
-    height: "15%",
+    height: "10%",
     width: "63%",
-    marginTop: "27%",
+    // marginTop: "1%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
     marginLeft: "18%",
     padding: 10,
-    marginBottom: 10,
+    // marginBottom: "10%",
     shadowOffset: {
       width: 1,
       height: 2,
@@ -303,13 +315,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   pwInput: {
-    height: "15%",
+    height: "10%",
     width: "63%",
     borderBottomWidth: 1,
     borderBottomColor: "white",
     marginLeft: "18%",
     padding: 10,
-    marginBottom: 10,
+    marginBottom: "40%",
     fontFamily: "Avenir",
     shadowOffset: {
       width: 1,
@@ -356,7 +368,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     // backgroundColor: "red",
-    height: "60%",
+    height: "100%",
     width: "100%",
     //alignItems: 'center',
     //justifyContent: 'flex-start',
@@ -406,6 +418,11 @@ const styles = StyleSheet.create({
     marginLeft: 150,
     marginTop: 5,
   },
+  // imageContainer: {
+  //   height: "50%",
+  //   width: "90%",
+  //   backgroundColor: "red",
+  // },
 });
 
 export default Login;

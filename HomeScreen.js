@@ -352,6 +352,7 @@ const HomeScreen = ({ navigation, route }) => {
     if (day && day.dateString) {
       const newStyle = { selected: true, selectedColor: "#0099ff" };
       setSelectedDate(day.dateString);
+      console.log(day.dateString);
       setSelectedDates({ [day.dateString]: newStyle });
     } else {
       console.error("Invalid day object received:", day);
@@ -484,19 +485,13 @@ const HomeScreen = ({ navigation, route }) => {
           await handlePredictionData(location, capacity, utilities);
         } else {
           //trigger the alert here
-          
-          Alert.alert(
-            "Room Unavailable",
-            "Sorry, all rooms are booked.",
-            [
-              { text: "OK", onPress: () => resetSelections() }
-            ]
-          );
-          
+
+          Alert.alert("Room Unavailable", "Sorry, all rooms are booked.", [
+            { text: "OK", onPress: () => resetSelections() },
+          ]);
+
           console.log("ALERT");
-          
         }
-        
       } else {
         const sortByCapacity = potentialRooms.sort(
           (a, b) => a.capacity - b.capacity
@@ -505,13 +500,24 @@ const HomeScreen = ({ navigation, route }) => {
         const availabilityId = allAvailRooms.filter(
           (room) => room.room_id == selectedRoom._id
         );
-        const newDate = new Date(selectedDate);
+        // const newDate = new Date(selectedDate);
+        const parseDate = selectedDate.split("-");
+        const newDate = new Date(
+          parseDate[0],
+          Number(parseDate[1]) - 1,
+          parseDate[2]
+        );
+        // newDate.setHours(0);
+
+        console.log("NEWDATE");
+        console.log(newDate.getDay());
+        console.log(newDate);
         const formattedDate =
-          Arrays.weekdays[newDate.getDay() + 1] +
+          Arrays.weekdays[newDate.getDay()] +
           ", " +
           Arrays.months[newDate.getMonth()] +
           " " +
-          Number(newDate.getDate() + 1).toString();
+          newDate.getDate();
 
         /* we can only reserve the room automatically if it meets all user requirements */
         if (!predictionFlag) {
@@ -562,18 +568,13 @@ const HomeScreen = ({ navigation, route }) => {
         await handlePredictionData(location, capacity, utilities);
       } else {
         //call an alert here for further error handling
-        Alert.alert(
-          "Room Unavailable",
-          "Sorry, all rooms are booked.",
-          [
-            { text: "OK", onPress: () => resetSelections() }
-          ]
-        );
+        Alert.alert("Room Unavailable", "Sorry, all rooms are booked.", [
+          { text: "OK", onPress: () => resetSelections() },
+        ]);
       }
     }
   };
 
-  
   const reloadBookingData = (
     dateObj,
     room_num,
