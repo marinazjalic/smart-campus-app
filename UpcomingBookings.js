@@ -42,6 +42,7 @@ const UpcomingBookings = () => {
                 shadowOpacity: 0.23,
                 shadowRadius: 2.99,
                 height: "86%",
+                width: 287,
               }}
             >
               <Card.Title style={styles.dateText}>
