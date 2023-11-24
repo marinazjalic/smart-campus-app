@@ -223,6 +223,7 @@ function Login({ navigation }) {
           <TextInput
             placeholder="Enter your email"
             placeholderTextColor={"white"}
+            autoCapitalize="none"
             value={username}
             onChangeText={(text) => setUsername(text)}
             style={styles.emailInput}
