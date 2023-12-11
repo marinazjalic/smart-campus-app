@@ -2,7 +2,6 @@ import React from "react";
 import { View, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
 
 const imageSourceMap = require("./campus1.jpg");
-// const imageSourceMap = require("./testCamp.png");
 export default function ClickableImage() {
   return (
     <View style={styles.container}>
@@ -27,7 +26,6 @@ export default function ClickableImage() {
         style={styles.clickableArea5}
         onPress={() => Alert.alert("Engineering")}
       />
-      {/* Add more touchables for more clickable areas */}
     </View>
   );
 }
@@ -42,26 +40,23 @@ const styles = StyleSheet.create({
   },
   clickableArea1: {
     position: "absolute",
-    top: 50, // Adjust according to your needs
-    left: 50, // Adjust according to your needs
-    width: 50, // Adjust according to your needs
-    height: 50, // Adjust according to your needs
-    backgroundColor: "rgba(255, 0, 0, 0.5)", // Uncomment this to see the clickable area
+    top: 50,
+    left: 50,
+    width: 50,
+    height: 50,
   },
   clickableArea2: {
     position: "absolute",
-    top: 150, // Adjust according to your needs
-    left: 150, // Adjust according to your needs
-    width: 50, // Adjust according to your needs
-    height: 50, // Adjust according to your needs
-    // backgroundColor: 'rgba(0, 255, 0, 0.5)' // Uncomment this to see the clickable area
+    top: 150,
+    left: 150,
+    width: 50,
+    height: 50,
   },
   clickableArea3: {
     position: "absolute",
-    top: 150, // Adjust according to your needs
-    left: 150, // Adjust according to your needs
-    width: 50, // Adjust according to your needs
-    height: 50, // Adjust according to your needs
-    // backgroundColor: 'rgba(0, 255, 0, 0.5)' // Uncomment this to see the clickable area
+    top: 150,
+    left: 150,
+    width: 50,
+    height: 50,
   },
 });

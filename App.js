@@ -78,15 +78,8 @@ function TabNavigator() {
               end={{ x: 1, y: 0 }}
             />
           ),
-          // headerStyle: { backgroundColor: "#0066cc" },
         }}
       />
-
-      {/* <Tab.Screen
-        name="Suggestion Screen"
-        component={SuggestionScreen}
-        options={{ headerShown: false }}
-      /> */}
 
       <Tab.Screen
         name="Logout"
@@ -94,7 +87,6 @@ function TabNavigator() {
         options={{ headerShown: false }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            // Prevent default action
             e.preventDefault();
 
             Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -115,10 +107,7 @@ function TabNavigator() {
 }
 
 export default function App() {
-  // console.disableYellowBox = true;
   return (
-    //initialRouteName was "Home"
-    //Stack.Screen 1st was "Home" component={HomeScreen}
     <AppProvider>
       <UserProvider>
         <NavigationContainer>
@@ -144,7 +133,6 @@ export default function App() {
               component={SuggestionScreen}
               options={{ headerShown: false }}
             />
-            {/* Add other screens as needed */}
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>

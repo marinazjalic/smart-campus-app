@@ -15,19 +15,7 @@ import { UserContext } from "./global/UserContext";
 //const Stack1 = createStackNavigator();
 
 function Confirmation({ navigation }) {
-  // const { latestBookingID, set}
   const { latestBookingObj, setLatestBookingObj } = useContext(UserContext);
-  /*
-  <NavigationContainer>
-      <Stack1.Navigator initialRouteName="Home">
-        <Stack1.Screen name="Home" component={HomeScreen} />
-        <Stack1.Screen name="App" component={App} />
-        <Stack1.Screen name="Room" component={AIRooomFinder} />
-        <Stack1.Screen name="Confirmation" component={Confirmation} /> 
-        <Stack1.Screen name="Logout" component={LogoutScreen} />
-      </Stack1.Navigator>
-    </NavigationContainer>
-  */
   function handleHomeButtonPress() {
     navigation.navigate("Home");
   }
@@ -113,25 +101,6 @@ function Confirmation({ navigation }) {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.container}>
-            <View style={styles.card}>
-            <Text style={{fontSize: 24, marginTop:60, marginBottom:5}}>RESERVED</Text>
-            <View style={{ flexDirection: 'row'}}>
-              <RoomFeatures isAccessibleSelected={isAccessibleSelected} isWhiteboardSelected={isWhiteboardSelected} />
-          <Text> Location: {selectedBuilding}</Text>
-
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-          <IconPerson />
-          <Text> {roomCapacity} </Text>
-          </View>
-          
-          <Text style= {{ marginBottom: 30}}>{selectedDate}</Text>
-          <Button title='Go home' onPress={() => navigation.navigate('Home')} color="#0B7DF1" />
-
-        </View>
-
-      </View> */}
     </View>
   );
 }
@@ -152,7 +121,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 30,
     marginBottom: 10,
-    borderRadius: 20, // Adjust for desired corner radius
+    borderRadius: 20,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -164,8 +133,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   text: {
-    fontSize: 16, // Adjust the font size as needed
-    color: "#000", // Adjust text color as needed
+    fontSize: 16,
+    color: "#000",
   },
   topContainer: {
     backgroundColor: "white",
@@ -243,11 +212,8 @@ const styles = StyleSheet.create({
   detailsText: {
     color: "#999999",
     fontFamily: "Avenir",
-    // fontWeight: "bold",
     fontSize: 14,
     paddingTop: 20,
-    // paddingLeft: 12,
-    // textAlign: "center",
     marginLeft: 12,
   },
 });

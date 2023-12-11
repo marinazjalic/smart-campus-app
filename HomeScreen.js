@@ -16,7 +16,7 @@ import {
 import { TabView, TabBar } from "react-native-tab-view";
 import { Calendar } from "react-native-calendars";
 import { TouchableOpacity } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker"; // Import the date-time picker
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import CampusMap1 from "./CampusMap1";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "./Checkbox";
@@ -46,9 +46,9 @@ const HomeScreen = ({ navigation, route }) => {
 
   const { selectedDate, setSelectedDate } = useAppContext();
   const [index, setIndex] = useState(0);
-  const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
-  const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false); // State to control the visibility of the date-time picker
-  const [startTime, setStartTime] = useState(null); // State to store the selected date
+  const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false);
+  const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false);
+  const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedDates, setSelectedDates] = useState({});
@@ -107,9 +107,6 @@ const HomeScreen = ({ navigation, route }) => {
     } else {
       console.warn("Invalid capacity value:", numCapacity);
     }
-
-    // Reset the capacity after closing the dialog
-    // setRoomCapacity("");
   };
 
   const renderBookingPanel = (booking) => {
@@ -137,7 +134,7 @@ const HomeScreen = ({ navigation, route }) => {
       setMarkedDates(next14Days);
     };
 
-    generateNext14Days(); // call the function to generate the next 14 days on component mount
+    generateNext14Days();
   }, []);
 
   const handleFindRoomPress = async () => {
@@ -352,7 +349,6 @@ const HomeScreen = ({ navigation, route }) => {
     if (day && day.dateString) {
       const newStyle = { selected: true, selectedColor: "#0099ff" };
       setSelectedDate(day.dateString);
-      console.log(day.dateString);
       setSelectedDates({ [day.dateString]: newStyle });
     } else {
       console.error("Invalid day object received:", day);
@@ -481,16 +477,11 @@ const HomeScreen = ({ navigation, route }) => {
       if (potentialRooms.length == 0) {
         predictionCount++;
         if (predictionCount <= 3) {
-          console.log("Prediction 1");
           await handlePredictionData(location, capacity, utilities);
         } else {
-          //trigger the alert here
-
           Alert.alert("Room Unavailable", "Sorry, all rooms are booked.", [
             { text: "OK", onPress: () => resetSelections() },
           ]);
-
-          console.log("ALERT");
         }
       } else {
         const sortByCapacity = potentialRooms.sort(
@@ -500,18 +491,13 @@ const HomeScreen = ({ navigation, route }) => {
         const availabilityId = allAvailRooms.filter(
           (room) => room.room_id == selectedRoom._id
         );
-        // const newDate = new Date(selectedDate);
         const parseDate = selectedDate.split("-");
         const newDate = new Date(
           parseDate[0],
           Number(parseDate[1]) - 1,
           parseDate[2]
         );
-        // newDate.setHours(0);
 
-        console.log("NEWDATE");
-        console.log(newDate.getDay());
-        console.log(newDate);
         const formattedDate =
           Arrays.weekdays[newDate.getDay()] +
           ", " +
@@ -564,7 +550,6 @@ const HomeScreen = ({ navigation, route }) => {
     } else {
       predictionCount++;
       if (predictionCount <= 3) {
-        console.log("Prediction 2");
         await handlePredictionData(location, capacity, utilities);
       } else {
         //call an alert here for further error handling
@@ -586,8 +571,14 @@ const HomeScreen = ({ navigation, route }) => {
     room_id,
     dateText
   ) => {
+    let id;
+    if (bookings.length == 0) {
+      id = 0;
+    } else {
+      id = bookings[bookings.length - 1].id++;
+    }
     let bookingObj = {
-      id: bookings[bookings.length - 1].id++,
+      id: id,
       dateText: dateText,
       dateObj: dateObj,
       time: startTime + " - " + endTime,
@@ -618,7 +609,6 @@ const HomeScreen = ({ navigation, route }) => {
         capacity,
         utilities,
       });
-      console.log("Prediction:", response.data.prediction);
       return response.data.prediction;
     } catch (error) {
       console.error("Error while fetching prediction:", error);

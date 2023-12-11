@@ -19,7 +19,6 @@ import Strings from "./constants/Strings";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { LogBox } from "react-native";
-//import Navigation from './Navigation';
 
 function Login({ navigation }) {
   LogBox.ignoreLogs(["Warning: ..."]);
@@ -159,7 +158,6 @@ function Login({ navigation }) {
         room_id: upcomingBookings[i].room_id,
       };
       bookings_arr.push(booking_obj);
-      console.log(booking_obj);
     }
     setBookings(bookings_arr);
     setData(bookings_arr);
@@ -236,9 +234,6 @@ function Login({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             style={styles.pwInput}
           />
-          {/* <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
-          </TouchableOpacity> */}
         </View>
       </LinearGradient>
       <View style={styles.bottomContainer}>
@@ -275,8 +270,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "white",
   },
   topTextContainer: {
-    flex: 1, // Take up some vertical space
-    justifyContent: "center", // Center vertically
+    flex: 1,
+    justifyContent: "center",
   },
   topText: {
     textAlign: "center",
@@ -363,16 +358,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   backgroundContainer: {
-    // backgroundColor: "#336699",
     alignItems: "center",
     flex: 1,
   },
   topContainer: {
-    // backgroundColor: "red",
     height: "100%",
     width: "100%",
-    //alignItems: 'center',
-    //justifyContent: 'flex-start',
   },
   bottomContainer: {
     height: "33%",
@@ -391,11 +382,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   signupButton: {
-    // padding: 16,
-    // marginLeft: 75,
-    // marginTop: 15,
-    // paddingHorizontal: 20,
-    // backgroundColor: "#004d99",
     borderRadius: 20,
     width: 75,
     height: 50,
@@ -419,21 +405,6 @@ const styles = StyleSheet.create({
     marginLeft: 150,
     marginTop: 5,
   },
-  // imageContainer: {
-  //   height: "50%",
-  //   width: "90%",
-  //   backgroundColor: "red",
-  // },
 });
 
 export default Login;
-/*
-const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
-  */

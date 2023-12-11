@@ -29,7 +29,6 @@ function Suggestions({ navigation }) {
     createAndModifyBooking();
   }
 
-  //needs to be replaced with a  different svg
   function Icon() {
     return (
       <Svg
@@ -81,9 +80,6 @@ function Suggestions({ navigation }) {
       end_time: end_time,
     });
 
-    console.log("PARAMs");
-    console.log(params);
-
     const response = await axios.post(
       `http://${Strings.ip_address}:3000/availability/get-by-id`,
       params,
@@ -120,7 +116,6 @@ function Suggestions({ navigation }) {
       " " +
       Number(newDate.getDate() + 1).toString();
 
-    console.log(formattedDate);
     reloadBookingData(new Date(newBooking.date), newBooking._id, formattedDate);
   };
 

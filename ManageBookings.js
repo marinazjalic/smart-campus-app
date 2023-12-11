@@ -72,10 +72,12 @@ const ManageBookings = () => {
   const cancelUserBooking = async (bookingId, room_id, date, time) => {
     var newTime = time.split(" - ");
     console.log("dae");
-    console.log(date);
+    console.log(bookingId);
     const isDeleted = await deleteBooking(bookingId);
     if (isDeleted) {
+      console.log("Reached");
       const availObj = await getAvailabilityID(room_id, date, time);
+      console.log(availObj);
       var result = await modifyCancelledBooking(
         availObj._id,
         newTime[0],
@@ -89,13 +91,13 @@ const ManageBookings = () => {
   };
 
   const getAvailabilityID = async (room_id, date) => {
-    var offset = date.getMonth() + 1 == 11 && date.getDate() > 5 ? 5 : 4;
+    //var offset = date.getMonth() + 1 == 11 && date.getDate() > 5 ? 5 : 4;
 
     var newDate = new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
-      0 - offset,
+      0 - 5,
       0,
       0,
       0
@@ -222,8 +224,6 @@ const ManageBookings = () => {
             )}
           </View>
         </View>
-
-        {/* Add more booking details as needed */}
       </View>
     </View>
   );
@@ -255,10 +255,8 @@ const styles = StyleSheet.create({
     width: "95%",
     justifyContent: "center",
     alignItems: "center",
-    // padding: 25,
     marginLeft: 1,
-    // marginBottom: 10,
-    borderRadius: 20, // Adjust for desired corner radius
+    borderRadius: 20,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
@@ -281,9 +279,8 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     borderRadius: 15,
     marginTop: 25,
-    // flexDirection: "row",
     width: "65%",
-    // borderRadius: 4,
+
     marginBottom: 15,
   },
   cancelButtonText: {
@@ -313,7 +310,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#cccccc",
   },
   splitLeft: {
-    // backgroundColor: "red",
     paddingLeft: 9,
     width: "60%",
   },
@@ -347,9 +343,7 @@ const styles = StyleSheet.create({
   splitRight: {
     width: "30%",
   },
-  capacityContainer: {
-    // backgroundColor: "grey",
-  },
+  capacityContainer: {},
   capacityText: {
     fontFamily: "Avenir",
     fontSize: 15,
@@ -358,12 +352,9 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     backgroundColor: "white",
-    // opacity: 80,
     width: "96%",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-
-    // borderRadius: 20,
   },
   dateContainer2: {
     paddingLeft: 10,
@@ -372,25 +363,11 @@ const styles = StyleSheet.create({
     fontFamily: "Avenir",
     fontSize: 16,
     color: "#999999",
-    // fontWeight: "bold",
   },
   iconContainer: {
     flexDirection: "row",
-    // backgroundColor: "red",
     paddingTop: 4,
   },
 });
 
 export default ManageBookings;
-
-/*
-function ManageBookings() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Manage Bookings now </Text>
-      </View>
-    );
-  }
-
-  export default ManageBookings;
-  */

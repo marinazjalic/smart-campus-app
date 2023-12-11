@@ -25,27 +25,7 @@ export default function CampusMap1({ selectedBuilding, onBuildingPress }) {
   const [isLeddySelected, setIsLeddySelected] = useState(false);
 
   const handleBuildingPress = (buildingName) => {
-    //selectedBuilding={buildingName};
     onBuildingPress(buildingName);
-
-    /*
-    if(buildingName === "CEI"){
-      setIsCEISelected(!(isCEISelected))
-    }
-    else if(buildingName === "Law"){
-      setIsLawSelected(!(isLawSelected))
-    }
-    else if(buildingName === "Leddy"){
-      setIsLeddySelected(!(isLeddySelected))
-    }
-    else {
-      setIsOdetteSelected(!(isOdetteSelected))
-
-    }
-    */
-
-    // Do anything else you need with the selected building name.
-    // For example, send it to a backe`nd or store it
   };
 
   return (
